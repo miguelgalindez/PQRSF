@@ -16,4 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/admin', 'PqrsfsController@index');
-Route::get('/admin/pqrsfs/all', 'PqrsfsController@getAll');
+Route::get('/admin/pqrsfs/all', 'PqrsfsController@getAll'); //only ajax
+
+Route::get('/admin/pqrsfs/direccionar', 'PqrsfsController@getDireccionar'); // only ajax
+Route::get('/admin/pqrsfs/direccionar/dependenciasFuncionarios' , 'DependenciasController@obtnDependenciasFuncionarios'); //only ajax
