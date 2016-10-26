@@ -30,7 +30,22 @@
             },            
             "columns": [
                 {"data": "pqrsfCodigo"},
-                {"data": "pqrsfTipo"},
+                {   "data": "pqrsfTipo",
+                    render: function(data, type, row){
+                        switch(data){
+                            case "P":
+                                return "Petición";
+                            case "Q":
+                                return "Queja";
+                            case "R":
+                                return "Reclamo";
+                            case "S":
+                                return "Sugerencia";
+                            case "F":
+                                return "Felicitación";
+                        }
+                    }
+                },
                 {"data": "pqrsfAsunto"},
                 {"data": "pqrsfFechaCreacion"},
                 {"data": "pqrsfMedioRecepcion"},
