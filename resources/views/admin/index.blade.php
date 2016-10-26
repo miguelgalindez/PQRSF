@@ -21,6 +21,41 @@
         </div>
     </div>
 <script type="text/javascript">
+
+    $.fn.dataTable.render.pqrsfTipo= function(){
+        return function(data, type, row){
+            switch(data){
+                case "P":
+                    return "Petición";
+                case "Q":
+                    return "Queja";
+                case "R":
+                    return "Reclamo";
+                case "S":
+                    return "Sugerencia";
+                case "F":
+                    return "Felicitación";
+            }
+        }
+    };
+
+    $.fn.dataTable.render.pqrsfEstado=function(){
+        return function(data, type, row){
+            switch(data){
+                case "0":
+                    return "Pendiente";
+                case "1":
+                    return "Atendida";
+            }
+        }
+    };
+
+    $.fn.dataTable.render.personaNombreCompleto=function(){
+        return function(data, type, row){
+            return row.perNombres + " " + row.perApellidos; 
+        }
+    };
+
     $(document).ready(function(){
         $('#pqrsfs').DataTable({
             ajax:{
@@ -31,38 +66,17 @@
             "columns": [
                 {"data": "pqrsfCodigo"},
                 {   "data": "pqrsfTipo",
-                    render: function(data, type, row){
-                        switch(data){
-                            case "P":
-                                return "Petición";
-                            case "Q":
-                                return "Queja";
-                            case "R":
-                                return "Reclamo";
-                            case "S":
-                                return "Sugerencia";
-                            case "F":
-                                return "Felicitación";
-                        }
-                    }
+                    render: $.fn.dataTable.render.pqrsfTipo()
                 },
                 {"data": "pqrsfAsunto"},
                 {"data": "pqrsfFechaCreacion"},
                 {"data": "pqrsfMedioRecepcion"},
                 {   "data": "pqrsfEstado",
-                    render: function(data, type, row){
-                        switch(data){
-                            case "0":
-                                return "Pendiente";
-                            case "1":
-                                return "Atendida";
-                        }
-                    }
+                    render: $.fn.dataTable.render.pqrsfEstado()
                 },
                 {   "data": null, 
-                    render: function(data, type, row){
-                        return row.perNombres + " " + row.perApellidos; 
-                }}
+                    render: $.fn.dataTable.render.personaNombreCompleto()
+                }
             ]
         });
     });
