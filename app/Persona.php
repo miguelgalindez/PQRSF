@@ -9,6 +9,6 @@ class Persona extends Model
 	protected $primaryKey='perId';
     
     public function pqrsfs(){
-    	return $this->hasMany('App\Pqrsf', 'perId');
+    	return $this->hasMany('App\Pqrsf');
     }
 }

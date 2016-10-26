@@ -15,4 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin', 'PqrsfsController@getAll');
+Route::get('/admin', 'PqrsfsController@index');
+Route::get('/admin/pqrsfs/all', 'PqrsfsController@getAll');

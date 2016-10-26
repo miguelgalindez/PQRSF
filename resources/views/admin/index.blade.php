@@ -1,20 +1,56 @@
 @extends('admin.master')
-@section('title', 'Administrador PQRSF')
+@section('title', 'Index')
 
 @section('content')
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/free-jqgrid/4.13.4/css/ui.jqgrid.min.css">
-	<script src="https://cdn.jsdelivr.net/free-jqgrid/4.13.4/js/i18n/grid.locale-de.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/free-jqgrid/4.13.4/js/jquery.jqgrid.min.js"></script>
+    <div class="container">
+        <div class="col-lg-12">
+            <table id="pqrsfs" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Tipo</th>
+                        <th>Asunto</th>
+                        <th>Creada</th>
+                        <th>Recepcion</th>
+                        <th>Estado</th>
+                        <th>Solicitante</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>  
+        </div>
+    </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#pqrsfs').DataTable({
+            ajax:{
+                url :  '/admin/pqrsfs/all',
+                dataSrc: ''
 
-	<div class="container">
-		<div class="content">
-			<div class="title">Bienvenido Admin</div>			
-			
-			<table id="s2list"></table>
-			<div id="s2pager"></div>
-			<div id="filter" style="margin-left:30%;display:none">Search Invoices</div>
-			<script src="search2.js" type="text/javascript"> </script>
-			
-		</div>		
-	</div>
+            },            
+            "columns": [
+                {"data": "pqrsfCodigo"},
+                {"data": "pqrsfTipo"},
+                {"data": "pqrsfAsunto"},
+                {"data": "pqrsfFechaCreacion"},
+                {"data": "pqrsfMedioRecepcion"},
+                {   "data": "pqrsfEstado",
+                    render: function(data, type, row){
+                        switch(data){
+                            case "0":
+                                return "Pendiente";
+                            case "1":
+                                return "Atendida";
+                        }
+                    }
+                },
+                {   "data": null, 
+                    render: function(data, type, row){
+                        return row.perNombres + " " + row.perApellidos; 
+                }}
+            ]
+        });
+    });
+</script>
+
 @endsection
