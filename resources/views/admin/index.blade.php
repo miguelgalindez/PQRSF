@@ -48,28 +48,23 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="prioridad">Prioridad</label>
+                        <label class="control-label col-sm-2" for="fechaVencimiento">Fecha de vencimiento</label> 
                         <div class="col-sm-10">
-                            <select class="form-control" id="prioridad"></select>           
+                            <input type='text' class="form-control" id="fechaVencimiento" />                        
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="fechaVencimiento">Fecha de vencimiento</label>
+                        <label class="control-label col-sm-2" for="prioridad">Prioridad</label>
                         <div class="col-sm-10">
-                            <select class="form-control" id="fechaVencimiento"></select>            
+                            <select class="form-control" id="prioridad"></select>           
                         </div>
-                    </div>  
-
-                    <div class="form-group"> 
-                        <div class="col-sm-offset-2 col-sm-10">
-                          <button type="submit" class="btn btn-default">Direccionar</button>
-                        </div>
-                    </div>
+                    </div>                                    
                 </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button id="btnCancelarDireccionarModal" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button id="btnDireccionarDireccionarModal" type="submit" class="btn btn-primary">Direccionar</button>
           </div>
         </div>
 
@@ -115,6 +110,10 @@
     var funcionarios;
 
     $(document).ready(function(){
+        $('#fechaVencimiento').datetimepicker({
+            locale: 'es'
+        });
+
         $('#pqrsfsTable').DataTable({
             ajax:{
                 url :  '/admin/pqrsfs/all',
@@ -148,18 +147,24 @@
         */
         var dependencias=[];
         var funcionarios=[];
-        $.get('/admin/pqrsfs/direccionar/dependenciasFuncionarios', function(data){
+        $.get('/admin/pqrsfs/direccionar/datosDireccionamiento', function(data){
             dependencias=data.dependencias;
             funcionarios=data.funcionarios;
-            $('#dependencia').append("<option value=''></option>");
+            
+            $('#dependencia').append("<option value=''>Elegir...</option>");
             $.each(data.dependencias, function(index, dependencia){
                 $('#dependencia').append("<option value='"+ dependencia.dept_id + "'>" +dependencia.dept_name+"</option>");
-            });            
+            });
+
+            $('#prioridad').append("<option value=''>Elegir...</option>"); 
+            $.each(data.prioridades, function(index, prioridad){
+               $('#prioridad').append("<option value='"+ prioridad.priority_id + "'>" +prioridad.priority_desc+"</option>"); 
+            });
         });
 
         $('#dependencia').change(function(){
             $('#funcionario').empty();
-            $('#funcionario').append("<option value=''></option>");
+            $('#funcionario').append("<option value=''>Elegir...</option>");
             var dependenciaSeleccionada=$(this).val();
             $.each(funcionarios, function(index, funcionario){
                 if(funcionario.dept_id == dependenciaSeleccionada){
