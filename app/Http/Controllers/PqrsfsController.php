@@ -25,6 +25,10 @@ class PqrsfsController extends Controller
     public function getDireccionar(){
         return view('admin.partial.direccionarPqrsf');
     }
+
+    public function postDireccionar(){
+        
+    }
 }
 
 /*

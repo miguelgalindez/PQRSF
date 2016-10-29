@@ -19,5 +19,15 @@ class OsticketController extends Controller
     	return response()->json($dependenciasFuncionarios);    	
     }
 
+    public function crearTicket(Request $request){
+    	$resp=Osticket::crearTicket(
+    		$request->get('dependencia'), 
+    		$request->get('funcionario'),
+    		$request->get('fechaVencimiento'),
+    		$request->get('prioridad')
+    	);
+
+    	return $resp;
+    }
 
 }
