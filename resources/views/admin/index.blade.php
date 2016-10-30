@@ -36,7 +36,7 @@
                 <form class="form-horizontal" id="direccionarForm" action="/admin/pqrsfs/direccionar" method="post">
 
                     <input type="hidden" name="_token" value="{!! csrf_token() !!}">
-
+                    <input type="hidden" name="subject" value="" id="subject">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="dependencia">Dependencia</label>
                         <div class="col-sm-10">
@@ -122,7 +122,7 @@
             showTodayButton: true,            
         });
 
-        $('#pqrsfsTable').DataTable({
+        var table=$('#pqrsfsTable').DataTable({
             ajax:{
                 url :  '/admin/pqrsfs/all',
                 dataSrc: ''
@@ -180,12 +180,16 @@
                 }
             });
         });
-
+        
+        $('#pqrsfsTable tbody').on('click', 'button',function () {
+            $('#direccionarModal').modal('show');
+            var data = table.row( $(this).parents('tr') ).data();
+            console.log(data.pqrsfAsunto);
+            $("#subject").val(data.pqrsfAsunto);
+        });
     });  
 
-    $('#pqrsfsTable tbody').on('click', 'button',function () {
-        $('#direccionarModal').modal('show');
-    });    
+        
 
 </script>
 

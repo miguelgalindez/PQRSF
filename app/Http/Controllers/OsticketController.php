@@ -24,7 +24,8 @@ class OsticketController extends Controller
     		$request->get('dependencia'), 
     		$request->get('funcionario'),
     		$request->get('fechaVencimiento'),
-    		$request->get('prioridad')
+    		$request->get('prioridad'),
+    		$request->get('subject')
     	);
 
     	return $resp;

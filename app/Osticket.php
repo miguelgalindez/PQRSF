@@ -91,7 +91,7 @@ class Osticket extends Model
         }
     }
 
-    public static function crearTicket($idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad){
+    public static function crearTicket($idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $subject){
         $db=DB::connection('osticketdb');
 
         $sigNumeroTicket=Self::obtnSigNumeroTicket();
@@ -100,26 +100,33 @@ class Osticket extends Model
         
         try{
             $db->beginTransaction();
+            $idTicket=$db->table('ost_ticket')
+                            ->insertGetId([
+                                'number' => $sigNumeroTicket,
+                                'status_id' => 1,
+                                'dept_id' => $idDependencia,
+                                // Sin Topic ??
+                                // Sin sla ??
+                                // Sin team ?
+                                // Sin email Id
+                                // sin flags
+                                // sin ip address
 
-            $db->table('ost_ticket')
-            ->insert([
-                'number' => $sigNumeroTicket,
-                'status_id' => 1,
-                'dept_id' => $idDependencia,
-                // Sin Topic ??
-                // Sin sla ??
-                // Sin team ?
-                // Sin email Id
-                // sin flags
-                // sin ip address
-
-                'staff_id' => $idFuncionario,
-                'source'=> 'Web',
-                'isoverdue' => 0,
-                'duedate' => $vencimiento,
-                'created' => date('Y-m-d H:i:s'),
-                'updated' => date('Y-m-d H:i:s'),
+                                'staff_id' => $idFuncionario,
+                                'source'=> 'Web',
+                                'isoverdue' => 0,
+                                'duedate' => $vencimiento,
+                                'created' => date('Y-m-d H:i:s'),
+                                'updated' => date('Y-m-d H:i:s'),
             ]);
+
+            $db->table('ost_ticket__cdata')
+                 ->insert([
+                    'ticket_id' => $idTicket,
+                    'subject' => $subject,
+                    'priority' => $idPrioridad
+            ]);
+
             // OJO FALTA AGREGARLO A LA TABLA SERVICIOS
             $db->commit();
 
