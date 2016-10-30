@@ -10,7 +10,7 @@ class UsersController extends Controller
 {
     public function googleLogin(Request $request){
     	$gClient= new \Google_Client();
-    	$gClient->setApplicationName(config('PQRSF'));
+    	$gClient->setApplicationName(config('PQRSF - Universidad del Cauca'));
         $gClient->setClientId('706330254364-a4mc6no6tjikib8a80gvdfpns357dur7.apps.googleusercontent.com');
         $gClient->setClientSecret('ofNaryan-9mMjblr8nsUVUU-');
         $gClient->setRedirectUri('http://localhost:8000/glogin');
