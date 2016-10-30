@@ -14,8 +14,11 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+    // OJO: que se puede llenar el ROL
+
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'rol', 'fechaInicio', 'fechaFin'
     ];
 
     /**
@@ -24,6 +27,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'remember_token',
     ];
 }

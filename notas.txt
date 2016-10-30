@@ -1,0 +1,9 @@
+--------------------------------------------------------------------------------------------------------------------
+
+Para que no se lanzara la excepción que indicaba error al intentar validar las credenciales por la falta de contraseña Y LOGRAR QUE FUNCIONARA LA AUTENTICACIÓN CON GOOGLE, se modificó el archivo 
+
+/var/www/pqrsf/vendor/laravel/framework/src/Illuminate/Auth/EloquentUserProvider.php
+
+Específicamente se modificó la función validateCredentials, ubicada en la fila 114, para que no valide si hay contraseña. Para que ello fuera posible, se colocó que siempre retorne true
+
+--------------------------------------------------------------------------------------------------------------------

@@ -24,3 +24,5 @@ Route::get('/admin/pqrsfs/direccionar/datosDireccionamiento' , 'OsticketControll
 
 Route::get('/prueba' , 'OsticketController@crearTicket');// prueba
 Route::post('/admin/pqrsfs/direccionar' , 'OsticketController@crearTicket');//only ajax
+
+Route::get('glogin',array('as'=>'glogin','uses'=>'UsersController@googleLogin')) ;

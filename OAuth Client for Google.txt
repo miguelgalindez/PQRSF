@@ -1,0 +1,10 @@
+Cliente OAuth
+
+Nombre app
+PQRSF - Universidad del Cauca
+
+ID
+706330254364-a4mc6no6tjikib8a80gvdfpns357dur7.apps.googleusercontent.com
+
+SECRETO
+ofNaryan-9mMjblr8nsUVUU-

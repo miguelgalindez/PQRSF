@@ -17,7 +17,6 @@ class CreatePqrsfsTable extends Migration
             $table->string('pqrsfCodigo', '5')->unique();
             $table->string('perId', '16');
             $table->string('radId', '16')->nullable();
-            $table->integer('serId')->nullable();
             $table->string('pqrsfTipo', '1');
             $table->string('pqrsfAsunto', '128');
             $table->string('pqrsfDescripcion', '1024');
@@ -28,7 +27,7 @@ class CreatePqrsfsTable extends Migration
             $table->date('pqrsfFechaCierre')->nullable();   
 
             $table->primary('pqrsfCodigo');
-            $table->foreign('perId')->references('perId')->on('personas')->onDelete('cascade');
+            $table->foreign('perId')->references('perId')->on('personas');
         });
     }
 
