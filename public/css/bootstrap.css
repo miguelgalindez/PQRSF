@@ -6989,3 +6989,39 @@ a.list-group-item-danger.active:focus {
 .popover {
   color: #2c3e50;
 }
+
+
+.navbar-content
+{
+    width:320px;
+    padding: 15px;
+    padding-bottom:0px;
+}
+
+.navbar-content:before, .navbar-content:after
+{
+    display: table;
+    content: "";
+    line-height: 0;
+}
+
+.navbar-nav.navbar-right:last-child {
+margin-right: 15px !important;
+}
+.navbar-footer 
+{
+    background-color:#DDD;
+}
+.navbar-footer-content { padding:15px 15px 15px 15px; }
+.dropdown-menu {
+padding: 0px;
+overflow: hidden;
+}
+
+#userPhoto {
+
+  width: 120px; /*or your image's width*/
+  height: 120px; /*or your image's height*/
+  margin: 0;
+  padding: 0;
+}
