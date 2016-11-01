@@ -67,23 +67,26 @@
                     <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <div class="navbar-content">
+                            <div class="navbar-content">                            	
                                 <div class="row">
-                                    <div class="col-lg-5">
+                                    <div class="col-lg-4">
                                         <img src="{!! asset('img/user-default.png') !!}"
                                             alt="Alternate Text" class="img-responsive" />
                                         <p class="text-center small">
                                             <a href="#">Change Photo</a></p>
                                     </div>
-                                    <div class="col-lg-7">
-                                        <span>{!! Auth::user()->name !!}</span>
+                                    <div class="col-lg-8">
+                                        <span>
+                                        	{!! Auth::user()->name !!}
+                                        </span>
                                         <p class="text-muted small">
-                                            mail@gmail.com</p>
+                                            {!! Auth::user()->id !!}
+                                        </p>
                                         <div class="divider">
                                         </div>
                                         <a href="#" class="btn btn-primary btn-sm active">View Profile</a>
                                     </div>
-                                </div>
+                                </div>                              
                             </div>
                             <div class="navbar-footer">
                                 <div class="navbar-footer-content">

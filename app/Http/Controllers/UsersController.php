@@ -44,7 +44,7 @@ class UsersController extends Controller
                 	return redirect('/admin');
                 }
                 else{
-                	return "ojo";
+                	return "houston we have a problem";
                 }                              
             }
             else{
