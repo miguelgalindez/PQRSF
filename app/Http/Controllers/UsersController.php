@@ -36,13 +36,15 @@ class UsersController extends Controller
         if($gClient->getAccessToken()){
             
             //For logged in user, get details from google using access token
-            $gUser = $google_oauthV2->userinfo->get();           
-            
-            if ($user = User::where('email',$gUser['email'])->first()){
+            $gUser = $google_oauthV2->userinfo->get();                       
+            $user=User::find($gUser['email']);
+            if ($user){
                 
-                if(Auth::attempt(['email' => $user->email])){
-                	return response()->json($user);
-                	//return redirect('/admin');
+                if(Auth::loginUsingId($user->id)){                	
+                	return redirect('/admin');
+                }
+                else{
+                	return "ojo";
                 }                              
             }
             else{

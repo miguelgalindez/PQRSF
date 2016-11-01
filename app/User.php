@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -16,9 +17,9 @@ class User extends Authenticatable
      */
 
     // OJO: que se puede llenar el ROL
-
+    public $incrementing = false;
     protected $fillable = [
-        'name', 'email', 'rol', 'fechaInicio', 'fechaFin'
+        'name', 'rol', 'fechaInicio', 'fechaFin'
     ];
 
     /**
@@ -29,4 +30,12 @@ class User extends Authenticatable
     protected $hidden = [
         'remember_token',
     ];
+
+    public static function getUserByEmail($email){
+
+        return DB::table('users')                    
+                    ->select('*')
+                    ->where('id', $email)
+                    ->get();
+    }
 }
