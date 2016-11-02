@@ -7,3 +7,5 @@ Para que no se lanzara la excepción que indicaba error al intentar validar las 
 Específicamente se modificó la función validateCredentials, ubicada en la fila 114, para que no valide si hay contraseña. Para que ello fuera posible, se colocó que siempre retorne true
 
 --------------------------------------------------------------------------------------------------------------------
+
+Ver la anotación de la línea 32 del Middleware IsAdministrator

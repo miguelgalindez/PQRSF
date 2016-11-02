@@ -95,7 +95,7 @@
                                             <a href="#" class="btn btn-default btn-sm">Change Passowrd</a>
                                         </div>
                                         <div class="col-lg-6">
-                                            <a href="http://www.jquery2dotnet.com" class="btn btn-default btn-sm pull-right">Sign Out</a>
+                                            <a href="/logout" class="btn btn-default btn-sm pull-right">Cerrar Sesión</a>
                                         </div>
                                     </div>
                                 </div>

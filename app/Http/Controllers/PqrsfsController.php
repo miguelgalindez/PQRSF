@@ -16,21 +16,5 @@ class PqrsfsController extends Controller
                     ->get();
 	
     	return response()->json($pqrsfs);
-    }
-
-    public function index(){
-        return view('admin.index');
-    }
-
-    public function getDireccionar(){
-        return view('admin.partial.direccionarPqrsf');
-    }
-
-    public function postDireccionar(){
-        
-    }
+    }    
 }
-
-/*
-'pqrsfCodigo', 'pqrsfTipo', 'pqrsfAsunto', 'pqrsfDescripcion', 'pqrsfFechaCreacion', 'pqrsfMedioRecepcion', 'pqrsfEstado', '
-*/

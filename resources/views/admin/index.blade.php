@@ -63,7 +63,7 @@
                             <select class="form-control" id="prioridad" name="prioridad"></select>           
                         </div>
                     </div>
-                    <button id="btnDireccionarDireccionarModal" type="submit" class="btn btn-primary">Direccionar</button>                  
+                    <button id="btnDireccionarModal" type="submit" class="btn btn-primary">Direccionar</button>                  
                 </form>
           </div>
           <div class="modal-footer">
