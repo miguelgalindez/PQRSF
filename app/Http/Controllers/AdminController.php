@@ -21,8 +21,12 @@ class AdminController extends Controller
 	}
 
 	
+    public function mostrarDireccionarPqrsf(){
+        return view('admin.direccionarPqrsf');
+    }
+
     public function index(){
-        return view('admin.index');
+    	return view('admin.index');
     }
 
     public function obtnDatosRegistroPqrsf(){

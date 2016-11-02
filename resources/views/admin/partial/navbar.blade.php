@@ -40,7 +40,7 @@
 			            <li><a href="#">Imprimir PQRSF</a></li>
 			            <li><a href="#">Radicar PQRSF</a></li>        
 			            <li class="divider"></li>		            
-			            <li><a href="#">Direccionar PQRSF</a></li>
+			            <li><a href="/admin/direccionarPqrsf">Direccionar PQRSF</a></li>
 		          	</ul>
 		        </li>
 
