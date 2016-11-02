@@ -16,5 +16,5 @@ class PqrsfsController extends Controller
                     ->get();
 	
     	return response()->json($pqrsfs);
-    }    
+    }
 }

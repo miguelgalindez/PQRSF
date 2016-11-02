@@ -16,9 +16,10 @@ Route::get('/', function () {
 });
 
 Route::get('/admin', 'AdminController@index');
-Route::get('/admin/registrarPqrsf', 'AdminController@registrarPqrsf');
+Route::get('/admin/registrarPqrsf', 'AdminController@mostrarRegistrarPqrsf');
+Route::post('/admin/registrarPqrsf', 'AdminController@registrarPqrsf');
 
-Route::get('/persona/datosRegistro', 'PersonasController@obtnDatosRegistro');
+Route::get('/admin/datosRegistroPqrsf', 'AdminController@obtnDatosRegistroPqrsf');
 
 Route::get('/admin/pqrsfs/all', 'PqrsfsController@getAll'); //only ajax
 Route::get('/admin/pqrsfs/direccionar/datosDireccionamiento' , 'OsticketController@obtnDatosDireccionamiento'); //only ajax

@@ -5,7 +5,9 @@
 	<div class="container">
         <div class="col-lg-10">
         	<div class="row">
-        		<form class="form-horizontal">
+        		<form class="form-horizontal" action="/admin/registrarPqrsf" method="post">
+        			<input type="hidden" name="_token" value="{!! csrf_token() !!}">
+        			
 		        	<div id="paso1">
 		        		<div class="col-lg-6">
 			        		<div class="input-group">
@@ -58,6 +60,13 @@
 
 						<div class="col-lg-6">
 							<div class="input-group">
+								<span class="input-group-addon">Celular</span>
+								<input type="text" class="form-control" id="celular" name="celular">
+							</div>
+						</div>
+
+						<div class="col-lg-12">
+							<div class="input-group">
 								<span class="input-group-addon">Dirección</span>
 								<input type="text" class="form-control" id="direccion" name="direccion">
 							</div>
@@ -76,15 +85,22 @@
 								<select class="form-control" id="tipoSolicitud" name="tipoSolicitud"></select>
 							</div>	
 			        	</div>
-			        	
+
 			        	<div class="col-lg-6">
+			        		<div class="input-group">
+								<span class="input-group-addon">Medio de recepción</span>
+								<select class="form-control" id="medioRecepcion" name="medioRecepcion"></select>
+							</div>	
+			        	</div>
+			        	
+			        	<div class="col-lg-12">
 							<div class="input-group">
 								<span class="input-group-addon">Asunto</span>
-								<select class="form-control" id="asunto" name="asunto"></select>
+								<input class="form-control" id="asunto" name="asunto">
 							</div>
 						</div>
 
-						<div class="col-lg-6">
+						<div class="col-lg-12">
 			        		<div class="input-group">
 								<span class="input-group-addon">Descripción</span>
 								<textarea class="form-control" rows="4" id="descripcion" name="descripcion"></textarea>
@@ -104,7 +120,7 @@
 
     <script type="text/javascript">
     	$(document).ready(function(){
-    		$.get('/persona/datosRegistro', function(data){
+    		$.get('/admin/datosRegistroPqrsf', function(data){
 	          	           	            
 	            $('#tipoSolicitante').append("<option value=''>Elegir...</option>");
 	            $.each(data.tiposPersona, function(index, tipoPersona){
@@ -114,6 +130,16 @@
 	            $('#tipoIdentificacion').append("<option value=''>Elegir...</option>"); 
 	            $.each(data.tiposIdentificacion, function(index, tipoIdentificacion){
 	               $('#tipoIdentificacion').append("<option value='"+ tipoIdentificacion + "'>" +tipoIdentificacion+"</option>"); 
+	            });
+
+				$('#tipoSolicitud').append("<option value=''>Elegir...</option>"); 
+	            $.each(data.tiposSolicitud, function(index, tipoSolicitud){
+	               $('#tipoSolicitud').append("<option value='"+ tipoSolicitud.substring(0, 1) + "'>" +tipoSolicitud+"</option>"); 
+	            });
+
+	            $('#medioRecepcion').append("<option value=''>Elegir...</option>"); 
+	            $.each(data.mediosRecepcion, function(index, medioRecepcion){
+	               $('#medioRecepcion').append("<option value='"+ medioRecepcion + "'>" +medioRecepcion+"</option>"); 
 	            });
 	        });	
 
