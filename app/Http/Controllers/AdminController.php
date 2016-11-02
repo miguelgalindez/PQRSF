@@ -18,7 +18,9 @@ class AdminController extends Controller
 
 	}
 
-
+	public function registrarPqrsf(){
+		return view('admin.registrarPqrsf');
+	}
     public function index(){
         return view('admin.index');
     }
