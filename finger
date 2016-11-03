@@ -1,0 +1,83 @@
+Cuando se coloca una atención y el usuario no existe:
+ticket_id=6
+
+
+
+------------------------------------------------------------------
+
+INSERT INTO `ost_form_entry_values` (`entry_id`, `field_id`, `value`, `value_id`) VALUES
+	
+	3: número telefono
+(8, 3, '8888888X88', NULL),
+		Telefono solo aparece aqui
+	
+	4: Notas internas del usuario
+(8, 4, NULL, NULL),
+
+	20: Resumen del problema
+(9, 20, 'Resumen Fabian', NULL),
+		Resumen aparace en ost_ticket__cdata ost__search 
+
+
+	22: Nivel de prioridad
+(9, 22, 'Alta', 3);
+		Prioridad solo aparece aqui
+
+
+------------------------------------------------------------------
+
+						
+						
+INSERT INTO `ost_ticket_thread` (`id`, `pid`, `ticket_id`, `staff_id`, `user_id`, `thread_type`, `poster`, `source`, `title`, `body`, `format`, `ip_address`, `created`, `updated`) VALUES
+
+(12, 0, 6, 0, 3, 'M', 'Fabian Muñoz', 'Email', '', 'Descripcion Fabian', 'html', '::1', '2016-11-03 15:59:55', '0000-00-00 00:00:00'),
+(13, 0, 6, 1, 0, 'N', 'Miguel Angel Galindez Muñoz', '', 'Ticket asignado a Area de soporte', 'Asignación de Tickets', 'html', '::1', '2016-11-03 15:59:55', '0000-00-00 00:00:00'),
+(14, 0, 6, 0, 0, 'N', 'SYSTEM', '', 'Nuevo Ticket por el agente', 'Ticket creado por el agente - Miguel Angel Galindez Muñoz', 'html', '::1', '2016-11-03 15:59:55', '0000-00-00 00:00:00');
+
+
+
+
+`thread_type` enum('M','R','N') NOT NULL
+
+
+--------------------------------------------------------------------
+
+
+INSERT INTO `ost_ticket__cdata` (`ticket_id`, `subject`, `priority`) VALUES
+(6, 'Resumen Fabian', '3');
+
+--------------------------------------------------------------------
+
+INSERT INTO `ost_user` (`id`, `org_id`, `default_email_id`, `status`, `name`, `created`, `updated`) VALUES
+(3, 0, 3, 0, 'Fabian Orlando Galindez Muñoz', '2016-11-03 15:55:48', '2016-11-03 15:55:48');
+
+id: AUTOINCREMENT
+
+-------------------------------------------------------------------------
+
+
+INSERT INTO `ost__search` (`object_type`, `object_id`, `title`, `content`) VALUES
+('U', 3, 'Fabian Orlando Galindez Munoz', ''),
+('H', 12, '', 'Descripcion Fabian'),
+('H', 13, 'Ticket asignado a Area de soporte', 'Asignación de Tickets'),
+('T', 6, '173568 Resumen Fabian', 'Resumen Fabian');
+
+
+
+
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+
+INSERT INTO `ost_user_email` (`id`, `user_id`, `address`) VALUES
+(3, 3, 'orlandogalindez@unicauca.edu.co');
+
+id: AUTOINCREMENT
+
+
+
+
+
+
+

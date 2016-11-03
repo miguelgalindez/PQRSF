@@ -36,7 +36,7 @@
                 <form class="form-horizontal" id="direccionarForm" action="/admin/direccionarPqrsf" method="post">
 
                     <input type="hidden" name="_token" value="{!! csrf_token() !!}">
-                    <input type="hidden" name="subject" value="" id="subject">
+                    <input type="hidden" name="asunto" value="" id="asunto">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="dependencia">Dependencia</label>
                         <div class="col-sm-10">
@@ -185,7 +185,7 @@
             $('#direccionarModal').modal('show');
             var data = table.row( $(this).parents('tr') ).data();
             console.log(data.pqrsfAsunto);
-            $("#subject").val(data.pqrsfAsunto);
+            $("#asunto").val(data.pqrsfAsunto);
         });
     });  
 
