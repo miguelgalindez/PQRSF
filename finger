@@ -92,18 +92,9 @@ id: AUTOINCREMENT
 INSERT INTO `ost__search` (`object_type`, `object_id`, `title`, `content`) VALUES
 ('U', 3, 'Fabian Orlando Galindez Guerrero', ''),
 ('H', 12, '', 'Descripción del problema de FABIAN'),
-('H', 13, 'Ticket asignado a Teresa Toledo', 'Asignación de Tickets'),
 ('T', 12, '000039 Resumen del problema de FABIAN', 'Resumen del problema de FABIAN');
 
+000039: Secuencia para el numero del ticket con todos los ceros a la izquierda como relleno para completar los 6 dígitos
 
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-

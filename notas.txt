@@ -9,3 +9,8 @@ Específicamente se modificó la función validateCredentials, ubicada en la fil
 --------------------------------------------------------------------------------------------------------------------
 
 Ver la anotación de la línea 32 del Middleware IsAdministrator
+
+--------------------------------------------------------------------------------------------------------------------
+
+OJO !!! 
+		La cantidad de digitos (6) para el numero del ticket ŚE PUEDE ESTAR QUEDANDO CORTA. dejar por lo menos 10
