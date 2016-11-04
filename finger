@@ -1,79 +1,105 @@
 Cuando se coloca una atención y el usuario no existe:
 ticket_id=6
+------------------- INFO
 
+INSERT INTO `ost_form` (`id`, `type`, `deletable`, `title`, `instructions`, `notes`, `created`, `updated`) VALUES
+(1, 'U', 1, 'Información de contacto', NULL, NULL, '2016-10-27 10:56:27', '2016-10-27 10:56:27'),
+(2, 'T', 1, 'Datos del Ticket', 'Por favor, describa su problema', 'Este formulario se adjuntará a cada ticket, independientemente de su origen. Puede agregar nuevos campos a este formulario y estarán disponibles para todos los tickets y se podrán consultar con búsqueda avanzada y filtros.', '2016-10-27 10:56:27', '2016-10-27 10:56:27'),
+(3, 'C', 1, 'Informacion de la empresa', 'Más información disponible en plantillas de correo electrónico', NULL, '2016-10-27 10:56:27', '2016-10-27 10:56:27'),
+(4, 'O', 1, 'Información de la organización', 'Detalles sobre la organización del usuario', NULL, '2016-10-27 10:56:27', '2016-10-27 10:56:27'),
+(5, 'L1', 1, 'Propiedades del estado del Ticket', 'Propiedades que pueden establecerse en un estado del Ticket.', NULL, '2016-10-27 10:56:28', '2016-10-27 10:56:28');
 
+-- --------------------------------------------------------
+
+INSERT INTO `ost_form_entry` (`id`, `form_id`, `object_id`, `object_type`, `sort`, `created`, `updated`) VALUES
+
+-- entrada que define los datos del usuario (form_id=1 ) objectId hace referencia al id del usuario
+(8, 1, 3, 'U', 1, '2016-10-29 18:34:30', '2016-10-29 18:34:30'),
+
+-- Entrada que define los datos del ticket (form_id=2 ) objectId hace referencia al id del ticket TICKET
+(9, 2, 12, 'T', 1, '2016-10-29 18:38:51', '2016-10-29 18:38:51');
 
 ------------------------------------------------------------------
 
 INSERT INTO `ost_form_entry_values` (`entry_id`, `field_id`, `value`, `value_id`) VALUES
 	
-	3: número telefono
-(8, 3, '8888888X88', NULL),
+
+		3: número telefono
+(8, 3, '8209900X55', NULL),
 		Telefono solo aparece aqui
-	
-	4: Notas internas del usuario
-(8, 4, NULL, NULL),
+
+	4: Notas internas del usuario	Si no hay nota colocar esta (8, 4, NULL, NULL),
+(8, 4, 'Monitor DIVTIC', NULL),
 
 	20: Resumen del problema
-(9, 20, 'Resumen Fabian', NULL),
-		Resumen aparace en ost_ticket__cdata ost__search 
-
+(9, 20, 'Resumen del problema de FABIAN', NULL),
+	Resumen aparace en ost_ticket__cdata ost__search 
 
 	22: Nivel de prioridad
-(9, 22, 'Alta', 3);
-		Prioridad solo aparece aqui
+(9, 22, 'Urgente', 4);
+	Prioridad solo aparece aqui
+
 
 
 ------------------------------------------------------------------
 
-						
+INSERT INTO `ost_ticket` (`ticket_id`, `number`, `user_id`, `user_email_id`, `status_id`, `dept_id`, `sla_id`, `topic_id`, `staff_id`, `team_id`, `email_id`, `flags`, `ip_address`, `source`, `isoverdue`, `isanswered`, `duedate`, `reopened`, `closed`, `lastmessage`, `lastresponse`, `created`, `updated`) VALUES						
+
+(12, '000039', 3, 0, 1, 4, 1, 7, 3, 0, 0, 0, '::1', 'EMAIL', 0, 0, '2016-10-29 19:00:00', NULL, NULL, '2016-10-29 18:38:51', NULL, '2016-10-29 18:38:51', '2016-10-29 18:38:52');
+
+-----------------------------------------------------------------------
+
+
+INSERT INTO `ost_ticket_event` (`ticket_id`, `staff_id`, `team_id`, `dept_id`, `topic_id`, `state`, `staff`, `annulled`, `timestamp`) VALUES
+
+(12, 3, 0, 4, 7, 'assigned', 'miguelgalindez', 0, '2016-10-29 18:38:52'),
+(12, 3, 0, 4, 7, 'created', 'miguelgalindez', 0, '2016-10-29 18:38:52');
+
+----------------------------------------------------------------------------------------------
+
+
 						
 INSERT INTO `ost_ticket_thread` (`id`, `pid`, `ticket_id`, `staff_id`, `user_id`, `thread_type`, `poster`, `source`, `title`, `body`, `format`, `ip_address`, `created`, `updated`) VALUES
 
-(12, 0, 6, 0, 3, 'M', 'Fabian Muñoz', 'Email', '', 'Descripcion Fabian', 'html', '::1', '2016-11-03 15:59:55', '0000-00-00 00:00:00'),
-(13, 0, 6, 1, 0, 'N', 'Miguel Angel Galindez Muñoz', '', 'Ticket asignado a Area de soporte', 'Asignación de Tickets', 'html', '::1', '2016-11-03 15:59:55', '0000-00-00 00:00:00'),
-(14, 0, 6, 0, 0, 'N', 'SYSTEM', '', 'Nuevo Ticket por el agente', 'Ticket creado por el agente - Miguel Angel Galindez Muñoz', 'html', '::1', '2016-11-03 15:59:55', '0000-00-00 00:00:00');
-
-
-
-
-`thread_type` enum('M','R','N') NOT NULL
+(12, 0, 12, 0, 3, 'M', 'Fabian Guerrero', 'Email', '', 'Descripción del problema de FABIAN', 'html', '::1', '2016-10-29 18:38:51', '0000-00-00 00:00:00'),
+(13, 0, 12, 1, 0, 'N', 'Miguel Angel Galindez Muñoz', '', 'Ticket asignado a Teresa Toledo', 'Asignación de Tickets', 'html', '::1', '2016-10-29 18:38:51', '0000-00-00 00:00:00'),
+(14, 0, 12, 0, 0, 'N', 'SYSTEM', '', 'Nuevo Ticket por el agente', 'Ticket creado por el agente - Miguel Angel Galindez Muñoz', 'html', '::1', '2016-10-29 18:38:52', '0000-00-00 00:00:00');
 
 
 --------------------------------------------------------------------
 
 
 INSERT INTO `ost_ticket__cdata` (`ticket_id`, `subject`, `priority`) VALUES
-(6, 'Resumen Fabian', '3');
+(12, 'Resumen del problema de FABIAN', '4');
 
 --------------------------------------------------------------------
 
 INSERT INTO `ost_user` (`id`, `org_id`, `default_email_id`, `status`, `name`, `created`, `updated`) VALUES
-(3, 0, 3, 0, 'Fabian Orlando Galindez Muñoz', '2016-11-03 15:55:48', '2016-11-03 15:55:48');
+(3, 0, 3, 0, 'Fabian Orlando Galindez Guerrero', '2016-10-29 18:34:30', '2016-10-29 18:34:30');
 
 id: AUTOINCREMENT
 
 -------------------------------------------------------------------------
 
-
-INSERT INTO `ost__search` (`object_type`, `object_id`, `title`, `content`) VALUES
-('U', 3, 'Fabian Orlando Galindez Munoz', ''),
-('H', 12, '', 'Descripcion Fabian'),
-('H', 13, 'Ticket asignado a Area de soporte', 'Asignación de Tickets'),
-('T', 6, '173568 Resumen Fabian', 'Resumen Fabian');
-
-
-
-
-
-----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
-
-
 INSERT INTO `ost_user_email` (`id`, `user_id`, `address`) VALUES
 (3, 3, 'orlandogalindez@unicauca.edu.co');
 
 id: AUTOINCREMENT
+
+-----------------------------------------------------------------------------
+
+
+INSERT INTO `ost__search` (`object_type`, `object_id`, `title`, `content`) VALUES
+('U', 3, 'Fabian Orlando Galindez Guerrero', ''),
+('H', 12, '', 'Descripción del problema de FABIAN'),
+('H', 13, 'Ticket asignado a Teresa Toledo', 'Asignación de Tickets'),
+('T', 12, '000039 Resumen del problema de FABIAN', 'Resumen del problema de FABIAN');
+
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+
 
 
 
