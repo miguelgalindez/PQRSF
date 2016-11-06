@@ -169,13 +169,32 @@ class Osticket extends Model
         return array('idUsuario' =>$idUsuario, 'idEmail' => $idEmail);
     }
 
-    public function obtnDescripcionPrioridad($idPrioridad){
+    public static function obtnDescripcionPrioridad($idPrioridad){
         
         $db=DB::connection('osticketdb');
         return $db->table('ost_ticket_priority')
                     -where('priority_id', $idPrioridad)
                     ->select('priority_desc')
                     ->first();
+    }
+
+    public static function obtnStaffId($emailFuncionario){
+        $db=DB::connection('osticketdb');
+        return $db->table('ost_staff')
+                    -where('email', $emailFuncionario)
+                    ->select('staff_id')
+                    ->first();
+    }
+
+    public static function obtnNombreFuncionario($idFuncionario){
+        $db=DB::connection('osticketdb');
+
+        $nombres=$db->table('ost_staff')
+                    ->where('staff_id', $idFuncionario)
+                    ->select('firstname', 'lastname')
+                    ->first();
+
+        return $nombres->firstname . ' ' . $nombres->lastname;
     }
 
 
@@ -196,7 +215,7 @@ class Osticket extends Model
             }
 
             
-            $sigNumeroTicket=Self::obtnSigNumeroTicket();
+            $numeroTicket=Self::obtnSigNumeroTicket();
             $partes=explode(' ', $fechaVencimiento);
             $vencimiento=$partes[4] . "-" . Self::obtnnumeroMes($partes[2]) . "-" . (string)$partes[0] . " 23:59:59";
             $now=date('Y-m-d H:i:s');
@@ -206,7 +225,7 @@ class Osticket extends Model
 
             $idTicket=$db->table('ost_ticket')
                             ->insertGetId([
-                                'number' => str_pad($sigNumeroTicket, $longNumeroTicket, "0", STR_PAD_LEFT),
+                                'number' => str_pad($numeroTicket, $longNumeroTicket, "0", STR_PAD_LEFT),
                                 'user_id' => $datosUsuario->idUsuario,
                                 'user_email_id' => $datosUsuario->idEmail,
                                 'status_id' => 1,
@@ -294,7 +313,7 @@ class Osticket extends Model
                 ->insert([
                     'entry_id' => $idEntrada,
                     'field_id' => 22,
-                    'value' => $this->obtnDescripcionPrioridad($idPrioridad),
+                    'value' => Self::obtnDescripcionPrioridad($idPrioridad),
                     'value_id' => $idPrioridad
 
             ]);
@@ -337,24 +356,40 @@ class Osticket extends Model
                 ->insert([
                     'pid' => 0,
                     'ticket_id' => $idTicket,
-                    'staff_id' => $this->obtnStaffId($emailFuncionarioPQRSF),
+                    'staff_id' => Self::obtnStaffId($emailFuncionarioPQRSF),
                     'user_id' => 0,
                     'thread_type' => 'N',
                     'poster' => $nombreFuncionarioPQRSF,
                     'source' => '',
                     'title' => 'Ticket asignado',
-                    'body' => 'El agente ' . $nombreFuncionarioPQRSF . ' (PQRSF) acaba de asignar el Ticket a: ' .  $this->obtnNombreFuncionario($idFuncionario) . ,
+                    'body' => 'El agente ' . $nombreFuncionarioPQRSF . ' (PQRSF) acaba de asignar el Ticket a: ' .  Self::obtnNombreFuncionario($idFuncionario),
                     'format' => 'html',
                     'ip_address' => $ip,
                     'created' => $now,
                     'updated' => '0000-00-00 00:00:00'
             ]);
 
+            $db->table('ost__search')
+                ->insert([
+                    'object_type' => 'H',
+                    'object_id' => $idTicket,
+                    'title' => '',
+                    'content' => $descripcion,
+
+            ]);
+            
+            $db->table('ost__search')
+                ->insert([
+                    'object_type' => 'T',
+                    'object_id' => $idTicket,
+                    'title' => str_pad($numeroTicket, $longNumeroTicket, "0", STR_PAD_LEFT) . ' ' . $asunto,
+                    'content' => $asunto,
+            ]);
 
             // OJO FALTA AGREGARLO A LA TABLA SERVICIOS
             $db->commit();
 
-            return $sigNumeroTicket;
+            return $numeroTicket;
         }
         catch(Exception $ex){
             $db->rollback();

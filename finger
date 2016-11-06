@@ -96,8 +96,8 @@ id: AUTOINCREMENT
 INSERT INTO `ost__search` (`object_type`, `object_id`, `title`, `content`) VALUES
 
 	OK		('U', 3, 'Fabian Orlando Galindez Guerrero', ''),
-('H', 12, '', 'Descripción del problema de FABIAN'),
-('T', 12, '000039 Resumen del problema de FABIAN', 'Resumen del problema de FABIAN');
+	OK		('H', 12, '', 'Descripción del problema de FABIAN'),
+	OK		('T', 12, '000039 Resumen del problema de FABIAN', 'Resumen del problema de FABIAN');
 
 000039: Secuencia para el numero del ticket con todos los ceros a la izquierda como relleno para completar los 6 dígitos
 
