@@ -170,7 +170,7 @@ class Osticket extends Model
     }
 
 
-    public static function crearTicket($nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $subject, $ip){
+    public static function crearTicket($nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $asunto, $ip, $usernameFuncionarioPQRSF){
         $db=DB::connection('osticketdb');
 
         $datosUsuario=null;
@@ -190,6 +190,7 @@ class Osticket extends Model
             $sigNumeroTicket=Self::obtnSigNumeroTicket();
             $partes=explode(' ', $fechaVencimiento);
             $vencimiento=$partes[4] . "-" . Self::obtnnumeroMes($partes[2]) . "-" . (string)$partes[0] . " 23:59:59";
+            $now=date('Y-m-d H:i:s');
 
             $longNumeroTicket=6;
             $idTema=7; // OJO.. colocar el id del tema que se va a establecer para la creacion de Tickets desde PQRSF
@@ -221,16 +222,44 @@ class Osticket extends Model
                                 // 'lastmessage' => NULL, // Como estaria recien creado el ticket se deja esto como NULO
                                 // 'lastresponse' => NULL, 
 
-                                'created' => date('Y-m-d H:i:s'),
+                                'created' => $now,
                                 // 'updated' => NULL // Como estaria recien creado el ticket se deja esto como NULO
             ]);
 
             $db->table('ost_ticket__cdata')
                  ->insert([
                     'ticket_id' => $idTicket,
-                    'subject' => $subject,
+                    'subject' => $asunto,
                     'priority' => $idPrioridad
             ]);
+
+
+            $db->table('ost_ticket_event')
+                 ->insert([
+                    'ticket_id' => $idTicket,
+                    'staff_id' => $idFuncionario,
+                    'team_id' => 0, // Asi lo esta dejando osticket
+                    'dept_id' => $idDependencia,
+                    'topic_id' => $idTema,
+                    'state' => 'created',
+                    'staff' => $usernameFuncionarioPQRSF,
+                    'annulled' => 0,
+                    'timestamp' =>$now
+            ]);
+
+             $db->table('ost_ticket_event')
+             ->insert([
+                'ticket_id' => $idTicket,
+                'staff_id' => $idFuncionario,
+                'team_id' => 0, // Asi lo esta dejando osticket
+                'dept_id' => $idDependencia,
+                'topic_id' => $idTema,
+                'state' => 'assigned',
+                'staff' => $usernameFuncionarioPQRSF,
+                'annulled' => 0,
+                'timestamp' =>$now
+        ]);
+    
 
             // OJO FALTA AGREGARLO A LA TABLA SERVICIOS
             $db->commit();

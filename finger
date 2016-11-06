@@ -52,8 +52,8 @@ INSERT INTO `ost_form_entry_values` (`entry_id`, `field_id`, `value`, `value_id`
 
 INSERT INTO `ost_ticket_event` (`ticket_id`, `staff_id`, `team_id`, `dept_id`, `topic_id`, `state`, `staff`, `annulled`, `timestamp`) VALUES
 
-(12, 3, 0, 4, 7, 'assigned', 'miguelgalindez', 0, '2016-10-29 18:38:52'),
-(12, 3, 0, 4, 7, 'created', 'miguelgalindez', 0, '2016-10-29 18:38:52');
+	OK 		(12, 3, 0, 4, 7, 'assigned', 'miguelgalindez', 0, '2016-10-29 18:38:52'),
+	OK		(12, 3, 0, 4, 7, 'created', 'miguelgalindez', 0, '2016-10-29 18:38:52');
 
 ----------------------------------------------------------------------------------------------
 
@@ -69,8 +69,8 @@ INSERT INTO `ost_ticket_thread` (`id`, `pid`, `ticket_id`, `staff_id`, `user_id`
 --------------------------------------------------------------------
 
 
-INSERT INTO `ost_ticket__cdata` (`ticket_id`, `subject`, `priority`) VALUES
-(12, 'Resumen del problema de FABIAN', '4');
+	OK		INSERT INTO `ost_ticket__cdata` (`ticket_id`, `subject`, `priority`) VALUES
+	OK		(12, 'Resumen del problema de FABIAN', '4');
 
 --------------------------------------------------------------------
 
