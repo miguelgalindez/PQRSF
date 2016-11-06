@@ -166,47 +166,63 @@ class Osticket extends Model
                             'content' => ''
         ]);
 
-        return $idUsuario;
+        return array('idUsuario' =>$idUsuario, 'idEmail' => $idEmail);
     }
 
 
-    public static function crearTicket($nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $subject){
+    public static function crearTicket($nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $subject, $ip){
         $db=DB::connection('osticketdb');
 
-        $sigNumeroTicket=Self::obtnSigNumeroTicket();
-        $partes=explode(' ', $fechaVencimiento);
-        $vencimiento=$partes[4] . "-" . Self::obtnnumeroMes($partes[2]) . "-" . (string)$partes[0] . " 23:59:59";
-        
+        $datosUsuario=null;
+
         try{
             $db->beginTransaction();
 
             if($this->usuarioExiste()){
                 //  TODO
-                //  $idUsuario= xxxxx   obtener el id del usuario
+                //  $datosUsuario= xxxxx   obtener el id del usuario
             }
             else{
-                $idUsuario=$this->crearUsuario($nombrePersona, $emailPersona, $telefonoPersona);
+                $datosUsuario=$this->crearUsuario($nombrePersona, $emailPersona, $telefonoPersona);
             }
 
+            
+            $sigNumeroTicket=Self::obtnSigNumeroTicket();
+            $partes=explode(' ', $fechaVencimiento);
+            $vencimiento=$partes[4] . "-" . Self::obtnnumeroMes($partes[2]) . "-" . (string)$partes[0] . " 23:59:59";
+
+            $longNumeroTicket=6;
+            $idTema=7; // OJO.. colocar el id del tema que se va a establecer para la creacion de Tickets desde PQRSF
 
             $idTicket=$db->table('ost_ticket')
                             ->insertGetId([
-                                'number' => $sigNumeroTicket,
+                                'number' => str_pad($sigNumeroTicket, $longNumeroTicket, "0", STR_PAD_LEFT),
+                                'user_id' => $datosUsuario->idUsuario,
+                                'user_email_id' => $datosUsuario->idEmail,
                                 'status_id' => 1,
                                 'dept_id' => $idDependencia,
-                                // Sin Topic ??
-                                // Sin sla ??
-                                // Sin team ?
-                                // Sin email Id
-                                // sin flags
-                                // sin ip address
+                                'sla_id' =>0,  // Sin sla ??
 
+                                'topic_id' => $idTema,
                                 'staff_id' => $idFuncionario,
-                                'source'=> 'Web',
+                                
+                                'team_id' => 0, //Al parecer se deja asi cuando el ticket es asignado a una persona en concreto
+                                'email_id' => 0, // Asi lo deja osticket
+                                'flags' =>0,     // Asi lo deja osticket
+                                                                        
+                                'ip_address' => $ip,                                
+                                'source'=> 'Web', // toca verificar para que en lo posible sean los mismos definidos por PQRSF
                                 'isoverdue' => 0,
+                                'isanswered' => 0,
                                 'duedate' => $vencimiento,
+
+                                // 'reopened' => NULL, // osticket lo deja como nulo
+                                // 'closed' => NULL, // osticket lo deja como nulo
+                                // 'lastmessage' => NULL, // Como estaria recien creado el ticket se deja esto como NULO
+                                // 'lastresponse' => NULL, 
+
                                 'created' => date('Y-m-d H:i:s'),
-                                'updated' => date('Y-m-d H:i:s'),
+                                // 'updated' => NULL // Como estaria recien creado el ticket se deja esto como NULO
             ]);
 
             $db->table('ost_ticket__cdata')

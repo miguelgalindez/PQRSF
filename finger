@@ -43,9 +43,9 @@ INSERT INTO `ost_form_entry_values` (`entry_id`, `field_id`, `value`, `value_id`
 
 ------------------------------------------------------------------
 
-INSERT INTO `ost_ticket` (`ticket_id`, `number`, `user_id`, `user_email_id`, `status_id`, `dept_id`, `sla_id`, `topic_id`, `staff_id`, `team_id`, `email_id`, `flags`, `ip_address`, `source`, `isoverdue`, `isanswered`, `duedate`, `reopened`, `closed`, `lastmessage`, `lastresponse`, `created`, `updated`) VALUES						
+	OK		INSERT INTO `ost_ticket` (`ticket_id`, `number`, `user_id`, `user_email_id`, `status_id`, `dept_id`, `sla_id`, `topic_id`, `staff_id`, `team_id`, `email_id`, `flags`, `ip_address`, `source`, `isoverdue`, `isanswered`, `duedate`, `reopened`, `closed`, `lastmessage`, `lastresponse`, `created`, `updated`) VALUES						
 
-(12, '000039', 3, 0, 1, 4, 1, 7, 3, 0, 0, 0, '::1', 'EMAIL', 0, 0, '2016-10-29 19:00:00', NULL, NULL, '2016-10-29 18:38:51', NULL, '2016-10-29 18:38:51', '2016-10-29 18:38:52');
+	OK		(12, '000039', 3, 0, 1, 4, 1, 7, 3, 0, 0, 0, '::1', 'EMAIL', 0, 0, '2016-10-29 19:00:00', NULL, NULL, '2016-10-29 18:38:51', NULL, '2016-10-29 18:38:51', '2016-10-29 18:38:52');
 
 -----------------------------------------------------------------------
 
