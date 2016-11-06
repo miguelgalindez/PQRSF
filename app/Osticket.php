@@ -91,7 +91,7 @@ class Osticket extends Model
         }
     }
 
-    public function usuarioExiste($email){
+    public static function usuarioExiste($email){
         $db=DB::connection('osticketdb');
         
         $cont=$db->table('ost_user_email')
@@ -102,11 +102,10 @@ class Osticket extends Model
         return $cont>0;
     }
 
-    public function crearUsuario($nombres, $email, $telefono){
+    public static function crearUsuario($db, $nombres, $email, $telefono){
 
         $now=date('Y-m-d H:i:s');
-        $db=DB::connection('osticketdb');
-
+        
         $idUsuario=$db->table('ost_user')
                             ->insertGetId([
                                 'org_id' => 0,
@@ -198,7 +197,7 @@ class Osticket extends Model
     }
 
 
-    public static function crearTicket($nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $asunto, $descripcion, $ip, $usernameFuncionarioPQRSF, $emailFuncionarioPQRSF, $nombreFuncionarioPQRSF){
+    public static function crearTicket($nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $asunto, $descripcion, $ipFuncionarioPQRSF, $usernameFuncionarioPQRSF, $emailFuncionarioPQRSF, $nombreFuncionarioPQRSF){
         $db=DB::connection('osticketdb');
 
         $datosUsuario=null;
@@ -206,12 +205,12 @@ class Osticket extends Model
         try{
             $db->beginTransaction();
 
-            if($this->usuarioExiste()){
+            if(Self::usuarioExiste()){
                 //  TODO
                 //  $datosUsuario= xxxxx   obtener el id del usuario
             }
             else{
-                $datosUsuario=$this->crearUsuario($nombrePersona, $emailPersona, $telefonoPersona);
+                $datosUsuario=Self::crearUsuario($db, $nombrePersona, $emailPersona, $telefonoPersona);
             }
 
             
@@ -347,7 +346,7 @@ class Osticket extends Model
                     'title' => 'Ticket creado',
                     'body' => 'Ticket creado por el agente ' . $nombreFuncionarioPQRSF . ' (PQRSF)',
                     'format' => 'html',
-                    'ip_address' => $ip,
+                    'ip_address' => $ipFuncionarioPQRSF,
                     'created' => $now,
                     'updated' => '0000-00-00 00:00:00'
             ]);
@@ -364,7 +363,7 @@ class Osticket extends Model
                     'title' => 'Ticket asignado',
                     'body' => 'El agente ' . $nombreFuncionarioPQRSF . ' (PQRSF) acaba de asignar el Ticket a: ' .  Self::obtnNombreFuncionario($idFuncionario),
                     'format' => 'html',
-                    'ip_address' => $ip,
+                    'ip_address' => $ipFuncionarioPQRSF,
                     'created' => $now,
                     'updated' => '0000-00-00 00:00:00'
             ]);

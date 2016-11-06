@@ -28,6 +28,8 @@ class OsticketController extends Controller
     		$request->get('asunto')
     	);
 
+        ($nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $asunto, $descripcion, $ipFuncionarioPQRSF, $usernameFuncionarioPQRSF, $emailFuncionarioPQRSF, $nombreFuncionarioPQRSF){
+
     	return $resp;
     }
 

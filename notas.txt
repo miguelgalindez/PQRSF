@@ -14,3 +14,10 @@ Ver la anotación de la línea 32 del Middleware IsAdministrator
 
 OJO !!! 
 		La cantidad de digitos (6) para el numero del ticket ŚE PUEDE ESTAR QUEDANDO CORTA. dejar por lo menos 10
+
+
+---------
+
+Ojo !!
+
+modificar la función crearActualizar del modelo Persona. Toca que reciba la instancia de la BD que utiliza el modelo Pqrsf para que se pueda hacer rollback en caso de que la transaccion no se pueda completar con éxito
