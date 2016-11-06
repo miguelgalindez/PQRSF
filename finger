@@ -11,17 +11,17 @@ INSERT INTO `ost_form` (`id`, `type`, `deletable`, `title`, `instructions`, `not
 
 -- --------------------------------------------------------
 
-INSERT INTO `ost_form_entry` (`id`, `form_id`, `object_id`, `object_type`, `sort`, `created`, `updated`) VALUES
+	OK		INSERT INTO `ost_form_entry` (`id`, `form_id`, `object_id`, `object_type`, `sort`, `created`, `updated`) VALUES
 
 	OK		-- entrada que define los datos del usuario (form_id=1 ) objectId hace referencia al id del usuario
 	OK		(8, 1, 3, 'U', 1, '2016-10-29 18:34:30', '2016-10-29 18:34:30'),
 
--- Entrada que define los datos del ticket (form_id=2 ) objectId hace referencia al id del ticket TICKET
-(9, 2, 12, 'T', 1, '2016-10-29 18:38:51', '2016-10-29 18:38:51');
+	OK		-- Entrada que define los datos del ticket (form_id=2 ) objectId hace referencia al id del ticket TICKET
+	OK		(9, 2, 12, 'T', 1, '2016-10-29 18:38:51', '2016-10-29 18:38:51');
 
 ------------------------------------------------------------------
 
-INSERT INTO `ost_form_entry_values` (`entry_id`, `field_id`, `value`, `value_id`) VALUES
+	OK			INSERT INTO `ost_form_entry_values` (`entry_id`, `field_id`, `value`, `value_id`) VALUES
 	
 
 	OK				3: número telefono
@@ -31,13 +31,13 @@ INSERT INTO `ost_form_entry_values` (`entry_id`, `field_id`, `value`, `value_id`
 	OK				4: Notas internas del usuario	Si no hay nota colocar esta (8, 4, NULL, NULL),
 	OK			(8, 4, 'Monitor DIVTIC', NULL),
 
-	20: Resumen del problema
-(9, 20, 'Resumen del problema de FABIAN', NULL),
-	Resumen aparace en ost_ticket__cdata ost__search 
+	OK			20: Resumen del problema
+	OK		(9, 20, 'Resumen del problema de FABIAN', NULL),
+	OK			Resumen aparace en ost_ticket__cdata ost__search 
 
-	22: Nivel de prioridad
-(9, 22, 'Urgente', 4);
-	Prioridad solo aparece aqui
+	OK			22: Nivel de prioridad
+	OK		(9, 22, 'Urgente', 4);
+	OK			Prioridad solo aparece aqui
 
 
 
@@ -50,7 +50,7 @@ INSERT INTO `ost_form_entry_values` (`entry_id`, `field_id`, `value`, `value_id`
 -----------------------------------------------------------------------
 
 
-INSERT INTO `ost_ticket_event` (`ticket_id`, `staff_id`, `team_id`, `dept_id`, `topic_id`, `state`, `staff`, `annulled`, `timestamp`) VALUES
+	OK		INSERT INTO `ost_ticket_event` (`ticket_id`, `staff_id`, `team_id`, `dept_id`, `topic_id`, `state`, `staff`, `annulled`, `timestamp`) VALUES
 
 	OK 		(12, 3, 0, 4, 7, 'assigned', 'miguelgalindez', 0, '2016-10-29 18:38:52'),
 	OK		(12, 3, 0, 4, 7, 'created', 'miguelgalindez', 0, '2016-10-29 18:38:52');
@@ -59,11 +59,15 @@ INSERT INTO `ost_ticket_event` (`ticket_id`, `staff_id`, `team_id`, `dept_id`, `
 
 
 						
-INSERT INTO `ost_ticket_thread` (`id`, `pid`, `ticket_id`, `staff_id`, `user_id`, `thread_type`, `poster`, `source`, `title`, `body`, `format`, `ip_address`, `created`, `updated`) VALUES
+	OK		INSERT INTO `ost_ticket_thread` (`id`, `pid`, `ticket_id`, `staff_id`, `user_id`, `thread_type`, `poster`, `source`, `title`, `body`, `format`, `ip_address`, `created`, `updated`) VALUES
 
-(12, 0, 12, 0, 3, 'M', 'Fabian Guerrero', 'Email', '', 'Descripción del problema de FABIAN', 'html', '::1', '2016-10-29 18:38:51', '0000-00-00 00:00:00'),
-(13, 0, 12, 1, 0, 'N', 'Miguel Angel Galindez Muñoz', '', 'Ticket asignado a Teresa Toledo', 'Asignación de Tickets', 'html', '::1', '2016-10-29 18:38:51', '0000-00-00 00:00:00'),
-(14, 0, 12, 0, 0, 'N', 'SYSTEM', '', 'Nuevo Ticket por el agente', 'Ticket creado por el agente - Miguel Angel Galindez Muñoz', 'html', '::1', '2016-10-29 18:38:52', '0000-00-00 00:00:00');
+	OK		(12, 0, 12, 0, 3, 'M', 'Fabian Guerrero', 'Email', '', 'Descripción del problema de FABIAN', 'html', '::1', '2016-10-29 18:38:51', '0000-00-00 00:00:00'),
+
+	OK		13, 0, 12, 1, 0, 'N', 'Miguel Angel Galindez Muñoz', '', 'Ticket asignado a Teresa Toledo', 'Asignación de Tickets', 'html', '::1', '2016-10-29 18:38:51', '0000-00-00 00:00:00'),
+
+
+
+	OK		(14, 0, 12, 0, 0, 'N', 'SYSTEM', '', 'Nuevo Ticket por el agente', 'Ticket creado por el agente - Miguel Angel Galindez Muñoz', 'html', '::1', '2016-10-29 18:38:52', '0000-00-00 00:00:00');
 
 
 --------------------------------------------------------------------

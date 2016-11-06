@@ -169,8 +169,17 @@ class Osticket extends Model
         return array('idUsuario' =>$idUsuario, 'idEmail' => $idEmail);
     }
 
+    public function obtnDescripcionPrioridad($idPrioridad){
+        
+        $db=DB::connection('osticketdb');
+        return $db->table('ost_ticket_priority')
+                    -where('priority_id', $idPrioridad)
+                    ->select('priority_desc')
+                    ->first();
+    }
 
-    public static function crearTicket($nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $asunto, $ip, $usernameFuncionarioPQRSF){
+
+    public static function crearTicket($nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $asunto, $descripcion, $ip, $usernameFuncionarioPQRSF, $emailFuncionarioPQRSF, $nombreFuncionarioPQRSF){
         $db=DB::connection('osticketdb');
 
         $datosUsuario=null;
@@ -211,7 +220,7 @@ class Osticket extends Model
                                 'email_id' => 0, // Asi lo deja osticket
                                 'flags' =>0,     // Asi lo deja osticket
                                                                         
-                                'ip_address' => $ip,                                
+                                'ip_address' => '::1',                                
                                 'source'=> 'Web', // toca verificar para que en lo posible sean los mismos definidos por PQRSF
                                 'isoverdue' => 0,
                                 'isanswered' => 0,
@@ -247,7 +256,7 @@ class Osticket extends Model
                     'timestamp' =>$now
             ]);
 
-             $db->table('ost_ticket_event')
+            $db->table('ost_ticket_event')
              ->insert([
                 'ticket_id' => $idTicket,
                 'staff_id' => $idFuncionario,
@@ -258,8 +267,89 @@ class Osticket extends Model
                 'staff' => $usernameFuncionarioPQRSF,
                 'annulled' => 0,
                 'timestamp' =>$now
-        ]);
-    
+            ]);
+
+       
+            // Entrada que define los datos del ticket (form_id=2 ) objectId hace referencia al id del ticket TICKET
+            $idEntrada=$db->table('ost_form_entry')
+                        ->insertGetId([
+                            'form_id' => 2,
+                            'object_id' => $idTicket,
+                            'object_type' => 'T',
+                            'sort' => 1,
+                            'created' => $now,
+                            'updated' => $now
+            ]);
+
+
+            $db->table('ost_form_entry_values')
+                ->insert([
+                    'entry_id' => $idEntrada,
+                    'field_id' => 20,
+                    'value' => $asunto,
+                    // 'value_id' => NULL
+            ]);
+
+            $db->table('ost_form_entry_values')
+                ->insert([
+                    'entry_id' => $idEntrada,
+                    'field_id' => 22,
+                    'value' => $this->obtnDescripcionPrioridad($idPrioridad),
+                    'value_id' => $idPrioridad
+
+            ]);
+            
+            $db->table('ost_ticket_thread')
+                ->insert([
+                    'pid' => 0,
+                    'ticket_id' => $idTicket,
+                    'staff_id' => 0,
+                    'user_id' => $datosUsuario->idUsuario,
+                    'thread_type' => 'M',
+                    'poster' => $nombrePersona,
+                    'source' => 'Web',  // OJO verificar si se puede dejar como los de PQRSF
+                    'title' => 'Descripción de la solicitud',
+                    'body' => $descripcion,
+                    'format' => 'html',
+                    'ip_address' => '::1',
+                    'created' => $now,
+                    'updated' => '0000-00-00 00:00:00'
+            ]);
+
+            $db->table('ost_ticket_thread')
+                ->insert([
+                    'pid' => 0,
+                    'ticket_id' => $idTicket,
+                    'staff_id' => 0,
+                    'user_id' => 0,
+                    'thread_type' => 'N',
+                    'poster' => 'SYSTEM',
+                    'source' => '',
+                    'title' => 'Ticket creado',
+                    'body' => 'Ticket creado por el agente ' . $nombreFuncionarioPQRSF . ' (PQRSF)',
+                    'format' => 'html',
+                    'ip_address' => $ip,
+                    'created' => $now,
+                    'updated' => '0000-00-00 00:00:00'
+            ]);
+
+            $db->table('ost_ticket_thread')
+                ->insert([
+                    'pid' => 0,
+                    'ticket_id' => $idTicket,
+                    'staff_id' => $this->obtnStaffId($emailFuncionarioPQRSF),
+                    'user_id' => 0,
+                    'thread_type' => 'N',
+                    'poster' => $nombreFuncionarioPQRSF,
+                    'source' => '',
+                    'title' => 'Ticket asignado',
+                    'body' => 'El agente ' . $nombreFuncionarioPQRSF . ' (PQRSF) acaba de asignar el Ticket a: ' .  $this->obtnNombreFuncionario($idFuncionario) . ,
+                    'format' => 'html',
+                    'ip_address' => $ip,
+                    'created' => $now,
+                    'updated' => '0000-00-00 00:00:00'
+            ]);
+
 
             // OJO FALTA AGREGARLO A LA TABLA SERVICIOS
             $db->commit();
