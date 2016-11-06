@@ -90,7 +90,7 @@ class Osticket extends Model
             
         }
     }
-
+    // Ojo que tambien busque en la tabla Staff
     public static function usuarioExiste($email){
         $db=DB::connection('osticketdb');
         
@@ -185,6 +185,14 @@ class Osticket extends Model
                     ->first();
     }
 
+    public static function obtnUserName($emailFuncionario){
+        $db=DB::connection('osticketdb');
+        return $db->table('ost_staff')
+                    -where('email', $emailFuncionario)
+                    ->select('username')
+                    ->first();
+    }
+
     public static function obtnNombreFuncionario($idFuncionario){
         $db=DB::connection('osticketdb');
 
@@ -197,7 +205,7 @@ class Osticket extends Model
     }
 
 
-    public static function crearTicket($nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $asunto, $descripcion, $ipFuncionarioPQRSF, $usernameFuncionarioPQRSF, $emailFuncionarioPQRSF, $nombreFuncionarioPQRSF){
+    public static function crearTicket($nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $asunto, $descripcion, $ipFuncionarioPQRSF, $emailFuncionarioPQRSF, $nombreFuncionarioPQRSF){
         $db=DB::connection('osticketdb');
 
         $datosUsuario=null;
@@ -205,7 +213,7 @@ class Osticket extends Model
         try{
             $db->beginTransaction();
 
-            if(Self::usuarioExiste()){
+            if(Self::usuarioExiste($emailPersona)){
                 //  TODO
                 //  $datosUsuario= xxxxx   obtener el id del usuario
             }
@@ -225,8 +233,8 @@ class Osticket extends Model
             $idTicket=$db->table('ost_ticket')
                             ->insertGetId([
                                 'number' => str_pad($numeroTicket, $longNumeroTicket, "0", STR_PAD_LEFT),
-                                'user_id' => $datosUsuario->idUsuario,
-                                'user_email_id' => $datosUsuario->idEmail,
+                                'user_id' => $datosUsuario["idUsuario"],
+                                'user_email_id' => $datosUsuario["idEmail"],
                                 'status_id' => 1,
                                 'dept_id' => $idDependencia,
                                 'sla_id' =>0,  // Sin sla ??
@@ -260,6 +268,7 @@ class Osticket extends Model
                     'priority' => $idPrioridad
             ]);
 
+            $usernameFuncionarioPQRSF=Self::obtnUserName($emailFuncionarioPQRSF);
 
             $db->table('ost_ticket_event')
                  ->insert([

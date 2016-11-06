@@ -36,7 +36,9 @@
                 <form class="form-horizontal" id="direccionarForm" action="/admin/direccionarPqrsf" method="post">
 
                     <input type="hidden" name="_token" value="{!! csrf_token() !!}">
+                    <input type="hidden" name="idPersona" value="" id="idPersona">
                     <input type="hidden" name="asunto" value="" id="asunto">
+                    <input type="hidden" name="descripcion" value="" id="descripcion">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="dependencia">Dependencia</label>
                         <div class="col-sm-10">
@@ -184,8 +186,10 @@
         $('#pqrsfsTable tbody').on('click', 'button',function () {
             $('#direccionarModal').modal('show');
             var data = table.row( $(this).parents('tr') ).data();
-            console.log(data.pqrsfAsunto);
+            
+            $("#idPersona").val(data.perId);
             $("#asunto").val(data.pqrsfAsunto);
+            $("#descripcion").val(data.pqrsfDescripcion);
         });
     });  
 

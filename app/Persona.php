@@ -32,6 +32,13 @@ class Persona extends Model
 			'Pasaporte'
 		);
 	}
+
+    public static function obtnDatosContacto($perId){
+        return DB::table('personas')
+                    ->where('perId', $perId)
+                    ->select('perNombres', 'perApellidos', 'perEmail', 'perTelefono')
+                    ->first();
+    }
     
     public function pqrsfs(){
     	return $this->hasMany('App\Pqrsf');
