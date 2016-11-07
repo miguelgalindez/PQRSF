@@ -91,15 +91,19 @@ class Osticket extends Model
         }
     }
     // Ojo que tambien busque en la tabla Staff
-    public static function usuarioExiste($email){
+    public static function obtnDatosUsuario($email){
         $db=DB::connection('osticketdb');
         
-        $cont=$db->table('ost_user_email')
+        $user=$db->table('ost_user_email')
                     ->where('address', $email)
-                    ->select('address')
-                    ->count();
+                    ->select('id', 'user_id')
+                    ->first();
 
-        return $cont>0;
+        if($user!=null){
+            return array('idUsuario' => $user->user_id, 'idEmail' => $user->id);    
+        }
+
+        return null;        
     }
 
     public static function crearUsuario($db, $nombres, $email, $telefono){
@@ -210,7 +214,7 @@ class Osticket extends Model
     }
 
 
-    public static function crearTicket($nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $asunto, $descripcion, $ipFuncionarioPQRSF, $emailFuncionarioPQRSF, $nombreFuncionarioPQRSF){
+    public static function crearTicket($codigoPQRSF, $nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $asunto, $descripcion, $ipFuncionarioPQRSF, $emailFuncionarioPQRSF, $nombreFuncionarioPQRSF){
         $db=DB::connection('osticketdb');
 
         $datosUsuario=null;
@@ -218,11 +222,8 @@ class Osticket extends Model
         try{
             $db->beginTransaction();
 
-            if(Self::usuarioExiste($emailPersona)){
-                //  TODO
-                //  $datosUsuario= xxxxx   obtener el id del usuario
-            }
-            else{
+            $datosUsuario=Self::obtnDatosUsuario($emailPersona);
+            if($datosUsuario==null){
                 $datosUsuario=Self::crearUsuario($db, $nombrePersona, $emailPersona, $telefonoPersona);
             }
  
@@ -364,6 +365,8 @@ class Osticket extends Model
                     'updated' => date('Y-m-d H:i:s', 0)
             ]);
 
+            $nombreFuncionario=Self::obtnNombreFuncionario($idFuncionario);
+
             $db->table('ost_ticket_thread')
                 ->insert([
                     'pid' => 0,
@@ -374,7 +377,7 @@ class Osticket extends Model
                     'poster' => $nombreFuncionarioPQRSF,
                     'source' => '',
                     'title' => 'Ticket asignado',
-                    'body' => 'El agente ' . $nombreFuncionarioPQRSF . ' (PQRSF) acaba de asignar el Ticket a: ' .  Self::obtnNombreFuncionario($idFuncionario),
+                    'body' => 'El agente ' . $nombreFuncionarioPQRSF . ' (PQRSF) acaba de asignar el Ticket a: ' .  $nombreFuncionario,
                     'format' => 'html',
                     'ip_address' => $ipFuncionarioPQRSF,
                     'created' => $now,
@@ -396,16 +399,31 @@ class Osticket extends Model
                     'object_id' => $idTicket,
                     'title' => str_pad($numeroTicket, $longNumeroTicket, "0", STR_PAD_LEFT) . ' ' . $asunto,
                     'content' => $asunto,
-            ]);
-
-            // OJO FALTA AGREGARLO A LA TABLA SERVICIOS
+            ]);            
+            
             $db->commit();
 
-            return $numeroTicket;
+            DB::table('tickets')
+                ->insert([
+                    'ticketId' => $idTicket,
+                    'pqrsfCodigo' => $codigoPQRSF
+            ]);
+
+            return array(
+                'status' => 'successful',
+                'numeroTicket' =>$numeroTicket,
+                'nombreFuncionario'=> $nombreFuncionario            
+            );
+
         }
         catch(Exception $ex){
+            
             $db->rollback();
-            throw new Exception($ex->getMessage(), 1);
+
+            return array(
+                'status' => 'failure',
+                'message' => $ex->getMessage()
+            );
             
         }
         

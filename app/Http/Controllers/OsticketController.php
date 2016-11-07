@@ -25,7 +25,9 @@ class OsticketController extends Controller
         // idPersona descripcion 
         $idPersona=$request->get("idPersona");
         $datosPersona=Persona::obtnDatosContacto($idPersona);
-    	$resp=Osticket::crearTicket(
+    	
+        $response=Osticket::crearTicket(
+            $request->get('codigoPQRSF'),
             $datosPersona->perNombres . ' ' . $datosPersona->perApellidos,
             $datosPersona->perEmail,
             $datosPersona->perTelefono,
@@ -38,8 +40,16 @@ class OsticketController extends Controller
             $request->ip(),
             Auth::user()->id,
             Auth::user()->name
-    	);        
-    	return $resp;
+    	);
+        if($response["status"] == "successful"){
+            return redirect()->back()->with('status', $response["status"])
+                                ->with('numeroTicket', $response["numeroTicket"])
+                                ->with('nombreFuncionario', $response["nombreFuncionario"]);
+        }
+        else{
+            return redirect()->back()->with('status', $response["status"])
+                                ->with('message', $response["message"]);
+        }                                       
     }
 
 }

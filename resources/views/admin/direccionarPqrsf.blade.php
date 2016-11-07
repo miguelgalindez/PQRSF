@@ -36,6 +36,7 @@
                 <form class="form-horizontal" id="direccionarForm" action="/admin/direccionarPqrsf" method="post">
 
                     <input type="hidden" name="_token" value="{!! csrf_token() !!}">
+                    <input type="hidden" name="codigoPQRSF" value="" id="codigoPQRSF">
                     <input type="hidden" name="idPersona" value="" id="idPersona">
                     <input type="hidden" name="asunto" value="" id="asunto">
                     <input type="hidden" name="descripcion" value="" id="descripcion">
@@ -76,7 +77,45 @@
 
         </div>
     </div>
+
+    @if (session('status'))        
+        <div id="modalResultadoDireccionar" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Direccionamiento de la PQRSF</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert {{ session('status')=='successful' ? 'alert-success' : 'alert-danger' }}">
+                            @if(session('status')=='successful')
+                                <strong>Direccionamiento exitoso.</strong> La PQRSF ha sido direccionada exitosamente. 
+                                <br>
+                                <br>Número del Ticket: {{ session('numeroTicket') }}
+                                <br>Funcionario asignado: {{ session('nombreFuncionario') }}
+                            @else
+                                <strong>Error.</strong> No se pudo direccionar la PQRSF; inténtelo nuevamente. Si el problema persiste, por favor contáctese con la DivTIC
+                                <br>
+                                <br>{{ session('message') }}
+                            @endif
+                        </div>    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>            
+                    </div>
+                </div>
+            </div>
+        </div>    
+    @endif
+    <!-- Modal -->
+    
 <script type="text/javascript">
+
+    var modalResultadoDireccionar =$('#modalResultadoDireccionar');
+    if(modalResultadoDireccionar){
+        modalResultadoDireccionar.modal('show')
+    }
 
     $.fn.dataTable.render.pqrsfTipo= function(){
         return function(data, type, row){
@@ -187,6 +226,7 @@
             $('#direccionarModal').modal('show');
             var data = table.row( $(this).parents('tr') ).data();
             
+            $("#codigoPQRSF").val(data.pqrsfCodigo);
             $("#idPersona").val(data.perId);
             $("#asunto").val(data.pqrsfAsunto);
             $("#descripcion").val(data.pqrsfDescripcion);
