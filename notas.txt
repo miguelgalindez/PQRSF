@@ -15,6 +15,8 @@ Ver la anotación de la línea 32 del Middleware IsAdministrator
 OJO !!! 
 		La cantidad de digitos (6) para el numero del ticket ŚE PUEDE ESTAR QUEDANDO CORTA. dejar por lo menos 10
 
+		Consecuentemente, para un correcto funcionamiento se deberá CONFIGURAR OSTICKET para que use la secuencia Ticket General (http://localhost/scp/settings.php?t=tickets) y verificar que el tamaño del numero del Ticket COINCIDA CON LOS PARAMETROS DE PQRSF (Ver el modelo Osticket en la función crear ticket)
+
 
 ---------
 

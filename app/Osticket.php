@@ -157,6 +157,7 @@ class Osticket extends Model
         ]);
 
         // Osticket por defecto tambien hace la siguiente inserción
+
         $db->table('ost__search')
                         ->insert([
                             'object_type' => 'U',
@@ -164,44 +165,48 @@ class Osticket extends Model
                             'title' => $nombres,
                             'content' => ''
         ]);
-
+        
         return array('idUsuario' =>$idUsuario, 'idEmail' => $idEmail);
     }
 
     public static function obtnDescripcionPrioridad($idPrioridad){
         
         $db=DB::connection('osticketdb');
-        return $db->table('ost_ticket_priority')
-                    -where('priority_id', $idPrioridad)
+        $prioridad=$db->table('ost_ticket_priority')
+                    ->where('priority_id', $idPrioridad)
                     ->select('priority_desc')
                     ->first();
+        return $prioridad->priority_desc;
     }
 
     public static function obtnStaffId($emailFuncionario){
         $db=DB::connection('osticketdb');
-        return $db->table('ost_staff')
-                    -where('email', $emailFuncionario)
+        $staff=$db->table('ost_staff')
+                    ->where('email', $emailFuncionario)
                     ->select('staff_id')
                     ->first();
+        return $staff->staff_id;
     }
 
     public static function obtnUserName($emailFuncionario){
         $db=DB::connection('osticketdb');
-        return $db->table('ost_staff')
-                    -where('email', $emailFuncionario)
+        $staff=$db->table('ost_staff')
+                    ->where('email', $emailFuncionario)
                     ->select('username')
                     ->first();
+
+        return $staff->username;
     }
 
     public static function obtnNombreFuncionario($idFuncionario){
         $db=DB::connection('osticketdb');
 
-        $nombres=$db->table('ost_staff')
+        $staff=$db->table('ost_staff')
                     ->where('staff_id', $idFuncionario)
                     ->select('firstname', 'lastname')
                     ->first();
 
-        return $nombres->firstname . ' ' . $nombres->lastname;
+        return $staff->firstname . ' ' . $staff->lastname;
     }
 
 
@@ -220,15 +225,14 @@ class Osticket extends Model
             else{
                 $datosUsuario=Self::crearUsuario($db, $nombrePersona, $emailPersona, $telefonoPersona);
             }
-
-            
-            $numeroTicket=Self::obtnSigNumeroTicket();
+ 
             $partes=explode(' ', $fechaVencimiento);
             $vencimiento=$partes[4] . "-" . Self::obtnnumeroMes($partes[2]) . "-" . (string)$partes[0] . " 23:59:59";
             $now=date('Y-m-d H:i:s');
 
+            $numeroTicket=Self::obtnSigNumeroTicket();
             $longNumeroTicket=6;
-            $idTema=7; // OJO.. colocar el id del tema que se va a establecer para la creacion de Tickets desde PQRSF
+            $idTema=6; // OJO.. colocar el id del tema que se va a establecer para la creacion de Tickets desde PQRSF
 
             $idTicket=$db->table('ost_ticket')
                             ->insertGetId([
@@ -258,7 +262,7 @@ class Osticket extends Model
                                 // 'lastresponse' => NULL, 
 
                                 'created' => $now,
-                                // 'updated' => NULL // Como estaria recien creado el ticket se deja esto como NULO
+                                'updated' => $now // Como estaria recien creado el ticket se deja esto como NULO
             ]);
 
             $db->table('ost_ticket__cdata')
@@ -331,7 +335,7 @@ class Osticket extends Model
                     'pid' => 0,
                     'ticket_id' => $idTicket,
                     'staff_id' => 0,
-                    'user_id' => $datosUsuario->idUsuario,
+                    'user_id' => $datosUsuario["idUsuario"],
                     'thread_type' => 'M',
                     'poster' => $nombrePersona,
                     'source' => 'Web',  // OJO verificar si se puede dejar como los de PQRSF
@@ -340,7 +344,7 @@ class Osticket extends Model
                     'format' => 'html',
                     'ip_address' => '::1',
                     'created' => $now,
-                    'updated' => '0000-00-00 00:00:00'
+                    'updated' => date('Y-m-d H:i:s', 0)
             ]);
 
             $db->table('ost_ticket_thread')
@@ -357,7 +361,7 @@ class Osticket extends Model
                     'format' => 'html',
                     'ip_address' => $ipFuncionarioPQRSF,
                     'created' => $now,
-                    'updated' => '0000-00-00 00:00:00'
+                    'updated' => date('Y-m-d H:i:s', 0)
             ]);
 
             $db->table('ost_ticket_thread')
@@ -374,7 +378,7 @@ class Osticket extends Model
                     'format' => 'html',
                     'ip_address' => $ipFuncionarioPQRSF,
                     'created' => $now,
-                    'updated' => '0000-00-00 00:00:00'
+                    'updated' => date('Y-m-d H:i:s', 0)
             ]);
 
             $db->table('ost__search')
