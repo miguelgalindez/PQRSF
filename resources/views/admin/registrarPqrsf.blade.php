@@ -128,7 +128,7 @@
     	function accionSiguiente(numeroPaso){
     		if(caso==3){
     			$.post('/admin/registrarPqrsf', function(data){
-
+    				
     			});
     		}
     		else{
