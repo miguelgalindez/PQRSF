@@ -17,11 +17,11 @@ Route::get('/', function () {
 
 Route::get('/admin/', 'AdminController@index');
 
-Route::get('/admin/direccionarPqrsf', 'AdminController@mostrarDireccionarPqrsf');
-Route::post('/admin/direccionarPqrsf' , 'OsticketController@crearTicket');//only ajax
-
 Route::get('/admin/registrarPqrsf', 'AdminController@mostrarRegistrarPqrsf');
 Route::post('/admin/registrarPqrsf', 'AdminController@registrarPqrsf');
+
+Route::get('/admin/direccionarPqrsf', 'AdminController@mostrarDireccionarPqrsf');
+Route::post('/admin/direccionarPqrsf' , 'OsticketController@crearTicket');//only ajax
 
 Route::get('/admin/datosRegistroPqrsf', 'AdminController@obtnDatosRegistroPqrsf');
 
