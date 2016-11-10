@@ -23,3 +23,9 @@ OJO !!!
 Ojo !!
 
 modificar la función crearActualizar del modelo Persona. Toca que reciba la instancia de la BD que utiliza el modelo Pqrsf para que se pueda hacer rollback en caso de que la transaccion no se pueda completar con éxito
+
+------------------------
+
+Ojo !!
+
+El random para sacar el codigo de la PQRSF no se debe generar en el controlador sino en la BD para que no hayan claves repetidas

@@ -57,21 +57,41 @@ class AdminController extends Controller
 
 	public function registrarPqrsf(Request $request){
 		
-		Pqrsf::crear(			
-			$request->get('tipoSolicitante'),
-			$request->get('tipoIdentificacion'),
-			$request->get('identificacion'),
-			$request->get('email'),
-			$request->get('nombres'),
-			$request->get('apellidos'),
-			$request->get('telefono'),
-			$request->get('celular'),
-			$request->get('direccion'),
-			$this->generateRandomString(5),
-			$request->get('tipoSolicitud'),
-			$request->get('medioRecepcion'),
-			$request->get('asunto'),
-			$request->get('descripcion')
-		);		
+		try{
+			$codigoPQRSF=$this->generateRandomString(5);
+			$tipoSolicitud=$request->get('tipoSolicitud');
+			Pqrsf::crear(			
+				$request->get('tipoSolicitante'),
+				$request->get('tipoIdentificacion'),
+				$request->get('identificacion'),
+				$request->get('email'),
+				$request->get('nombres'),
+				$request->get('apellidos'),
+				$request->get('telefono'),
+				$request->get('celular'),
+				$request->get('direccion'),
+				$codigoPQRSF,
+				$tipoSolicitud,
+				$request->get('medioRecepcion'),
+				$request->get('asunto'),
+				$request->get('descripcion')
+			);
+
+			$response=array(
+				'status' => 'success',
+				'codigoPQRSF' => $codigoPQRSF,
+				'tipoSolicitud' => $tipoSolicitud
+
+			);
+			
+		}
+		catch(Exception $ex){
+			$response=array(
+				'status' => 'failure',
+				'errorMessage' => $ex->getMessage()
+			);
+		}
+		return response()->json($response);
+		
 	}
 }
