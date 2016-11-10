@@ -113,8 +113,15 @@
 
 	              <!-- /.box-body -->
 	              <div class="box-footer">	                
-	                <button type="button" class="btn btn-default">Cancelar</button>                
-	                <button type="button" class="btn btn-primary pull-right">Registrar PQRSF</button>                
+	                
+	                <a href="#" class="btn btn-danger hidden" id="btnAtras">	                
+      					<i class="ion ion-android-arrow-dropleft-circle" aria-hidden="true"></i>
+      					Atrás      					
+    				</a>    				
+	                <a href="#" class="btn btn-success pull-right" id="btnSiguiente">	                
+      					Siguiente      					
+      					<i class="ion ion-android-arrow-dropright-circle" aria-hidden="true"></i>
+    				</a>    				
 	              </div>
 	              <!-- /.box-footer -->
 	              </div>
@@ -122,22 +129,42 @@
           
        		</div>
        	</div>
-    </div>   	        		           					        			     		        				      				
+    </div>   	        		  
+
     
     <script type="text/javascript">
-    	function accionSiguiente(numeroPaso){
-    		if(caso==3){
-    			$.post('/admin/registrarPqrsf', function(data){
-    				
-    			});
-    		}
-    		else{
+    // Enviar 
+    	var numeroPaso=1;
+    	function accionSiguiente(){
+
+    		if(numeroPaso<3){
     			$("#paso"+numeroPaso).addClass('hidden');
-	        	$("#paso"+(numeroPaso+1).removeClass('hidden');
+	        	$("#paso"+(numeroPaso+1)).removeClass('hidden');
+	        	numeroPaso=numeroPaso+1;
+
+
+	        	$("#btnAtras").removeClass('hidden');	        	
+
+	        	if(numeroPaso==3){
+					$("#btnSiguiente").html("Registrar <i class=\"ion ion-checkmark-circled\" aria-hidden=\"true\"></i>");
+					// Send Ajax	
+    			}
+    		}
+    	}
+    	function accionAnterior(){
+    		if(numeroPaso>1){
+    			$("#paso"+numeroPaso).addClass('hidden');
+	        	$("#paso"+(numeroPaso-1)).removeClass('hidden');
+	        	numeroPaso=numeroPaso-1;
+
+	        	$("#btnSiguiente").html("Siguiente <i class=\"ion ion-android-arrow-dropright-circle\" aria-hidden=\"true\"></i>");
+    			if(numeroPaso==1){
+					$("#btnAtras").addClass('hidden');
+	    		}	    		
     		}
     	}
     	$(document).ready(function(){
-    		var numeroPaso=1;
+    		
     		$.get('/admin/datosRegistroPqrsf', function(data){
 	          	           	            
 	            $('#tipoSolicitante').append("<option value=''>Elegir...</option>");
@@ -161,18 +188,14 @@
 	            });
 	        });	
 
+	        
 	        $("#btnSiguiente").on('click', function(e){
 	        	e.preventDefault();
-
-	        	$("#paso"+numeroPaso).addClass('hidden');
-	        	$("#paso"+(numeroPaso+1).removeClass('hidden');
+	        	accionSiguiente();        	
 	        });
-
 	        $("#btnAtras").on('click', function(e){
 	        	e.preventDefault();
-
-	        	$("#paso1").removeClass('hidden');
-	        	$("#paso2").addClass('hidden');	        	
+	        	accionAnterior();        	
 	        });
     	});
     	
