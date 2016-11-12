@@ -91,7 +91,7 @@ class AdminController extends Controller
 		catch(Exception $ex){
 			report($ex);
 			$response=array(
-				'status' => 'failure',				
+				'status' => 'fail',				
 			);			
 		}
 		return response()->json($response);

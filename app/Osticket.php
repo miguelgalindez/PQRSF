@@ -8,6 +8,218 @@ use Illuminate\Support\Facades\DB;
 class Osticket extends Model
 {
 	
+    public static function crearTicket($codigoPQRSF, $nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $asunto, $descripcion, $ipFuncionarioPQRSF, $emailFuncionarioPQRSF, $nombreFuncionarioPQRSF){
+        $db=DB::connection('osticketdb');
+
+        $datosUsuario=null;
+
+        try{
+            $db->beginTransaction();
+
+            $datosUsuario=Self::obtnDatosUsuario($emailPersona);
+            if($datosUsuario==null){
+                $datosUsuario=Self::crearUsuario($db, $nombrePersona, $emailPersona, $telefonoPersona);
+            }
+ 
+            $partes=explode(' ', $fechaVencimiento);
+            $vencimiento=$partes[4] . "-" . Self::obtnnumeroMes($partes[2]) . "-" . (string)$partes[0] . " 23:59:59";
+            $now=date('Y-m-d H:i:s');
+
+            $numeroTicket=Self::obtnSigNumeroTicket();
+            $longNumeroTicket=6;
+            $idTema=6; // OJO.. colocar el id del tema que se va a establecer para la creacion de Tickets desde PQRSF
+
+            $idTicket=$db->table('ost_ticket')
+                            ->insertGetId([
+                                'number' => str_pad($numeroTicket, $longNumeroTicket, "0", STR_PAD_LEFT),
+                                'user_id' => $datosUsuario["idUsuario"],
+                                'user_email_id' => $datosUsuario["idEmail"],
+                                'status_id' => 1,
+                                'dept_id' => $idDependencia,
+                                'sla_id' =>0,  // Sin sla ??
+
+                                'topic_id' => $idTema,
+                                'staff_id' => $idFuncionario,
+                                
+                                'team_id' => 0, //Al parecer se deja asi cuando el ticket es asignado a una persona en concreto
+                                'email_id' => 0, // Asi lo deja osticket
+                                'flags' =>0,     // Asi lo deja osticket
+                                                                        
+                                'ip_address' => '::1',                                
+                                'source'=> 'Web', // toca verificar para que en lo posible sean los mismos definidos por PQRSF
+                                'isoverdue' => 0,
+                                'isanswered' => 0,
+                                'duedate' => $vencimiento,
+
+                                // 'reopened' => NULL, // osticket lo deja como nulo
+                                // 'closed' => NULL, // osticket lo deja como nulo
+                                // 'lastmessage' => NULL, // Como estaria recien creado el ticket se deja esto como NULO
+                                // 'lastresponse' => NULL, 
+
+                                'created' => $now,
+                                'updated' => $now // Como estaria recien creado el ticket se deja esto como NULO
+            ]);
+
+            $db->table('ost_ticket__cdata')
+                 ->insert([
+                    'ticket_id' => $idTicket,
+                    'subject' => $asunto,
+                    'priority' => $idPrioridad
+            ]);
+
+            $usernameFuncionarioPQRSF=Self::obtnUserName($emailFuncionarioPQRSF);
+
+            $db->table('ost_ticket_event')
+                 ->insert([
+                    'ticket_id' => $idTicket,
+                    'staff_id' => $idFuncionario,
+                    'team_id' => 0, // Asi lo esta dejando osticket
+                    'dept_id' => $idDependencia,
+                    'topic_id' => $idTema,
+                    'state' => 'created',
+                    'staff' => $usernameFuncionarioPQRSF,
+                    'annulled' => 0,
+                    'timestamp' =>$now
+            ]);
+
+            $db->table('ost_ticket_event')
+             ->insert([
+                'ticket_id' => $idTicket,
+                'staff_id' => $idFuncionario,
+                'team_id' => 0, // Asi lo esta dejando osticket
+                'dept_id' => $idDependencia,
+                'topic_id' => $idTema,
+                'state' => 'assigned',
+                'staff' => $usernameFuncionarioPQRSF,
+                'annulled' => 0,
+                'timestamp' =>$now
+            ]);
+
+       
+            // Entrada que define los datos del ticket (form_id=2 ) objectId hace referencia al id del ticket TICKET
+            $idEntrada=$db->table('ost_form_entry')
+                        ->insertGetId([
+                            'form_id' => 2,
+                            'object_id' => $idTicket,
+                            'object_type' => 'T',
+                            'sort' => 1,
+                            'created' => $now,
+                            'updated' => $now
+            ]);
+
+
+            $db->table('ost_form_entry_values')
+                ->insert([
+                    'entry_id' => $idEntrada,
+                    'field_id' => 20,
+                    'value' => $asunto,
+                    // 'value_id' => NULL
+            ]);
+
+            $db->table('ost_form_entry_values')
+                ->insert([
+                    'entry_id' => $idEntrada,
+                    'field_id' => 22,
+                    'value' => Self::obtnDescripcionPrioridad($idPrioridad),
+                    'value_id' => $idPrioridad
+
+            ]);
+            
+            $db->table('ost_ticket_thread')
+                ->insert([
+                    'pid' => 0,
+                    'ticket_id' => $idTicket,
+                    'staff_id' => 0,
+                    'user_id' => $datosUsuario["idUsuario"],
+                    'thread_type' => 'M',
+                    'poster' => $nombrePersona,
+                    'source' => 'Web',  // OJO verificar si se puede dejar como los de PQRSF
+                    'title' => 'Descripción de la solicitud',
+                    'body' => $descripcion,
+                    'format' => 'html',
+                    'ip_address' => '::1',
+                    'created' => $now,
+                    'updated' => date('Y-m-d H:i:s', 0)
+            ]);
+
+            $db->table('ost_ticket_thread')
+                ->insert([
+                    'pid' => 0,
+                    'ticket_id' => $idTicket,
+                    'staff_id' => 0,
+                    'user_id' => 0,
+                    'thread_type' => 'N',
+                    'poster' => 'SYSTEM',
+                    'source' => '',
+                    'title' => 'Ticket creado',
+                    'body' => 'Ticket creado por el agente ' . $nombreFuncionarioPQRSF . ' (PQRSF)',
+                    'format' => 'html',
+                    'ip_address' => $ipFuncionarioPQRSF,
+                    'created' => $now,
+                    'updated' => date('Y-m-d H:i:s', 0)
+            ]);
+
+            $nombreFuncionario=Self::obtnNombreFuncionario($idFuncionario);
+
+            $db->table('ost_ticket_thread')
+                ->insert([
+                    'pid' => 0,
+                    'ticket_id' => $idTicket,
+                    'staff_id' => Self::obtnStaffId($emailFuncionarioPQRSF),
+                    'user_id' => 0,
+                    'thread_type' => 'N',
+                    'poster' => $nombreFuncionarioPQRSF,
+                    'source' => '',
+                    'title' => 'Ticket asignado',
+                    'body' => 'El agente ' . $nombreFuncionarioPQRSF . ' (PQRSF) acaba de asignar el Ticket a: ' .  $nombreFuncionario,
+                    'format' => 'html',
+                    'ip_address' => $ipFuncionarioPQRSF,
+                    'created' => $now,
+                    'updated' => date('Y-m-d H:i:s', 0)
+            ]);
+
+            $db->table('ost__search')
+                ->insert([
+                    'object_type' => 'H',
+                    'object_id' => $idTicket,
+                    'title' => '',
+                    'content' => $descripcion,
+
+            ]);
+            
+            $db->table('ost__search')
+                ->insert([
+                    'object_type' => 'T',
+                    'object_id' => $idTicket,
+                    'title' => str_pad($numeroTicket, $longNumeroTicket, "0", STR_PAD_LEFT) . ' ' . $asunto,
+                    'content' => $asunto,
+            ]);                        
+
+            DB::table('tickets')
+                ->insert([
+                    'ticketId' => $idTicket,
+                    'pqrsfCodigo' => $codigoPQRSF
+            ]);
+
+            $db->commit();
+
+            return array(
+                'status' => 'success',
+                'numeroTicket' =>$numeroTicket,
+                'nombreFuncionario'=> $nombreFuncionario            
+            );
+        }
+        catch(Exception $ex){
+            
+            $db->rollback();
+            report($ex);
+
+            return array(
+                'status' => 'fail',
+            );   
+        }
+
+    }
 
     public static function obtnTodosFuncionarios(){
     	$db=DB::connection('osticketdb');	
@@ -212,222 +424,4 @@ class Osticket extends Model
 
         return $staff->firstname . ' ' . $staff->lastname;
     }
-
-
-    public static function crearTicket($codigoPQRSF, $nombrePersona,$emailPersona, $telefonoPersona, $idDependencia, $idFuncionario, $fechaVencimiento, $idPrioridad, $asunto, $descripcion, $ipFuncionarioPQRSF, $emailFuncionarioPQRSF, $nombreFuncionarioPQRSF){
-        $db=DB::connection('osticketdb');
-
-        $datosUsuario=null;
-
-        try{
-            $db->beginTransaction();
-
-            $datosUsuario=Self::obtnDatosUsuario($emailPersona);
-            if($datosUsuario==null){
-                $datosUsuario=Self::crearUsuario($db, $nombrePersona, $emailPersona, $telefonoPersona);
-            }
- 
-            $partes=explode(' ', $fechaVencimiento);
-            $vencimiento=$partes[4] . "-" . Self::obtnnumeroMes($partes[2]) . "-" . (string)$partes[0] . " 23:59:59";
-            $now=date('Y-m-d H:i:s');
-
-            $numeroTicket=Self::obtnSigNumeroTicket();
-            $longNumeroTicket=6;
-            $idTema=6; // OJO.. colocar el id del tema que se va a establecer para la creacion de Tickets desde PQRSF
-
-            $idTicket=$db->table('ost_ticket')
-                            ->insertGetId([
-                                'number' => str_pad($numeroTicket, $longNumeroTicket, "0", STR_PAD_LEFT),
-                                'user_id' => $datosUsuario["idUsuario"],
-                                'user_email_id' => $datosUsuario["idEmail"],
-                                'status_id' => 1,
-                                'dept_id' => $idDependencia,
-                                'sla_id' =>0,  // Sin sla ??
-
-                                'topic_id' => $idTema,
-                                'staff_id' => $idFuncionario,
-                                
-                                'team_id' => 0, //Al parecer se deja asi cuando el ticket es asignado a una persona en concreto
-                                'email_id' => 0, // Asi lo deja osticket
-                                'flags' =>0,     // Asi lo deja osticket
-                                                                        
-                                'ip_address' => '::1',                                
-                                'source'=> 'Web', // toca verificar para que en lo posible sean los mismos definidos por PQRSF
-                                'isoverdue' => 0,
-                                'isanswered' => 0,
-                                'duedate' => $vencimiento,
-
-                                // 'reopened' => NULL, // osticket lo deja como nulo
-                                // 'closed' => NULL, // osticket lo deja como nulo
-                                // 'lastmessage' => NULL, // Como estaria recien creado el ticket se deja esto como NULO
-                                // 'lastresponse' => NULL, 
-
-                                'created' => $now,
-                                'updated' => $now // Como estaria recien creado el ticket se deja esto como NULO
-            ]);
-
-            $db->table('ost_ticket__cdata')
-                 ->insert([
-                    'ticket_id' => $idTicket,
-                    'subject' => $asunto,
-                    'priority' => $idPrioridad
-            ]);
-
-            $usernameFuncionarioPQRSF=Self::obtnUserName($emailFuncionarioPQRSF);
-
-            $db->table('ost_ticket_event')
-                 ->insert([
-                    'ticket_id' => $idTicket,
-                    'staff_id' => $idFuncionario,
-                    'team_id' => 0, // Asi lo esta dejando osticket
-                    'dept_id' => $idDependencia,
-                    'topic_id' => $idTema,
-                    'state' => 'created',
-                    'staff' => $usernameFuncionarioPQRSF,
-                    'annulled' => 0,
-                    'timestamp' =>$now
-            ]);
-
-            $db->table('ost_ticket_event')
-             ->insert([
-                'ticket_id' => $idTicket,
-                'staff_id' => $idFuncionario,
-                'team_id' => 0, // Asi lo esta dejando osticket
-                'dept_id' => $idDependencia,
-                'topic_id' => $idTema,
-                'state' => 'assigned',
-                'staff' => $usernameFuncionarioPQRSF,
-                'annulled' => 0,
-                'timestamp' =>$now
-            ]);
-
-       
-            // Entrada que define los datos del ticket (form_id=2 ) objectId hace referencia al id del ticket TICKET
-            $idEntrada=$db->table('ost_form_entry')
-                        ->insertGetId([
-                            'form_id' => 2,
-                            'object_id' => $idTicket,
-                            'object_type' => 'T',
-                            'sort' => 1,
-                            'created' => $now,
-                            'updated' => $now
-            ]);
-
-
-            $db->table('ost_form_entry_values')
-                ->insert([
-                    'entry_id' => $idEntrada,
-                    'field_id' => 20,
-                    'value' => $asunto,
-                    // 'value_id' => NULL
-            ]);
-
-            $db->table('ost_form_entry_values')
-                ->insert([
-                    'entry_id' => $idEntrada,
-                    'field_id' => 22,
-                    'value' => Self::obtnDescripcionPrioridad($idPrioridad),
-                    'value_id' => $idPrioridad
-
-            ]);
-            
-            $db->table('ost_ticket_thread')
-                ->insert([
-                    'pid' => 0,
-                    'ticket_id' => $idTicket,
-                    'staff_id' => 0,
-                    'user_id' => $datosUsuario["idUsuario"],
-                    'thread_type' => 'M',
-                    'poster' => $nombrePersona,
-                    'source' => 'Web',  // OJO verificar si se puede dejar como los de PQRSF
-                    'title' => 'Descripción de la solicitud',
-                    'body' => $descripcion,
-                    'format' => 'html',
-                    'ip_address' => '::1',
-                    'created' => $now,
-                    'updated' => date('Y-m-d H:i:s', 0)
-            ]);
-
-            $db->table('ost_ticket_thread')
-                ->insert([
-                    'pid' => 0,
-                    'ticket_id' => $idTicket,
-                    'staff_id' => 0,
-                    'user_id' => 0,
-                    'thread_type' => 'N',
-                    'poster' => 'SYSTEM',
-                    'source' => '',
-                    'title' => 'Ticket creado',
-                    'body' => 'Ticket creado por el agente ' . $nombreFuncionarioPQRSF . ' (PQRSF)',
-                    'format' => 'html',
-                    'ip_address' => $ipFuncionarioPQRSF,
-                    'created' => $now,
-                    'updated' => date('Y-m-d H:i:s', 0)
-            ]);
-
-            $nombreFuncionario=Self::obtnNombreFuncionario($idFuncionario);
-
-            $db->table('ost_ticket_thread')
-                ->insert([
-                    'pid' => 0,
-                    'ticket_id' => $idTicket,
-                    'staff_id' => Self::obtnStaffId($emailFuncionarioPQRSF),
-                    'user_id' => 0,
-                    'thread_type' => 'N',
-                    'poster' => $nombreFuncionarioPQRSF,
-                    'source' => '',
-                    'title' => 'Ticket asignado',
-                    'body' => 'El agente ' . $nombreFuncionarioPQRSF . ' (PQRSF) acaba de asignar el Ticket a: ' .  $nombreFuncionario,
-                    'format' => 'html',
-                    'ip_address' => $ipFuncionarioPQRSF,
-                    'created' => $now,
-                    'updated' => date('Y-m-d H:i:s', 0)
-            ]);
-
-            $db->table('ost__search')
-                ->insert([
-                    'object_type' => 'H',
-                    'object_id' => $idTicket,
-                    'title' => '',
-                    'content' => $descripcion,
-
-            ]);
-            
-            $db->table('ost__search')
-                ->insert([
-                    'object_type' => 'T',
-                    'object_id' => $idTicket,
-                    'title' => str_pad($numeroTicket, $longNumeroTicket, "0", STR_PAD_LEFT) . ' ' . $asunto,
-                    'content' => $asunto,
-            ]);            
-            
-            $db->commit();
-
-            DB::table('tickets')
-                ->insert([
-                    'ticketId' => $idTicket,
-                    'pqrsfCodigo' => $codigoPQRSF
-            ]);
-
-            return array(
-                'status' => 'successful',
-                'numeroTicket' =>$numeroTicket,
-                'nombreFuncionario'=> $nombreFuncionario            
-            );
-
-        }
-        catch(Exception $ex){
-            
-            $db->rollback();
-
-            return array(
-                'status' => 'failure',
-                'message' => $ex->getMessage()
-            );
-            
-        }
-        
-
-    }
-
 }

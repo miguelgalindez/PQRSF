@@ -10,10 +10,6 @@ class Pqrsf extends Model
     protected $primaryKey='pqrsfCodigo';
 
 
-	public function persona(){
-		return $this->belongsTo('App\Persona', 'perId');
-	}
-
 	public static function obtnTiposSolicitud(){
     	return array(
     		'Petición',
@@ -40,7 +36,8 @@ class Pqrsf extends Model
     	DB::table('pqrsfs')
     			->insert([
     				'pqrsfCodigo' => $codigo,
-    				'perid' => $identificacion,
+    				'perId' => $identificacion,
+                    'perTipoId' => $tipoIdentificacion,
     				'pqrsfTipo' => $tipoSolicitud,
     				'pqrsfAsunto' => $asunto,
     				'pqrsfDescripcion' => $descripcion,

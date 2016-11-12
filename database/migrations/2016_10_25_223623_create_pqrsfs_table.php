@@ -16,6 +16,7 @@ class CreatePqrsfsTable extends Migration
         Schema::create('pqrsfs', function (Blueprint $table) {
             $table->string('pqrsfCodigo', '5')->unique();
             $table->string('perId', '16');
+            $table->string('perTipoId', '32');
             $table->string('radId', '16')->nullable();
             $table->string('pqrsfTipo', '1');
             $table->string('pqrsfAsunto', '128');
@@ -26,8 +27,7 @@ class CreatePqrsfsTable extends Migration
             $table->date('pqrsfFechaVencimiento')->nullable();
             $table->date('pqrsfFechaCierre')->nullable();   
 
-            $table->primary('pqrsfCodigo');
-            $table->foreign('perId')->references('perId')->on('personas');
+            $table->primary('pqrsfCodigo');            
         });
     }
 
