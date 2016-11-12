@@ -25,6 +25,10 @@ class AdminController extends Controller
         return view('admin.direccionarPqrsf');
     }
 
+    public function mostrarRadicarPQRSF(){
+    	return view('admin.radicarPQRSF');
+    }
+
     public function index(){
     	return view('admin.index');
     }
@@ -81,15 +85,14 @@ class AdminController extends Controller
 				'status' => 'success',
 				'codigoPQRSF' => $codigoPQRSF,
 				'tipoSolicitud' => $tipoSolicitud
-
 			);
 			
 		}
 		catch(Exception $ex){
+			report($ex);
 			$response=array(
-				'status' => 'failure',
-				'errorMessage' => $ex->getMessage()
-			);
+				'status' => 'failure',				
+			);			
 		}
 		return response()->json($response);
 		

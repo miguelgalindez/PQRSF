@@ -120,9 +120,14 @@ return [
     |
     */
 
-    'log' => env('APP_LOG', 'single'),
+//    'log' => env('APP_LOG', 'single'),
 
-    'log_level' => env('APP_LOG_LEVEL', 'debug'),
+    'log' => 'daily',
+    'log_max_files' => 8,
+    'log_level' => 'debug',
+
+
+  //  'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
     /*
     |--------------------------------------------------------------------------

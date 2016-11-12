@@ -1,25 +1,24 @@
 @extends('admin.master')
-@section('title', 'Index')
+@section('title', 'Direccionar PQRSFs')
 
 @section('content')
-    <div class="container">
-        <div class="col-lg-12">
-            <table id="pqrsfsTable" class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Codigo</th>
-                        <th>Tipo</th>
-                        <th>Asunto</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                        <th>Creada</th>
-                        <th>Recepcion</th>                        
-                        <th>Solicitante</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>              
-        </div>
+    
+    <div class="col-lg-10 col-lg-offset-1">
+        <table id="pqrsfsTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Tipo</th>
+                    <th>Asunto</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                    <th>Creada</th>
+                    <th>Recepcion</th>                        
+                    <th>Solicitante</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>              
     </div>
 
     <!-- Modal -->
@@ -65,13 +64,14 @@
                         <div class="col-sm-10">
                             <select class="form-control" id="prioridad" name="prioridad"></select>           
                         </div>
-                    </div>
-                    <button id="btnDireccionarModal" type="submit" class="btn btn-primary">Direccionar</button>                  
+                    </div>                
                 </form>
           </div>
           <div class="modal-footer">
-            <button id="btnCancelarDireccionarModal" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            
+            <div class="col-lg-offset-2">
+            <a class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</a>
+            <a id="btnDireccionarModal" class="btn btn-success pull-right">Direccionar</a>            
+            </div>            
           </div>
         </div>
 
@@ -180,7 +180,7 @@
                 },
                 {
                     "data": null,
-                    "defaultContent": "<button class='btn-xs btn-primary' id='btnDireccionar'>Direccionar</button>"
+                    "defaultContent": "<button class='btn-xs btn-success' id='btnDireccionar'>Direccionar</button>"
                 },
                 {"data": "pqrsfFechaCreacion"},
                 {"data": "pqrsfMedioRecepcion"},                

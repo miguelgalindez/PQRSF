@@ -14,7 +14,7 @@ class CreatePersonasTable extends Migration
     public function up()
     {
         Schema::create('personas', function (Blueprint $table) {
-            $table->string('perId', '16')->unique();
+            $table->string('perId', '16');
             $table->string('perTipoId', '32');
             $table->string('perTipo', '32');
             $table->string('perNombres', '64');
@@ -25,7 +25,7 @@ class CreatePersonasTable extends Migration
             $table->string('perCelular', '16');            
             $table->timestamps();
 
-            $table->primary('perId');
+            $table->primary(['perId', 'perTipoId']);            
         });
     }
 

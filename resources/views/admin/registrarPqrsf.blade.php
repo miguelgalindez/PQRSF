@@ -2,8 +2,7 @@
 
 @section('title', 'Registrar PQRSF')
 @section('content')
-	<div class="container">
-        <div class="col-lg-12">
+        <div class="col-lg-10 col-lg-offset-1">
         	<div class="box box-danger">
 	            <div class="box-header with-border">
 	            	<h2 class="pull-right" id="tituloNumeroPaso">Paso 1 de 3</h2>
@@ -12,14 +11,7 @@
 	              <input type="hidden" name="_token" value="{!! csrf_token() !!}">
 	              <div class="box-body">
 
-	              	<div id="paso1">
-
-		                <div class="form-group">
-		                  <label for="tipoSolicitante" class="col-sm-2 control-label">Tipo solicitante</label>
-		                  <div class="col-sm-10">
-		                    <select class="form-control" id="tipoSolicitante" name="tipoSolicitante"></select>
-		                  </div>
-		                </div>
+	              	<div id="paso1">		                
 		                
 		                <div class="form-group">
 		                  <label for="tipoIdentificacion" class="col-sm-2 control-label">Tipo de Identificación</label>
@@ -32,6 +24,13 @@
 		                  <label for="identificacion" class="col-sm-2 control-label">Identificación</label>
 		                  <div class="col-sm-10">
 		                    <input class="form-control" type="text" id="identificacion" name="identificacion">
+		                  </div>
+		                </div>
+
+		                <div class="form-group">
+		                  <label for="tipoSolicitante" class="col-sm-2 control-label">Tipo solicitante</label>
+		                  <div class="col-sm-10">
+		                    <select class="form-control" id="tipoSolicitante" name="tipoSolicitante"></select>
 		                  </div>
 		                </div>
 		                
@@ -149,88 +148,11 @@
 	            </form>
           
        		</div>
-       	</div>
-    </div>   	        		  
-
+       	</div>	        		  
     
     <script type="text/javascript">
     // Enviar 
-    	var numeroPaso=1;
-
-    	function reiniciarFormulario(){
-    		var token=$("#_token").val();
-			$("#formularioRegistroPqrsf").trigger("reset");
-			$("#_token").val(token);
-			numeroPaso=1;
-			$("#btnSiguiente").html("Siguiente <i class=\"fa fa-sign-out fa-2x pull-right\" aria-hidden=\"true\"></i>");
-			$("#btnAtras").addClass('hidden');
-			$("#paso1").removeClass('hidden');
-			$("#paso3").addClass('hidden');
-			$("#tituloNumeroPaso").text("Paso 1 de 3");
-
-    	}
-
-    	function accionAnterior(){
-    		if(numeroPaso>1){
-    			$("#paso"+numeroPaso).addClass('hidden');
-	        	$("#paso"+(numeroPaso-1)).removeClass('hidden');
-	        	numeroPaso=numeroPaso-1;
-	        	$("#tituloNumeroPaso").text("Paso "+numeroPaso+" de 3");
-
-	        	$("#btnSiguiente").html("Siguiente <i class=\"fa fa-sign-out fa-2x pull-right\" aria-hidden=\"true\"></i>");
-    			if(numeroPaso==1){
-					$("#btnAtras").addClass('hidden');
-	    		}	    		
-    		}
-    	}
-
-    	function accionSiguiente(){
-
-    		if(numeroPaso<3){
-    			$("#paso"+numeroPaso).addClass('hidden');
-	        	$("#paso"+(numeroPaso+1)).removeClass('hidden');
-	        	numeroPaso=numeroPaso+1;
-	        	$("#tituloNumeroPaso").text("Paso "+numeroPaso+" de 3");
-	        	$("#btnAtras").removeClass('hidden');	        	
-
-	        	if(numeroPaso==3) $("#btnSiguiente").html("Registrar <i class=\"fa fa-floppy-o fa-2x pull-right\" aria-hidden=\"true\"></i>");
-    		}
-    		else{
-    			var datosFormulario = $("#formularioRegistroPqrsf").serialize();
-					var request=$.ajax({
-						type: "POST",
-						url: "/admin/registrarPqrsf",
-						data: datosFormulario,
-						dataType: "json"
-					});
-
-				var modalRespuesta=$("#modalRespuesta");
-				request.done(function(response){
-					if(response.status=='success'){
-						$("#modalRespuestaTitulo").text('Registro satisfactorio');
-						$("#modalRespuestaTexto").html("<strong>La "+$("#tipoSolicitud option:selected").text() +" ha sido registrada exitosamente.</strong></br>Codigo: "+response.codigoPQRSF);
-						modalRespuesta.addClass('modal-success');
-						reiniciarFormulario();
-						modalRespuesta.modal('toggle');							
-					}
-					else{
-						$("#modalRespuestaTitulo").text('Error');
-						$("#modalRespuestaTexto").text(response.errorMessage);
-						modalRespuesta.addClass('modal-danger');
-						modalRespuesta.modal('toggle');							
-					}
-				});
-				request.fail(function (jqXHR, textStatus){
-					
-					$("#modalRespuestaTitulo").text('Error');
-					$("#modalRespuestaTexto").text(textStatus + " " + jqXHR);
-					modalRespuesta.addClass('modal-danger');
-					console.log(jqXHR);
-					modalRespuesta.modal('toggle');							
-					
-				});
-    		}
-    	}
+    	var numeroPaso=1;    
 
     	$(document).ready(function(){
     		
@@ -267,7 +189,83 @@
 	        	accionAnterior();        	
 	        });
     	});
-    	
+
+    	function accionSiguiente(){
+
+    		if(numeroPaso<3){
+    			$("#paso"+numeroPaso).addClass('hidden');
+	        	$("#paso"+(numeroPaso+1)).removeClass('hidden');
+	        	numeroPaso=numeroPaso+1;
+	        	$("#tituloNumeroPaso").text("Paso "+numeroPaso+" de 3");
+	        	$("#btnAtras").removeClass('hidden');	        	
+
+	        	if(numeroPaso==3) $("#btnSiguiente").html("Registrar <i class=\"fa fa-floppy-o fa-2x pull-right\" aria-hidden=\"true\"></i>");
+    		}
+    		else{
+    			var datosFormulario = $("#formularioRegistroPqrsf").serialize();
+					var request=$.ajax({
+						type: "POST",
+						url: "/admin/registrarPqrsf",
+						data: datosFormulario,
+						dataType: "json"
+					});
+				
+				request.done(function(response){					
+					cargarModalRespuesta(response);												
+				});
+				request.fail(function (jqXHR, textStatus){									
+					cargarModalRespuesta(null);
+				});
+    		}
+    	}    	
+
+    	function reiniciarFormulario(){
+    		var token=$("#_token").val();
+			$("#formularioRegistroPqrsf").trigger("reset");
+			$("#_token").val(token);
+			numeroPaso=1;
+			$("#btnSiguiente").html("Siguiente <i class=\"fa fa-sign-out fa-2x pull-right\" aria-hidden=\"true\"></i>");
+			$("#btnAtras").addClass('hidden');
+			$("#paso1").removeClass('hidden');
+			$("#paso3").addClass('hidden');
+			$("#tituloNumeroPaso").text("Paso 1 de 3");
+
+    	}
+
+    	function accionAnterior(){
+    		if(numeroPaso>1){
+    			$("#paso"+numeroPaso).addClass('hidden');
+	        	$("#paso"+(numeroPaso-1)).removeClass('hidden');
+	        	numeroPaso=numeroPaso-1;
+	        	$("#tituloNumeroPaso").text("Paso "+numeroPaso+" de 3");
+
+	        	$("#btnSiguiente").html("Siguiente <i class=\"fa fa-sign-out fa-2x pull-right\" aria-hidden=\"true\"></i>");
+    			if(numeroPaso==1){
+					$("#btnAtras").addClass('hidden');
+	    		}	    		
+    		}
+    	}
+
+    	function cargarModalRespuesta(response){
+    		
+    		var modalRespuesta=$("#modalRespuesta");
+
+    		if(response && response.status=='success'){
+    			$("#modalRespuestaTitulo").text('Registro satisfactorio');
+				$("#modalRespuestaTexto").html("<strong>La "+$("#tipoSolicitud option:selected").text() +" ha sido registrada exitosamente.</strong></br>Codigo: "+response.codigoPQRSF);
+				modalRespuesta.removeClass('modal-danger');
+				modalRespuesta.addClass('modal-success');					
+				reiniciarFormulario();
+				modalRespuesta.modal('toggle');							
+	    	}	
+	    	else{
+	    			$("#modalRespuestaTitulo").text('Error');
+					$("#modalRespuestaTexto").text('Ha ocurrido un error mientras se registraba la PQRSF. Si el problema persiste, por favor comuníquese con la División de Tecnologías de la Información y las Comunicaciones de la Universidad del Cauca - Teléfono: 8209900 extensión 55 - Correo electrónico: contacto@unicauca.edu.co');
+					modalRespuesta.removeClass('modal-success');
+					modalRespuesta.addClass('modal-danger');
+					modalRespuesta.modal('toggle');
+	    	}	    		
+    	}        	
     </script>
 @endsection
 

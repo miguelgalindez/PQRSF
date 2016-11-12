@@ -23,6 +23,8 @@ Route::post('/admin/registrarPqrsf', 'AdminController@registrarPqrsf');
 Route::get('/admin/direccionarPqrsf', 'AdminController@mostrarDireccionarPqrsf');
 Route::post('/admin/direccionarPqrsf' , 'OsticketController@crearTicket');//only ajax
 
+Route::get('/admin/radicarPQRSF', 'AdminController@mostrarRadicarPQRSF');
+
 Route::get('/admin/datosRegistroPqrsf', 'AdminController@obtnDatosRegistroPqrsf');
 
 Route::get('/admin/pqrsfs/all', 'PqrsfsController@getAll'); //only ajax

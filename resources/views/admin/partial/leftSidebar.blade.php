@@ -65,7 +65,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="/admin/registrarPqrsf"><i class="fa fa-circle-o"></i>Registrar PQRSFs</a></li>
-            <li><a href=""><i class="fa fa-circle-o"></i>Radicar PQRSFs</a></li>
+            <li><a href="/admin/radicarPQRSF"><i class="fa fa-circle-o"></i>Radicar PQRSFs</a></li>
             <li><a href="/admin/direccionarPqrsf"><i class="fa fa-circle-o"></i>Direccionar PQRSFs</a></li>                  
           </ul>
         </li>
