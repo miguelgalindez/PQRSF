@@ -252,7 +252,7 @@
 
     		if(response && response.status=='success'){
     			$("#modalRespuestaTitulo").text('Registro satisfactorio');
-				$("#modalRespuestaTexto").html("<strong>La "+$("#tipoSolicitud option:selected").text() +" ha sido registrada exitosamente.</strong></br>Codigo: "+response.codigoPQRSF);
+				$("#modalRespuestaTexto").html("<strong>La PQRSF ha sido registrada exitosamente.</strong></br>Codigo: "+response.codigoPQRSF);
 				modalRespuesta.removeClass('modal-danger');
 				modalRespuesta.addClass('modal-success');					
 				reiniciarFormulario();

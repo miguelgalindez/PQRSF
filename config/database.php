@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'PQRSFdb'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
             'prefix' => '',
         ],
 
-        'mysql' => [
+        'PQRSFdb' => [
             'driver' => 'mysql',
             'host' => 'localhost',
             'port' => '3306',

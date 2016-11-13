@@ -82,7 +82,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <button id="btnCerrarModalRespuesta" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button id="btnCerrarModalRespuesta1" type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">×</span></button>
             <h4 id="modalRespuestaTitulo" class="modal-title"></h4>
           </div>
@@ -90,7 +90,7 @@
             <p id="modalRespuestaTexto"></p>
           </div>
           <div class="modal-footer">
-            <button id="btnCerrarModalRespuesta" type="button" class="btn btn-outline" data-dismiss="modal">Cerrar</button>
+            <button id="btnCerrarModalRespuesta2" type="button" class="btn btn-outline" data-dismiss="modal">Cerrar</button>
           </div>
         </div>          
       </div>  
@@ -184,9 +184,11 @@
 
             request.done(function(response){
                 cargarModalRespuesta(response);
+                console.log("ok");        
             });
             request.fail(function(jqXHR, textStatus){
                 cargarModalRespuesta(null);
+                console.log("OJO !!");
             });
         });
     });
@@ -202,7 +204,7 @@
             $("#modalRespuestaTexto").html("<strong>La PQRSF ha sido asignada al funcionario" +response.nombreFuncionario+ ". </strong></br>Número de Ticket: "+response.numeroTicket);
             modalRespuesta.removeClass('modal-danger');
             modalRespuesta.addClass('modal-success');                   
-            modalRespuesta.modal('toggle');                         
+            modalRespuesta.modal('toggle');                             
         }   
         else{
                 $("#modalRespuestaTitulo").text('Error');
@@ -213,9 +215,11 @@
         }               
     }
 
-    $("#btnCerrarModalRespuesta").on('click', function(){
-        location.reload();
+    $("[id^=btnCerrarModalRespuesta]").on('click', function(){
+        if($("#modalRespuesta").hasClass('modal-success'))
+            location.reload();
     });
+    
     
     $.fn.dataTable.render.pqrsfTipo= function(){
         return function(data, type, row){

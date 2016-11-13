@@ -61,39 +61,27 @@ class AdminController extends Controller
 
 	public function registrarPqrsf(Request $request){
 		
-		try{
-			$codigoPQRSF=$this->generateRandomString(5);
-			$tipoSolicitud=$request->get('tipoSolicitud');
-			Pqrsf::crear(			
-				$request->get('tipoSolicitante'),
-				$request->get('tipoIdentificacion'),
-				$request->get('identificacion'),
-				$request->get('email'),
-				$request->get('nombres'),
-				$request->get('apellidos'),
-				$request->get('telefono'),
-				$request->get('celular'),
-				$request->get('direccion'),
-				$codigoPQRSF,
-				$tipoSolicitud,
-				$request->get('medioRecepcion'),
-				$request->get('asunto'),
-				$request->get('descripcion')
-			);
+		
+		$codigoPQRSF=$this->generateRandomString(5);
+		$tipoSolicitud=$request->get('tipoSolicitud');
+		
+		$response=Pqrsf::crear(			
+			$request->get('tipoSolicitante'),
+			$request->get('tipoIdentificacion'),
+			$request->get('identificacion'),
+			$request->get('email'),
+			$request->get('nombres'),
+			$request->get('apellidos'),
+			$request->get('telefono'),
+			$request->get('celular'),
+			$request->get('direccion'),
+			$codigoPQRSF,
+			$tipoSolicitud,
+			$request->get('medioRecepcion'),
+			$request->get('asunto'),
+			$request->get('descripcion')
+		);
 
-			$response=array(
-				'status' => 'success',
-				'codigoPQRSF' => $codigoPQRSF,
-				'tipoSolicitud' => $tipoSolicitud
-			);
-			
-		}
-		catch(Exception $ex){
-			report($ex);
-			$response=array(
-				'status' => 'fail',				
-			);			
-		}
 		return response()->json($response);
 		
 	}

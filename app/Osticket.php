@@ -210,19 +210,18 @@ class Osticket extends Model
             );
         }
         catch(Exception $ex){
-            
             $db->rollback();
             report($ex);
 
             return array(
-                'status' => 'fail',
+                'status' => 'fail'
             );   
         }
 
     }
 
-    public static function obtnTodosFuncionarios(){
-    	$db=DB::connection('osticketdb');	
+    public static function obtnTodosFuncionarios(){    	
+        $db=DB::connection('osticketdb');
     	return $db->table('ost_staff')
     			->select('dept_id', 'staff_id', 'firstname', 'lastname')
     			->get();

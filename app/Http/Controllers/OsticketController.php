@@ -41,15 +41,7 @@ class OsticketController extends Controller
             Auth::user()->id,
             Auth::user()->name
     	);
-        if($response["status"] == "successful"){
-            return redirect()->back()->with('status', $response["status"])
-                                ->with('numeroTicket', $response["numeroTicket"])
-                                ->with('nombreFuncionario', $response["nombreFuncionario"]);
-        }
-        else{
-            return redirect()->back()->with('status', $response["status"])
-                                ->with('message', $response["message"]);
-        }                                       
+        return response()->json($response);
     }
 
 }

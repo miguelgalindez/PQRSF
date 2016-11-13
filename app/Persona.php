@@ -44,12 +44,12 @@ class Persona extends Model
     	return $this->hasMany('App\Pqrsf');
     }
 
-    public static function crearActualizar($identificacion, $tipoIdentificacion, $tipoSolicitante, $nombres, $apellidos, $email, $direccion, $telefono, $celular){
+    public static function crearActualizar($db, $identificacion, $tipoIdentificacion, $tipoSolicitante, $nombres, $apellidos, $email, $direccion, $telefono, $celular){
     	
-    	$personaExiste = DB::table('personas')->select('perid')->where(['perTipoId' => $tipoIdentificacion, 'perId' => $identificacion])->count() > 0;
+    	$personaExiste = $db->table('personas')->select('perid')->where(['perTipoId' => $tipoIdentificacion, 'perId' => $identificacion])->count() > 0;
     	
     	if($personaExiste){
-            DB::table('personas')
+            $db->table('personas')
                     ->where(['perTipoId' => $tipoIdentificacion, 'perId' => $identificacion])
                     ->update([
                         'perTipo' => $tipoSolicitante,
@@ -63,7 +63,7 @@ class Persona extends Model
                 ]);    		
     	}
     	else{
-            DB::table('personas')
+            $db->table('personas')
                 ->insert([
                     'perId' => $identificacion,
                     'perTipoId' => $tipoIdentificacion,
