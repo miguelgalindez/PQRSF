@@ -14,6 +14,13 @@
 	              	<div id="paso1">		                
 		                
 		                <div class="form-group">
+		                  <label for="tipoSolicitante" class="col-sm-2 control-label">Tipo solicitante</label>
+		                  <div class="col-sm-10">
+		                    <select class="form-control" id="tipoSolicitante" name="tipoSolicitante"></select>
+		                  </div>
+		                </div>
+
+		                <div class="form-group">
 		                  <label for="tipoIdentificacion" class="col-sm-2 control-label">Tipo de Identificación</label>
 		                  <div class="col-sm-10">
 		                    <select class="form-control" id="tipoIdentificacion" name="tipoIdentificacion"></select>
@@ -25,14 +32,7 @@
 		                  <div class="col-sm-10">
 		                    <input class="form-control" type="text" id="identificacion" name="identificacion">
 		                  </div>
-		                </div>
-
-		                <div class="form-group">
-		                  <label for="tipoSolicitante" class="col-sm-2 control-label">Tipo solicitante</label>
-		                  <div class="col-sm-10">
-		                    <select class="form-control" id="tipoSolicitante" name="tipoSolicitante"></select>
-		                  </div>
-		                </div>
+		                </div>		               
 		                
 		                <div class="form-group">
 		                  <label for="nombres" class="col-sm-2 control-label">Nombres</label>

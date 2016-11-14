@@ -8,13 +8,12 @@
             <thead>
                 <tr>
                     <th>Codigo</th>
+                    <th>Radicado</th>
                     <th>Tipo</th>
-                    <th>Asunto</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                    <th>Creada</th>
-                    <th>Recepcion</th>                        
+                    <th>Asunto</th>                    
                     <th>Solicitante</th>
+                    <th>Creada</th>                       
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -100,43 +99,50 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
+        
+        var table=$('#pqrsfsTable').DataTable({
+            "language": {
+                "emptyTable": "No hay PQRSFs pendientes por direccionar",
+                "lengthMenu": "Mostrar _MENU_ PQRSFs por página",
+                "info": "Página _PAGE_ de _PAGES_",
+                "infoEmpty": "",                
+            },
+
+            ajax:{
+                url :  '/admin/pqrsfs/noDireccionadas',
+                dataSrc: ''
+
+            },    
+                    
+            "columns": [
+                {"data": "pqrsfCodigo"},
+                {"data": "radId"},
+                {   "data": "pqrsfTipo",
+                    render: $.fn.dataTable.render.pqrsfTipo()
+                },
+                {"data": "pqrsfAsunto"},
+                {   "data": null, 
+                    render: $.fn.dataTable.render.personaNombreCompleto()
+                },                
+                {"data": "pqrsfFechaCreacion"},
+                {
+                    "data": null,
+                    "defaultContent": "<button class='btn-xs btn-success'>Direccionar</button>"
+                }                            
+            ]
+        });
+
         $('#fechaVencimiento').datetimepicker({
             locale: 'es',
             format: "D [de] MMMM [de] YYYY",
             daysOfWeekDisabled: [0, 6],
             minDate: new Date(),
-            showTodayButton: true,            
-        });
-
-        var table=$('#pqrsfsTable').DataTable({
-            ajax:{
-                url :  '/admin/pqrsfs/all',
-                dataSrc: ''
-
-            },            
-            "columns": [
-                {"data": "pqrsfCodigo"},
-                {   "data": "pqrsfTipo",
-                    render: $.fn.dataTable.render.pqrsfTipo()
-                },
-                {"data": "pqrsfAsunto"},
-                {   "data": "pqrsfEstado",
-                    render: $.fn.dataTable.render.pqrsfEstado()
-                },
-                {
-                    "data": null,
-                    "defaultContent": "<button class='btn-xs btn-success'>Direccionar</button>"
-                },
-                {"data": "pqrsfFechaCreacion"},
-                {"data": "pqrsfMedioRecepcion"},                
-                {   "data": null, 
-                    render: $.fn.dataTable.render.personaNombreCompleto()
-                }
-            ]
+            showTodayButton: true            
         });
 
         var dependencias=[];
         var funcionarios=[];
+
         $.get('/admin/pqrsfs/direccionar/datosDireccionamiento', function(data){
             dependencias=data.dependencias;
             funcionarios=data.funcionarios;
@@ -163,14 +169,16 @@
             });
         });
         
-        $('#pqrsfsTable tbody').on('click', 'button',function () {
-            $('#modalDireccionar').modal('show');
+        $('#pqrsfsTable tbody').on('click', 'button', function () {
+
             var data = table.row( $(this).parents('tr') ).data();
-            
+
             $("#codigoPQRSF").val(data.pqrsfCodigo);
             $("#idPersona").val(data.perId);
             $("#asunto").val(data.pqrsfAsunto);
             $("#descripcion").val(data.pqrsfDescripcion);
+
+            $('#modalDireccionar').modal('toggle');
         });
         
         $("#btnModalDireccionar").on('click', function(){
@@ -234,17 +242,6 @@
                     return "Sugerencia";
                 case "F":
                     return "Felicitación";
-            }
-        }
-    };
-
-    $.fn.dataTable.render.pqrsfEstado=function(){
-        return function(data, type, row){
-            switch(data){
-                case "0":
-                    return "Pendiente";
-                case "1":
-                    return "Atendida";
             }
         }
     };

@@ -29,6 +29,19 @@ class Pqrsf extends Model
     	);
     }
 
+    public static function obtnNoDireccionadas(){
+        
+        $sql= "SELECT pqrsf.pqrsfCodigo, pqrsf.radId, pqrsf.pqrsfTipo, pqrsf.pqrsfAsunto, pqrsf.pqrsfDescripcion, pqrsf.pqrsfFechaCreacion, pqrsf.pqrsfMedioRecepcion, persona.perId, persona.perNombres, persona.perApellidos FROM pqrsfs pqrsf JOIN personas persona ON pqrsf.radId IS NOT NULL AND pqrsf.pqrsfDireccionada=0 AND pqrsf.perId=persona.perId AND pqrsf.perTipoId=persona.perTipoId";
+
+        return DB::select( $sql );
+    }
+
+    public static function obtnNoRadicadas(){
+        $sql= "SELECT pqrsf.pqrsfCodigo, pqrsf.pqrsfTipo, pqrsf.pqrsfAsunto, pqrsf.pqrsfDescripcion, pqrsf.pqrsfFechaCreacion, pqrsf.pqrsfMedioRecepcion, persona.perId, persona.perNombres, persona.perApellidos FROM pqrsfs pqrsf join personas persona on pqrsf.perId =persona.perId AND pqrsf.perTipoId=persona.perTipoId AND pqrsf.radId IS NULL";
+
+        return DB::select( $sql );
+    }
+
     public static function crear($tipoSolicitante, $tipoIdentificacion, $identificacion, $email, $nombres, $apellidos, $telefono, $celular, $direccion, $codigo, $tipoSolicitud, $medioRecepcion, $asunto, $descripcion){
     	
         try{

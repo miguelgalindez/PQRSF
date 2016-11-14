@@ -336,10 +336,10 @@ class ComposerStaticInitf105ecdd65be17f0c99715504d389209
     );
 
     public static $classMap = array (
-        'AddForeignkeysToPqrsfsTable' => __DIR__ . '/../..' . '/database/migrations/2016_11_12_223107_add_foreignkeys_to_pqrsfs_table.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
         'CreatePersonasTable' => __DIR__ . '/../..' . '/database/migrations/2016_10_25_200253_create_personas_table.php',
         'CreatePqrsfsTable' => __DIR__ . '/../..' . '/database/migrations/2016_10_25_223623_create_pqrsfs_table.php',
+        'CreateRadicadosTable' => __DIR__ . '/../..' . '/database/migrations/2016_11_14_171026_create_radicados_table.php',
         'CreateTicketsTable' => __DIR__ . '/../..' . '/database/migrations/2016_10_30_163214_create_tickets_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',

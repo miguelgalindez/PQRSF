@@ -27,8 +27,10 @@ Route::get('/admin/radicarPQRSF', 'AdminController@mostrarRadicarPQRSF');
 
 Route::get('/admin/datosRegistroPqrsf', 'AdminController@obtnDatosRegistroPqrsf');
 
-Route::get('/admin/pqrsfs/all', 'PqrsfsController@getAll'); //only ajax
+Route::get('/admin/pqrsfs/noDireccionadas', 'PqrsfsController@obtnNoDireccionadas'); //only ajax
 Route::get('/admin/pqrsfs/direccionar/datosDireccionamiento' , 'OsticketController@obtnDatosDireccionamiento'); //only ajax
+
+Route::get('/admin/pqrsfs/noRadicadas', 'PqrsfsController@obtnNoRadicadas');
 
 
 Route::get('/login', 'UsersController@googleLogin') ;

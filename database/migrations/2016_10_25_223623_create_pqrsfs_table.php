@@ -17,12 +17,13 @@ class CreatePqrsfsTable extends Migration
             $table->string('pqrsfCodigo', '5')->unique();
             $table->string('perId', '16');
             $table->string('perTipoId', '32');
-            $table->string('radId', '16')->nullable();
+            $table->string('radId', '16')->nullable();            
             $table->string('pqrsfTipo', '1');
             $table->string('pqrsfAsunto', '128');
             $table->string('pqrsfDescripcion', '1024');
             $table->date('pqrsfFechaCreacion');
             $table->string('pqrsfMedioRecepcion', '32');
+            $table->tinyInteger('pqrsfDireccionada')->default(0);
             $table->tinyInteger('pqrsfEstado');
             $table->date('pqrsfFechaVencimiento')->nullable();
             $table->date('pqrsfFechaCierre')->nullable();   

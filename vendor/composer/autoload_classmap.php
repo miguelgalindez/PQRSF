@@ -6,10 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'AddForeignkeysToPqrsfsTable' => $baseDir . '/database/migrations/2016_11_12_223107_add_foreignkeys_to_pqrsfs_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreatePersonasTable' => $baseDir . '/database/migrations/2016_10_25_200253_create_personas_table.php',
     'CreatePqrsfsTable' => $baseDir . '/database/migrations/2016_10_25_223623_create_pqrsfs_table.php',
+    'CreateRadicadosTable' => $baseDir . '/database/migrations/2016_11_14_171026_create_radicados_table.php',
     'CreateTicketsTable' => $baseDir . '/database/migrations/2016_10_30_163214_create_tickets_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
