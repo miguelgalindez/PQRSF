@@ -36,4 +36,4 @@ Ojo que la funcion obtnDatosUsuario del modelo Osticket tambien busque en la tab
 
 ----------------------
 
-
+OJO NO RECARCAR TODA LA PAGINA SI NO SOLO EL DATA TABLE (direccionarPQRSF.blade línea 230)

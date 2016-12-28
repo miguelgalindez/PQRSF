@@ -212,7 +212,8 @@
             $("#modalRespuestaTexto").html("<strong>La PQRSF ha sido asignada al funcionario" +response.nombreFuncionario+ ". </strong></br>Número de Ticket: "+response.numeroTicket);
             modalRespuesta.removeClass('modal-danger');
             modalRespuesta.addClass('modal-success');                   
-            modalRespuesta.modal('toggle');                             
+            modalRespuesta.modal('toggle');
+            table.ajax.reload();                             
         }   
         else{
                 $("#modalRespuestaTitulo").text('Error');
@@ -222,12 +223,6 @@
                 modalRespuesta.modal('toggle');
         }               
     }
-
-    $("[id^=btnCerrarModalRespuesta]").on('click', function(){
-        if($("#modalRespuesta").hasClass('modal-success'))
-            location.reload();
-    });
-    
     
     $.fn.dataTable.render.pqrsfTipo= function(){
         return function(data, type, row){

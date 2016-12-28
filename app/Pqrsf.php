@@ -81,6 +81,87 @@ class Pqrsf extends Model
         }   	
     }
 
+    public static function radicar($codigoPQRSF, $idRadicado, $fechaRadicado, $usuarioPQRSF){
 
+        $partes=explode(' ', $fechaRadicado);        
+        $fecha=$partes[4] . "-" . Self::obtnnumeroMes($partes[2]) . "-" . (string)$partes[0];
+        
+        $partes=explode('Hora: ', $fechaRadicado);
+        $hora24 = date("H:i", strtotime($partes[1]));
+
+        $fecha = $fecha . " " . $hora24;
+
+        $db=DB::connection('PQRSFdb');
+
+        try{
+            $db->beginTransaction();
+
+            $db->table('radicados')
+                ->insert([
+                    'radId' => $idRadicado,
+                    'radFecha' => $fecha,
+                    'radUsuario' => $usuarioPQRSF
+            ]);
+
+            $db->table('pqrsfs')
+                ->where('pqrsfCodigo', $codigoPQRSF)
+                ->update(['radId' => $idRadicado]);
+
+            $db->commit(); 
+            return array(
+                'status' => 'success'
+            );   
+        }
+        catch(Exception $ex){
+            $db->rollback();
+            report($ex);
+
+            return array(
+                'status' => 'fail'
+            );
+        }    
+    }
+
+    private static function obtnnumeroMes($mes){
+        switch ($mes) {
+            
+            case 'enero':
+                return '01';
+            
+            case 'febrero':
+                return '02';
+
+            case 'marzo':
+                return '03';
+
+            case 'abril':
+                return '04';
+
+            case 'mayo':
+                return '05';
+
+            case 'junio':
+                return '06';
+
+            case 'julio':
+                return '07';
+
+            case 'agosto':
+                return '08';
+
+            case 'septiembre':
+                return '09';
+
+            case 'octubre':
+                return '10';
+
+            case 'noviembre':
+                return '11';
+
+            case 'diciembre':
+                return '12';
+            
+        }
+    }
 
 }

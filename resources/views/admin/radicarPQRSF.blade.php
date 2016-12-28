@@ -51,13 +51,36 @@
           <div class="modal-footer">
             <div class="col-lg-offset-4">
                 <a class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</a>
-                <a id="btnModalDireccionar" class="btn btn-success pull-right">Radicar</a>            
+                <a id="btnModalRadicar" class="btn btn-success pull-right">Radicar</a>            
             </div>            
           </div>
         </div>
 
         </div>
     </div>
+
+
+    <!-- Modal Respuesta -->
+    <div id="modalRespuesta" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 id="modalRespuestaTitulo" class="modal-title"></h4>
+              </div>
+              <div class="modal-body">
+                <p id="modalRespuestaTexto"></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline" id="cerrarRespuesta" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+    </div>
+
 
     <script type="text/javascript">
 
@@ -104,25 +127,64 @@
 
         $('#pqrsfsTable tbody').on('click', '.btn-default', function () {
             var data = table.row( $(this).parents('tr') ).data();
-            alert('Ver PQRSF');
+            alert('Ver PQRSF' + data.pqrsfCodigo);
         });
 
         $('#pqrsfsTable tbody').on('click', '.btn-primary', function () {
             var data = table.row( $(this).parents('tr') ).data();
-            alert('Imprimir PQRSF');
+            alert('Imprimir PQRSF' + data.pqrsfCodigo);
         });
 
         $('#pqrsfsTable tbody').on('click', '.btn-success', function () {
 
             var data = table.row( $(this).parents('tr') ).data();
-            $("#codigoPQRSF").val(data.codigoPQRSF);
+            $("#codigoPQRSF").val(data.pqrsfCodigo);
             $('#modalRadicar').modal('toggle');
+        });        
+
+        $('#btnModalRadicar').on('click', function(){
+
+            var datosFormulario=$('#formularioRadicarPQRSF').serialize();
+            var request=$.ajax({
+                type: 'POST',
+                url: '/admin/radicarPQRSF',
+                data: datosFormulario,
+                dataType: 'json' 
+            });
+               
+            request.done(function(response){                    
+                cargarModalRespuesta(response);                                             
+            });
+            
+            request.fail(function (jqXHR, textStatus){                                  
+                cargarModalRespuesta(null);
+            });
         });
 
-        
+
+    function cargarModalRespuesta(response){
+           
+            var modalRespuesta=$("#modalRespuesta");
+
+            if(response && response.status=='success'){
+                $("#modalRespuestaTitulo").text('Radicado satisfactorio');
+                $("#modalRespuestaTexto").html("<strong>La PQRSF ha sido radicada exitosamente.");
+                modalRespuesta.removeClass('modal-danger');
+                modalRespuesta.addClass('modal-success');                   
+                $("#modalRadicar").modal('hide');
+                modalRespuesta.modal('toggle');
+                table.ajax.reload();                         
+            }   
+            else{
+                    $("#modalRespuestaTitulo").text('Error');
+                    $("#modalRespuestaTexto").text('Ha ocurrido un error mientras se radicaba la PQRSF. Si el problema persiste, por favor comuníquese con la División de Tecnologías de la Información y las Comunicaciones de la Universidad del Cauca - Teléfono: 8209900 extensión 55 - Correo electrónico: contacto@unicauca.edu.co');
+                    modalRespuesta.removeClass('modal-success');
+                    modalRespuesta.addClass('modal-danger');
+                    modalRespuesta.modal('toggle');
+            }               
+        }
 
     });
-    
     
     $.fn.dataTable.render.pqrsfTipo= function(){
         return function(data, type, row){
