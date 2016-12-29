@@ -7,8 +7,8 @@
         <table id="pqrsfsTable" class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Codigo</th>
-                    <th>Radicado</th>
+                    <th>Codigo</th>               
+                    <th></th>
                     <th>Tipo</th>
                     <th>Asunto</th>                    
                     <th>Solicitante</th>
@@ -115,8 +115,7 @@
             },    
                     
             "columns": [
-                {"data": "pqrsfCodigo"},
-                {"data": "radId"},
+                {"data": "pqrsfCodigo"},    
                 {   "data": "pqrsfTipo",
                     render: $.fn.dataTable.render.pqrsfTipo()
                 },
@@ -212,8 +211,9 @@
             $("#modalRespuestaTexto").html("<strong>La PQRSF ha sido asignada al funcionario" +response.nombreFuncionario+ ". </strong></br>Número de Ticket: "+response.numeroTicket);
             modalRespuesta.removeClass('modal-danger');
             modalRespuesta.addClass('modal-success');                   
-            modalRespuesta.modal('toggle');
-            table.ajax.reload();                             
+            $("#modalDireccionar").modal('hide');
+            modalRespuesta.modal('toggle');            
+            table.ajax.reload();                           
         }   
         else{
                 $("#modalRespuestaTitulo").text('Error');
