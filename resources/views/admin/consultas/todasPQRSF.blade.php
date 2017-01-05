@@ -24,7 +24,7 @@
     </div>
 
     <!-- Modal -->
-    <div id="modalVerPQRSF" class="modal fade" role="dialog">
+    <div id="modalVerPQRSF" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-lg">
 
         <!-- Modal content-->
