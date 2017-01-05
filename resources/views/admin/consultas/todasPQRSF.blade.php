@@ -1,11 +1,11 @@
 @extends('admin.master')
 @section('title', 'Todas las PQRSF')
 @section('content')		  
-   
    <style>
 	   table {table-layout:fixed;}
 	   table td {word-wrap:break-word;}
-	</style>   
+	</style>
+      
 	<div class="col-lg-10 col-lg-offset-1">
         <table id="pqrsfsTable" class="table table-bordered">
             <thead>
@@ -33,7 +33,7 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Detalles de la PQRSF</h4>
           </div>
-            <div class="modal-body">
+            <div class="modal-body">	            
             	<div class="row">            		
             		<div class="col-lg-6">
             		<table border="0" cellpadding="4" cellspacing="20" width="100%">
@@ -58,7 +58,15 @@
             				</tr>
             				<tr>
             					<th width="40%">Descripcion</th>
-            					<td width="60%"><button class="btn-xs btn-success" id="btnVerDescripcion">Ver descripción</button></td>
+            					<td width="60%"><button class="btn-xs btn-primary" id="btnVerDescripcion">Ver descripción</button></td>
+            				</tr>
+            				<tr>
+            					<th width="40%">Ordenes</th>
+            					<td width="60%" id="pqrsfOrdenes"></td>
+            				</tr>
+            				<tr>
+            					<th width="40%">Fecha de Vencimiento</th>
+            					<td width="60%"><p align="justify" id="pqrsfFechaVencimiento"></p></td>
             				</tr>
             				<tr>
             					<th width="40%">Fecha de Creación</th>
@@ -73,11 +81,7 @@
             					<th width="40%">Radicado</th>
             					<td width="60%"><p align="justify" id="pqrsfRadicado"></p></td>
             				</tr>
-
-            				<tr>
-            					<th width="40%">Fecha de Vencimiento</th>
-            					<td width="60%"><p align="justify" id="pqrsfFechaVencimiento"></p></td>
-            				</tr>
+            				
             				<tr>
             					<th width="40%">Fecha de Cierre</th>
             					<td width="60%"><p align="justify" id="pqrsfFechaCierre"></p></td>
@@ -144,6 +148,44 @@
         </div>
         
 
+        </div>
+    </div>
+
+
+<!-- Modal Ver Ordenes-->
+
+    <div id="modalVerOrdenes" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+	        <!-- Modal content-->
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal">&times;</button>
+	            <h4 class="modal-title">Ordenes asignadas</h4>
+	          </div>
+	            <div class="modal-body">		            
+	            	<div class="row">            		
+	            		<div class="col-lg-3">
+	            			<h4>Numero de Orden</h4>
+	            			<section class="sidebar">
+	            				<ul class="list-group">
+								  <li class="list-group-item">
+								    <span class="badge">14</span>
+								    Cras justo odio
+								  </li>
+								</ul>	
+	            			</section>	            			
+	            		</div>
+	            		<div class="col-lg-8">
+	            			<h4>Descripcion de la Orden</h4>
+	            		</div>				
+	            	</div>
+	            	               
+	          </div>          
+	          	<div class="modal-footer">           
+	             	<a class="btn btn-default pull-right" data-dismiss="modal">Cerrar</a>                         
+	        	</div>
+	        </div>       
         </div>
     </div>
 
@@ -234,18 +276,27 @@
 				.done(function(response) {					
 					response=response[0];					
 					$("#pqrsfCodigo").text(data.codigo);
-		            $("#pqrsfTipo").text(data.pqrsfTipo);
+		            $("#pqrsfTipo").text(renderPqrsfTipo(data.pqrsfTipo));
 		            $("#pqrsfAsunto").text(data.pqrsfAsunto);
 		            $("#pqrsfFechaVencimiento").text(data.pqrsfFechaVencimiento);
 		            $("#pqrsfRadicado").text(data.radId);
 		            $("#pqrsfDescripcion").text(response.pqrsfDescripcion);
 		            $("#pqrsfFechaCreacion").text(response.pqrsfFechaCreacion);
 		            $("#pqrsfMedioRecepcion").text(response.pqrsfMedioRecepcion);
-		            $("#pqrsfEstado").text(response.pqrsfEstado);
+		            $("#pqrsfEstado").text(renderPqrsfEstado(response.pqrsfEstado));
 		            $("#pqrsfDireccionada").text(response.pqrsfDireccionada);
-		            $("#pqrsfFechaCierre").text(response.pqrsfFechaCierre);
-		            $("#pqrsfEstado").text(response.pqrsfEstado);	            	            
+		            $("#pqrsfFechaCierre").text(response.pqrsfFechaCierre);		                       	      
 		            
+		            if(data.numeroOrdenes=="0"){
+		            	$("#pqrsfOrdenes").html('<p align="justify">No registra</p></td>');
+		            }
+		            else{
+		            	$("#pqrsfOrdenes").html('<button class="btn-xs btn-success" id="btnVerOrdenes">Ver ordenes</button>');
+		            	$("#btnVerOrdenes").on('click', function(){
+				        	$("#modalVerOrdenes").modal('toggle');
+				        });		            	
+		            }
+
 		            $("#perNombres").text(data.perNombres);
 		            $("#perApellidos").text(data.perApellidos);
 		            $("#perTipo").text(response.perTipo);
@@ -262,9 +313,10 @@
 			    	cargarModalRespuesta(null);
 			 	});							           
         });
+        
         $("#btnVerDescripcion").on('click', function(){
         	$("#modalVerDescripcion").modal('toggle');
-        });
+        });        
     });
     
     $.fn.dataTable.render.accionesDisponibles=function(){
@@ -274,7 +326,7 @@
     		}
     		return "<button class='btn-xs btn-default'>Ver</button> <button class='btn-xs btn-success'>Direccionar</button>";
     	}
-    }
+    }   
 
     $.fn.dataTable.render.numeroOrdenes=function(){
     	return function(data, type, row){    	
@@ -288,20 +340,36 @@
     		}    		    		
     	}
     }
+
+    function renderPqrsfEstado(estado){
+    	switch(estado){
+    		case "0":
+    			return "Pendiente";
+    		case "1":
+    			return "En proceso";
+    		case "2":
+    			return "Atendida";
+    	}
+    }
+
+    function renderPqrsfTipo(tipo){
+    	switch(tipo){
+            case "P":
+                return "Petición";
+            case "Q":
+                return "Queja";
+            case "R":
+                return "Reclamo";
+            case "S":
+                return "Sugerencia";
+            case "F":
+                return "Felicitación";
+       	}
+    }
+
     $.fn.dataTable.render.pqrsfTipo= function(){
         return function(data, type, row){
-            switch(data){
-                case "P":
-                    return "Petición";
-                case "Q":
-                    return "Queja";
-                case "R":
-                    return "Reclamo";
-                case "S":
-                    return "Sugerencia";
-                case "F":
-                    return "Felicitación";
-            }
+            return renderPqrsfTipo(data)
         }
     };
 
