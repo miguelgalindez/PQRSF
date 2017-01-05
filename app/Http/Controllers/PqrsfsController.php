@@ -15,4 +15,9 @@ class PqrsfsController extends Controller
     public function obtnNoRadicadas(){
     	return response()->json(Pqrsf::obtnNoRadicadas());
     }
+
+    public function obtnTodas(){
+    	return response()->json(Pqrsf::obtnTodas());
+    }
+
 }

@@ -7,8 +7,7 @@
         <table id="pqrsfsTable" class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Codigo</th>               
-                    <th></th>
+                    <th>Codigo</th>                                   
                     <th>Tipo</th>
                     <th>Asunto</th>                    
                     <th>Solicitante</th>
@@ -190,39 +189,35 @@
             });
 
             request.done(function(response){
-                cargarModalRespuesta(response);
-                console.log("ok");        
+                cargarModalRespuesta(response);                    
             });
             request.fail(function(jqXHR, textStatus){
-                cargarModalRespuesta(null);
-                console.log("OJO !!");
+                cargarModalRespuesta(null);                
             });
         });
-    });
 
-
-
-    function cargarModalRespuesta(response){
+        function cargarModalRespuesta(response){
             
-        var modalRespuesta=$("#modalRespuesta");
+            var modalRespuesta=$("#modalRespuesta");
 
-        if(response && response.status=='success'){
-            $("#modalRespuestaTitulo").text('Direccionamiento exitoso');
-            $("#modalRespuestaTexto").html("<strong>La PQRSF ha sido asignada al funcionario" +response.nombreFuncionario+ ". </strong></br>Número de Ticket: "+response.numeroTicket);
-            modalRespuesta.removeClass('modal-danger');
-            modalRespuesta.addClass('modal-success');                   
-            $("#modalDireccionar").modal('hide');
-            modalRespuesta.modal('toggle');            
-            table.ajax.reload();                           
-        }   
-        else{
-                $("#modalRespuestaTitulo").text('Error');
-                $("#modalRespuestaTexto").text('Ha ocurrido un error mientras se registraba la PQRSF. Si el problema persiste, por favor comuníquese con la División de Tecnologías de la Información y las Comunicaciones de la Universidad del Cauca - Teléfono: 8209900 extensión 55 - Correo electrónico: contacto@unicauca.edu.co');
-                modalRespuesta.removeClass('modal-success');
-                modalRespuesta.addClass('modal-danger');
-                modalRespuesta.modal('toggle');
-        }               
-    }
+            if(response && response.status=='success'){
+                $("#modalRespuestaTitulo").text('Direccionamiento exitoso');
+                $("#modalRespuestaTexto").html("<strong>La PQRSF ha sido asignada al funcionario" +response.nombreFuncionario+ ". </strong></br>Número de Ticket: "+response.numeroTicket);
+                modalRespuesta.removeClass('modal-danger');
+                modalRespuesta.addClass('modal-success');                   
+                $("#modalDireccionar").modal('hide');
+                modalRespuesta.modal('toggle');            
+                table.ajax.reload();                           
+            }   
+            else{
+                    $("#modalRespuestaTitulo").text('Error');
+                    $("#modalRespuestaTexto").text('Ha ocurrido un error mientras se registraba la PQRSF. Si el problema persiste, por favor comuníquese con la División de Tecnologías de la Información y las Comunicaciones de la Universidad del Cauca - Teléfono: 8209900 extensión 55 - Correo electrónico: contacto@unicauca.edu.co');
+                    modalRespuesta.removeClass('modal-success');
+                    modalRespuesta.addClass('modal-danger');
+                    modalRespuesta.modal('toggle');
+            }               
+        }
+    });
     
     $.fn.dataTable.render.pqrsfTipo= function(){
         return function(data, type, row){

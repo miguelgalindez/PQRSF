@@ -48,10 +48,10 @@
             </span>
           </a>
           <ul class="treeview-menu">
+            <li><a href="/admin/consultas/todasPQRSF"><i class="fa fa-circle-o"></i>Todas las PQRSFs</a></li>
             <li><a href=""><i class="fa fa-circle-o"></i>PQRSFs vencidas</a></li>
             <li><a href=""><i class="fa fa-circle-o"></i>PQRSFs proximas a vencerse</a></li>
-            <li><a href=""><i class="fa fa-circle-o"></i>PQRSFs por estado</a></li>        
-            <li><a href=""><i class="fa fa-circle-o"></i>Todas las PQRSFs</a></li>
+            <li><a href=""><i class="fa fa-circle-o"></i>PQRSFs por estado</a></li>                    
           </ul>
         </li>
 

@@ -36,3 +36,9 @@ Route::get('/admin/pqrsfs/noRadicadas', 'PqrsfsController@obtnNoRadicadas');
 
 Route::get('/login', 'UsersController@googleLogin') ;
 Route::get('/logout', 'UsersController@logout');
+
+
+// Admin/Consultas/TodasPqrsfs
+
+Route::get('/admin/consultas/todasPQRSF', 'AdminController@mostrarTodasPqrsfs');
+Route::get('/admin/pqrsfs/todas', 'PqrsfsController@obtnTodas');

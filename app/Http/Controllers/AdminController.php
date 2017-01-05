@@ -34,6 +34,10 @@ class AdminController extends Controller
     	return view('admin.index');
     }
 
+    public function mostrarTodasPqrsfs(){
+    	return view('admin.consultas.todasPQRSF');
+    }
+
     public function obtnDatosRegistroPqrsf(){
     	$resp=array(
     		'tiposPersona' => Persona::obtnTiposPersona(),

@@ -1,3 +1,19 @@
+--------------------------------------------------------------------------------------------------------------
+
+			REQUERIMIENTOS
+
+	1. Crear trigger en la BD de osticketdb que actualice el estado de la pqrsf( de la base de datos PQRSF)
+	2. Que exista el usuario pqrsf en osticket (LDAP o en la tabla -- como sea)
+	3. Sincornizar los medios de recepcion entre PQRSF y osticket
+
+
+
+
+
+
+
+
+
 --------------------------------------------------------------------------------------------------------------------
 
 Para que no se lanzara la excepción que indicaba error al intentar validar las credenciales por la falta de contraseña Y LOGRAR QUE FUNCIONARA LA AUTENTICACIÓN CON GOOGLE, se modificó el archivo 
@@ -37,3 +53,7 @@ Ojo que la funcion obtnDatosUsuario del modelo Osticket tambien busque en la tab
 -------------------------------
 
 Modal direccionar debe poderse modificar la descripcion del servicio (PQRSF) para que se registre en osticket pero no modificar en la tabla pqrsfs
+
+-------------------------------
+
+Ojo con la hora del radicado: no deja escoger una hora superior de un dia anterior
