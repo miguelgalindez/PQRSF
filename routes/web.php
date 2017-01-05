@@ -42,3 +42,4 @@ Route::get('/logout', 'UsersController@logout');
 
 Route::get('/admin/consultas/todasPQRSF', 'AdminController@mostrarTodasPqrsfs');
 Route::get('/admin/pqrsfs/todas', 'PqrsfsController@obtnTodas');
+Route::get('/admin/pqrsfs/consultas/todasPQRSF/datosRestantes/{pqrsfCodigo}', 'PqrsfsController@obtnDatosRestantes');

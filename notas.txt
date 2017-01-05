@@ -57,3 +57,14 @@ Modal direccionar debe poderse modificar la descripcion del servicio (PQRSF) par
 -------------------------------
 
 Ojo con la hora del radicado: no deja escoger una hora superior de un dia anterior
+
+---------------------------------
+
+Falta registrar la fecha de vencimiento de la PQRSF cuando se RADIQUE LA PQRSF
+
+--------------------------------------------
+
+OJO. Para direccionar dejar la opcion de que se cree el ticket o se envie simplemente el correo
+
+
+---------------------------------------------

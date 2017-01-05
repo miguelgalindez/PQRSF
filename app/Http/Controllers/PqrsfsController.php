@@ -20,4 +20,8 @@ class PqrsfsController extends Controller
     	return response()->json(Pqrsf::obtnTodas());
     }
 
+    public function obtnDatosRestantes(Request $request, $pqrsfCodigo){    	
+    	return response()->json(Pqrsf::obtnDatosRestantes($pqrsfCodigo));
+    }
+
 }

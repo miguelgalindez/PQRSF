@@ -30,9 +30,15 @@ class Pqrsf extends Model
     }
 
     public static function obtnTodas(){
-        $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ticketId) FROM tickets WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, perNombres, perApellidos, pqrsfFechaCreacion FROM pqrsfs NATURAL JOIN personas";
+        $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ticketId) FROM tickets WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, perNombres, perApellidos, pqrsfFechaVencimiento FROM pqrsfs NATURAL JOIN personas";
 
         return DB::select($sql);
+    }
+
+    public static function obtnDatosRestantes($pqrsfCodigo){
+        $sql="SELECT pqrsfDescripcion, pqrsfFechaCreacion, pqrsfMedioRecepcion, pqrsfEstado, pqrsfDireccionada, pqrsfFechaCierre, perTipo, perTipoId, perId, perEmail, perDireccion, perTelefono, perCelular FROM pqrsfs NATURAL JOIN personas WHERE pqrsfCodigo='" . $pqrsfCodigo . "'";
+
+        return DB::select($sql);   
     }
 
     public static function obtnNoDireccionadas(){
