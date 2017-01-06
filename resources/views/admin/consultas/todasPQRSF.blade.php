@@ -170,7 +170,7 @@
 	            		<div class="col-lg-7 col-lg-offset-1">
 	            			<div class="row">
 	            				<h4>Descripcion de la Orden</h4>
-	            					<table border="0" cellpadding="4" cellspacing="20" width="100%">
+	            					<table id="tblTicket" border="0" cellpadding="4" cellspacing="20" width="100%">
 				            			<tbody>
 				            				<tr>
 				            					<th width="40%">Responsable</th>
@@ -193,6 +193,28 @@
 				            					<th width="40%">Servicio solicitado</th>
 				            					<td width="60%"><p align="justify" id="ordServicio"></p></td>
 				            				</tr>
+				            			</tbody>
+				            		</table>
+
+				            		<table id="tblCorreo" border="0" cellpadding="4" cellspacing="20" width="100%">
+				            			<tbody>
+				            				<tr>
+				            					<th width="40%">Destinatario</th>
+				            					<td width="60%"><p align="justify" id="ordDestinatario"></p></td>
+				            				</tr>				            				
+				            				<tr>
+				            					<th width="40%">Asunto</th>
+				            					<td width="60%"><p align="justify" id="ordAsunto"></p></td>
+				            				</tr>            				            		
+				            				<tr>
+				            					<th width="40%">Mensaje</th>
+				            					<td width="60%"><p align="justify" id="ordMensaje"></p></td>
+				            				</tr>
+				            				<tr>
+				            					<th width="40%">Fecha</th>
+				            					<td width="60%"><p align="justify" id="ordFecha"></p></td>
+				            				</tr>
+
 				            			</tbody>
 				            		</table>	
 	            			</div>
@@ -355,46 +377,72 @@
 	    	listaOrdenes.empty();
 	    	
 	    	var arr=datosOrdenes.datosTickets;
-	    	for (var i = 0, len = arr.length; i < len; i++){
-	    		listaOrdenes.append("<li class=\"list-group-item\"><span class=\"badge\">14</span>"+arr[i].idTicket+"</li>");
-	    	}	    
+	    	var numeroTickets=arr.length;
+	    	for (var i = 0; i < numeroTickets; i++){
+	    		listaOrdenes.append("<li class=\"list-group-item\"><span class=\"badge\">14</span><a id=\""+arr[i].idTicket+"\" href=\"#\" class=\"orden\">Ticket # "+arr[i].numeroTicket+"</a></li>");
+	    	}	    	
 	    	
 	    	arr=datosOrdenes.datosCorreos;
 	    	for (var i = 0, len = arr.length; i < len; i++){
-	    		listaOrdenes.append("<li class=\"list-group-item\"><span class=\"badge\">14</span>"+arr[i].corDestinatario+"</li>");
-	    	}
+	    		listaOrdenes.append("<li class=\"list-group-item\"><span class=\"badge\">14</span><a id=\""+arr[i].corId+"\" href=\"#\" class=\"orden\">"+arr[i].corDestinatario+"</a></li>");
+	    	}	
 
-	  		cargarDatosOrden('TICKET', datosOrdenes.datosTickets[0].idTicket);
+	    	if(numeroTickets>0){
+	    		cargarDatosOrden('TICKET', datosOrdenes.datosTickets[0].idTicket);	
+	    	}
+	    	else{
+	    		cargarDatosOrden('CORREO', datosOrdenes.datosCorreos[0].corId);		
+	    	}    	
 	    }
 
 		function cargarDatosOrden(ordTipo, ordId){
 			var orden, arr;
 			if(ordTipo=='TICKET'){
+				
 				arr=datosOrdenes.datosTickets;
 				for (var i = 0, len = arr.length; i < len; i++){
 					if(arr[i].idTicket == ordId){
 						orden=arr[i];
 						break;
 					}
-				}												
-				// TODO hacer visible la tabla de datos para tickets y ocultar la de correos 
+				}																
 				$("#ordResponsable").text(orden.responsable);
 				$("#ordDependencia").text(orden.dependencia);
 				$("#ordServicio").text(orden.servicio);
 				$("#ordUltimaRespuesta").text(orden.fechaUltimaRespuesta);
 				$("#ordFechaVencimiento").text(orden.fechaVencimiento);
+
+				$('#tblCorreo').hide();
+				$('#tblTicket').show();
 			}
 			else{
+				
 				arr=datosOrdenes.datosCorreos;
 				for (var i = 0, len = arr.length; i < len; i++){
 					if(arr[i].corId == ordId){
 						orden=arr[i];
 						break;
 					}
-				}					
-				// TODO hacer visible la tabla de datos para correos y ocultar la de tickets
+				}
+				$("#ordFecha").text(orden.corFecha);
+				$("#ordDestinatario").text(orden.corDestinatario);
+				$("#ordAsunto").text(orden.corAsunto);
+				$("#ordMensaje").text(orden.corMensaje);
+				
+				$('#tblTicket').hide();
+				$('#tblCorreo').show();
 			}
 		}
+
+		
+		$("#listaOrdenes").on("click", ".orden", function(event){			
+			if($(this).text().includes('Ticket')){
+				cargarDatosOrden("TICKET", $(this).attr('id'));				
+			}
+			else{
+				cargarDatosOrden("CORREO", $(this).attr('id'));	
+			}			
+		});
     });	
     
     $.fn.dataTable.render.accionesDisponibles=function(){

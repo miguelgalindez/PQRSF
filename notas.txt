@@ -72,4 +72,3 @@ OJO. Para direccionar dejar la opcion de que se cree el ticket o se envie simple
 		Modiciar tabla correos para que tenga un corId
 
 		Falta programar funcionalidad para ver datos de las ordenes por correo en Consultas/todasPQRSF ver ordenes
----------------------------------------------
