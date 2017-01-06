@@ -221,7 +221,7 @@
 				            		</table>	
 	            			</div>	            			            			
 	            		</div>
-	            		<div class="col-lg-12" id="divHistorial"></div>				
+	            		<div class="col-lg-12" id="divHistorial"></div>		            		
 	            	</div>
 	            	               
 	          </div>          

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Persona;
 use App\Pqrsf;
-use Auth;
 
 class AdminController extends Controller
 {
@@ -89,17 +88,5 @@ class AdminController extends Controller
 
 		return response()->json($response);
 		
-	}
-
-	public function radicarPQRSF(Request $request){
-
-		$response=Pqrsf::radicar(
-			$request->get('codigoPQRSF'),
-			$request->get('idRadicado'),
-			$request->get('fechaRadicado'),
-			Auth::user()->id
-		);		
-
-		return response()->json($response);
-	}
+	}	
 }

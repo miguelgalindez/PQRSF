@@ -46,6 +46,15 @@
                             <input type='text' class="form-control" id="fechaRadicado" name="fechaRadicado" />
                         </div>
                     </div>                                    
+                    
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="fechaVencimientoPQRSF">Vencimiento de la PQRSF</label> 
+                        <div class="col-sm-8">
+                            <input type='text' class="form-control" id="fechaVencimientoPQRSF" name="fechaVencimientoPQRSF" />
+                        </div>
+                    </div>
+
+
                 </form>
           </div>
           <div class="modal-footer">
@@ -118,9 +127,18 @@
 
         $('#fechaRadicado').datetimepicker({
             locale: 'es',
-            format: "D [de] MMMM [de] YYYY [     Hora:] hh:mm A",
+            //format: "D [de] MMMM [de] YYYY [     Hora:] hh:mm A",
+            format: "D [de] MMMM [de] YYYY",
             daysOfWeekDisabled: [0, 6],                                    
             maxDate: new Date(),
+            defaultDate: new Date()
+        });
+
+        $('#fechaVencimientoPQRSF').datetimepicker({
+            locale: 'es',
+            format: "D [de] MMMM [de] YYYY",
+            daysOfWeekDisabled: [0, 6],                                    
+            minDate: new Date(),
             defaultDate: new Date()
         });
 
@@ -147,7 +165,7 @@
             var datosFormulario=$('#formularioRadicarPQRSF').serialize();
             var request=$.ajax({
                 type: 'POST',
-                url: '/admin/radicarPQRSF',
+                url: '/admin/pqrsf/radicarPQRSF',
                 data: datosFormulario,
                 dataType: 'json' 
             });

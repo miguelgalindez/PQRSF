@@ -98,15 +98,19 @@ class Pqrsf extends Model
         }   	
     }
 
-    public static function radicar($codigoPQRSF, $idRadicado, $fechaRadicado, $usuarioPQRSF){
+    public static function radicar($codigoPQRSF, $idRadicado, $fechaRadicado, $fechaVencimientoPQRSF, $usuarioPQRSF){
 
         $partes=explode(' ', $fechaRadicado);        
-        $fecha=$partes[4] . "-" . Self::obtnnumeroMes($partes[2]) . "-" . (string)$partes[0];
-        
+        $fechaRadicado=$partes[4] . "-" . Self::obtnnumeroMes($partes[2]) . "-" . (string)$partes[0] . " 23:59:59";
+    /*      Para incluir la hora
         $partes=explode('Hora: ', $fechaRadicado);
         $hora24 = date("H:i", strtotime($partes[1]));
+        $fechaRadicado = $fechaRadicado . " " . $hora24;
+    */
 
-        $fecha = $fecha . " " . $hora24;
+        $partes=explode(' ', $fechaVencimientoPQRSF);
+        $fechaVencimientoPQRSF=$partes[4] . "-" . Self::obtnnumeroMes($partes[2]) . "-" . (string)$partes[0] . " 23:59:59";        
+
 
         $db=DB::connection('PQRSFdb');
 
@@ -116,13 +120,16 @@ class Pqrsf extends Model
             $db->table('radicados')
                 ->insert([
                     'radId' => $idRadicado,
-                    'radFecha' => $fecha,
+                    'radFecha' => $fechaRadicado,
                     'radUsuario' => $usuarioPQRSF
             ]);
 
             $db->table('pqrsfs')
                 ->where('pqrsfCodigo', $codigoPQRSF)
-                ->update(['radId' => $idRadicado]);
+                ->update([
+                    'radId' => $idRadicado,
+                    'pqrsfFechaVencimiento' => $fechaVencimientoPQRSF
+                ]);
 
             $db->commit(); 
             return array(

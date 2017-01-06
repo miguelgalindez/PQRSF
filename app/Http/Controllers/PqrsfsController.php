@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Osticket;
 use App\Pqrsf;
 use Log;
+use Auth;
 
 class PqrsfsController extends Controller
 {
@@ -24,6 +25,19 @@ class PqrsfsController extends Controller
 
     public function obtnDatosRestantes($pqrsfCodigo){    	
     	return response()->json(Pqrsf::obtnDatosRestantes($pqrsfCodigo));
+    }
+
+    public function radicarPQRSF(Request $request){
+
+        $response=Pqrsf::radicar(
+            $request->get('codigoPQRSF'),
+            $request->get('idRadicado'),
+            $request->get('fechaRadicado'),
+            $request->get('fechaVencimientoPQRSF'),
+            Auth::user()->id
+        );      
+
+        return response()->json($response);
     }
 
     public function obtnDetallesOrdenes($pqrsfCodigo){
