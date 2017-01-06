@@ -85,9 +85,7 @@
             				<tr>
             					<th width="40%">Fecha de Cierre</th>
             					<td width="60%"><p align="justify" id="pqrsfFechaCierre"></p></td>
-            				</tr>
-
-            				<input type="hidden" name="pqrsfDireccionada" value="{!! csrf_token() !!}">
+            				</tr>            			
 
             			</tbody>
             		</table>
@@ -158,15 +156,11 @@
         <div class="modal-dialog modal-lg">
 
 	        <!-- Modal content-->
-	        <div class="modal-content">
-	          <div class="modal-header">
-	            <button type="button" class="close" data-dismiss="modal">&times;</button>
-	            <h4 class="modal-title">Ordenes asignadas</h4>
-	          </div>
+	        <div class="modal-content">	          
 	            <div class="modal-body">		            
 	            	<div class="row">            		
 	            		<div class="col-lg-3">
-	            			<h4>Numero de Orden</h4>
+	            			<h4>Ordenes asignadas</h4>
 	            			<section class="sidebar">
 	            				<ul class="list-group">
 								  <li class="list-group-item">
@@ -176,8 +170,38 @@
 								</ul>	
 	            			</section>	            			
 	            		</div>
-	            		<div class="col-lg-8">
-	            			<h4>Descripcion de la Orden</h4>
+	            		<div class="col-lg-7 col-lg-offset-1">
+	            			<div class="row">
+	            				<h4>Descripcion de la Orden</h4>
+	            					<table border="0" cellpadding="4" cellspacing="20" width="100%">
+				            			<tbody>
+				            				<tr>
+				            					<th width="40%">Responsable</th>
+				            					<td width="60%"><p align="justify" id="ordResponsable"></p></td>
+				            				</tr>				            				
+				            				<tr>
+				            					<th width="40%">Dependencia</th>
+				            					<td width="60%"><p align="justify" id="ordDependencia"></p></td>
+				            				</tr>            				            		
+				            				<tr>
+				            					<th width="40%">Fecha de vencimiento</th>
+				            					<td width="60%"><p align="justify" id="ordFechaVencimiento"></p></td>
+				            				</tr>
+				            				<tr>
+				            					<th width="40%">Ultima respuesta</th>
+				            					<td width="60%"><p align="justify" id="ordUltimaRespuesta"></p></td>
+				            				</tr>
+
+				            				<tr>
+				            					<th width="40%">Servicio solicitado</th>
+				            					<td width="60%"><p align="justify" id="ordServicio"></p></td>
+				            				</tr>
+				            			</tbody>
+				            		</table>	
+	            			</div>
+	            			<div class="row">
+	            				<h4>Historial de la Orden</h4>	
+	            			</div>
 	            		</div>				
 	            	</div>
 	            	               
@@ -234,10 +258,10 @@
     <script type="text/javascript">
 
     $(document).ready(function(){
-        
+    	var ordenes;        
         var table=$('#pqrsfsTable').DataTable({
             "language": {
-                "emptyTable": "No hay PQRSFs pendientes por direccionar",
+                "emptyTable": "Aún no se han registrado PQRSFs",
                 "lengthMenu": "Mostrar _MENU_ PQRSFs por página",
                 "info": "Página _PAGE_ de _PAGES_",
                 "infoEmpty": "",                
@@ -275,29 +299,7 @@
             $.get( "/admin/pqrsfs/consultas/todasPQRSF/datosRestantes/"+data.codigo)
 				.done(function(response) {					
 					response=response[0];					
-					$("#pqrsfCodigo").text(data.codigo);
-		            $("#pqrsfTipo").text(renderPqrsfTipo(data.pqrsfTipo));
-		            $("#pqrsfAsunto").text(data.pqrsfAsunto);
-		            $("#pqrsfFechaVencimiento").text(data.pqrsfFechaVencimiento);
-		            $("#pqrsfRadicado").text(data.radId);
-		            $("#pqrsfDescripcion").text(response.pqrsfDescripcion);
-		            $("#pqrsfFechaCreacion").text(response.pqrsfFechaCreacion);
-		            $("#pqrsfMedioRecepcion").text(response.pqrsfMedioRecepcion);
-		            $("#pqrsfEstado").text(renderPqrsfEstado(response.pqrsfEstado));
-		            $("#pqrsfDireccionada").text(response.pqrsfDireccionada);
-		            $("#pqrsfFechaCierre").text(response.pqrsfFechaCierre);		                       	      
-		            
-		            if(data.numeroOrdenes=="0"){
-		            	$("#pqrsfOrdenes").html('<p align="justify">No registra</p></td>');
-		            }
-		            else{
-		            	$("#pqrsfOrdenes").html('<button class="btn-xs btn-success" id="btnVerOrdenes">Ver ordenes</button>');
-		            	$("#btnVerOrdenes").on('click', function(){
-				        	$("#modalVerOrdenes").modal('toggle');
-				        });		            	
-		            }
-
-		            $("#perNombres").text(data.perNombres);
+					$("#perNombres").text(data.perNombres);
 		            $("#perApellidos").text(data.perApellidos);
 		            $("#perTipo").text(response.perTipo);
 		            $("#perId").text(response.perId);
@@ -306,6 +308,67 @@
 		            $("#perDireccion").text(response.perDireccion);
 		            $("#perTelefono").text(response.perTelefono);
 		            $("#perCelular").text(response.perCelular);
+
+					$("#pqrsfCodigo").text(data.codigo);
+		            $("#pqrsfTipo").text(renderPqrsfTipo(data.pqrsfTipo));
+		            $("#pqrsfAsunto").text(data.pqrsfAsunto);
+		            $("#pqrsfFechaVencimiento").text(data.pqrsfFechaVencimiento);
+		            $("#pqrsfRadicado").text(data.radId);
+		            $("#pqrsfDescripcion").text(response.pqrsfDescripcion);
+		            $("#pqrsfFechaCreacion").text(response.pqrsfFechaCreacion);
+		            $("#pqrsfMedioRecepcion").text(response.pqrsfMedioRecepcion);
+		            $("#pqrsfEstado").text(renderPqrsfEstado(response.pqrsfEstado));		            
+		            $("#pqrsfFechaCierre").text(response.pqrsfFechaCierre);		                       	      
+		            
+		            if(data.numeroOrdenes=="0"){
+		            	$("#pqrsfOrdenes").html('<p align="justify">No registra</p></td>');
+		            }
+		            else{
+		            	$("#pqrsfOrdenes").html('<button class="btn-xs btn-success" id="btnVerOrdenes">Ver ordenes</button>');
+
+		            	$("#btnVerOrdenes").on('click', function(){
+		            		ordenes=[];
+
+		            		// Obteniendo los ids de las ordenes asociadas a la pqrsf con codigo determinado
+		            		$.get( "/admin/ordenes/pqrsf/"+data.codigo)
+								.done(function(response){									
+
+									response.forEach(function(orden, index, array){	
+										
+										// Obteniendo datos de cada orden
+										if(orden.ordTipo=="TICKET"){
+											$.get( "/admin/ticket/"+orden.ordId)
+												.done(function(ticket){
+													ticket=ticket[0];
+													ordenes.push({
+														"ordTipo" : "TICKET",
+														"ordNumeroTicket" : ticket.numeroTicket,
+														"ordDependencia" : ticket.dependencia,
+														"ordResponsable" : ticket.responsable,
+														"ordServicio" : ticket.servicio,
+														"ordUltimaRespuesta" : ticket.fechaUltimaRespuesta,
+														"ordFechaVencimiento" : ticket.fechaVencimiento
+													});
+												})
+												.fail(function(){
+											    	cargarModalRespuesta(null);
+											 	});
+										}
+										else{
+											// TODO Orden por Correo
+										}
+										
+									});
+									console.log(ordenes);
+								})
+								.fail(function(){
+							    	cargarModalRespuesta(null);
+							 	});	
+
+				        	$("#modalVerOrdenes").modal('toggle');
+				        });		            	
+		            }
+		            
 
 		            $("#modalVerPQRSF").modal('toggle');		
 				})

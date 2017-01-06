@@ -5,6 +5,8 @@
 	1. Crear trigger en la BD de osticketdb que actualice el estado de la pqrsf( de la base de datos PQRSF)
 	2. Que exista el usuario pqrsf en osticket (LDAP o en la tabla -- como sea)
 	3. Sincornizar los medios de recepcion entre PQRSF y osticket
+	4. Que exista tema de ayuda PQRSF
+	5. Modificar el archivo de configuracion de la aplicacion con la direccion de las dos BD (osticketdb y PQRSF)
 
 
 
@@ -65,6 +67,9 @@ Falta registrar la fecha de vencimiento de la PQRSF cuando se RADIQUE LA PQRSF
 --------------------------------------------
 
 OJO. Para direccionar dejar la opcion de que se cree el ticket o se envie simplemente el correo
+	
+		Modificar tabla ordenes donde ordId apunte a un id de correo
+		Modiciar tabla correos para que tenga un corId
 
-
+		Falta programar funcionalidad para ver datos de las ordenes por correo en Consultas/todasPQRSF ver ordenes
 ---------------------------------------------

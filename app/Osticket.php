@@ -177,7 +177,8 @@ class Osticket extends Model
                     'created' => $now,
                     'updated' => date('Y-m-d H:i:s', 0)
             ]);
-
+            
+            /*
             $db->table('ost__search')
                 ->insert([
                     'object_type' => 'H',
@@ -194,10 +195,12 @@ class Osticket extends Model
                     'title' => str_pad($numeroTicket, $longNumeroTicket, "0", STR_PAD_LEFT) . ' ' . $asunto,
                     'content' => $asunto,
             ]);                        
+            */
 
-            DB::table('tickets')
+            DB::table('ordenes')
                 ->insert([
-                    'ticketId' => $idTicket,
+                    'ordId' => $idTicket,
+                    'ordTipo' => 'TICKET',
                     'pqrsfCodigo' => $codigoPQRSF
             ]);
 
@@ -221,6 +224,15 @@ class Osticket extends Model
                 'status' => 'fail'
             );   
         }
+
+    }
+
+    public static function obtnDatosTicket($idTicket){
+        $db=DB::connection('osticketdb');
+
+        $sql="SELECT ticket.number AS numeroTicket, CONCAT(staff.firstname, ' ', staff.lastname) AS responsable, dept_name AS dependencia, lastresponse AS fechaUltimaRespuesta, duedate AS fechaVencimiento, thread.body AS servicio FROM ost_ticket ticket JOIN ost_staff staff ON ticket.staff_id=staff.staff_id JOIN ost_department department ON staff.dept_id=department.dept_id JOIN ost_ticket_thread thread ON (ticket.ticket_id=thread.ticket_id AND thread.thread_type='M') WHERE ticket.ticket_id=" . $idTicket;
+        
+        return $db->select($sql);
 
     }
 
