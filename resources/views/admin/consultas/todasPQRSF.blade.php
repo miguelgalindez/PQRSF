@@ -30,8 +30,7 @@
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Detalles de la PQRSF</h4>
+            <button type="button" class="close" data-dismiss="modal">X</button>            
           </div>
             <div class="modal-body">	            
             	<div class="row">            		
@@ -152,17 +151,22 @@
 
 <!-- Modal Ver Ordenes-->
 
-    <div id="modalVerOrdenes" class="modal fade" role="dialog">
+    <div id="modalVerOrdenes" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-lg">
 
 	        <!-- Modal content-->
-	        <div class="modal-content">	          
+	        <div class="modal-content">	
+		        <div class="modal-header">
+	            	<button type="button" class="close" data-dismiss="modal">X</button>            
+	          	</div>          
 	            <div class="modal-body">		            
 	            	<div class="row">            		
 	            		<div class="col-lg-3">
 	            			<h4>Ordenes asignadas</h4>
 	            			<div class="list-group" id="listaOrdenes">
-								  <!-- <a href="#" class="list-group-item active">Activo</a>  -->
+	            					<!-- TODO
+	            						Que la lista pueda ser scrollable, colocar iconos de correo y de ticket y que ademas se marque el que esta activo
+								  	 <a href="#" class="list-group-item active">Activo</a>  -->
 							</div>	            				            	
 	            		</div>
 	            		<div class="col-lg-7 col-lg-offset-1">
@@ -233,8 +237,7 @@
 		  <div class="modal-dialog">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">x</span></button>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">X</button>
 		        <h4 id="modalRespuestaTitulo" class="modal-title"></h4>
 		      </div>
 		      <div class="modal-body">
@@ -256,7 +259,7 @@
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">x</span></button>
-		        <h4 class="modal-title">Descripción</h4>
+		        <h4 class="modal-title">Descripción de la PQRSF</h4>
 		      </div>
 		      <div class="modal-body">
 		        <p id="pqrsfDescripcion"></p>
@@ -307,6 +310,11 @@
                 }                            
             ]
         });
+        
+        $('#pqrsfsTable tbody').on('click', '.linkVerOrdenes', function () {        	
+        	var pqrsf = table.row( $(this).parents('tr') ).data();
+        	abrirModalVerOrdenes(pqrsf.codigo);
+        });
 
         $('#pqrsfsTable tbody').on('click', '.btn-default', function () {
             var pqrsf = table.row( $(this).parents('tr') ).data();
@@ -342,33 +350,33 @@
 		            	$("#pqrsfOrdenes").html('<button class="btn-xs btn-success" id="btnVerOrdenes">Ver ordenes</button>');
 
 		            	$("#btnVerOrdenes").on('click', function(){
-		            		
-		            		// Obteniendo los datos de las ordenes
-		            		$.get("/admin/ordenes/"+pqrsf.codigo+"/detalles")
-		            			.done(function(response){
-		            				datosOrdenes=response;		            				
-		            				inicializarModalVerOrdenes();		            				
-		            			})
-		            			.fail(function(){
-							    	cargarModalRespuesta(null);
-							 	});
-							$("#modalVerOrdenes").modal('toggle');		            		
-				        });		            	
-		            }
-		            
-
+		            		abrirModalVerOrdenes(pqrsf.codigo);		            		
+		            	});
+		            }		           
 		            $("#modalVerPQRSF").modal('toggle');		
 				})
 				.fail(function() {
 			    	cargarModalRespuesta(null);
 			 	});							           
-        });
-        
-        $("#btnVerDescripcion").on('click', function(){
-        	$("#modalVerDescripcion").modal('toggle');
-        });
+        });               
+
+        function abrirModalVerOrdenes(codigoPQRSF){
+        			         	
+			// Obteniendo los datos de las ordenes
+			$.get("/admin/ordenes/"+codigoPQRSF+"/detalles")
+				.done(function(response){
+					datosOrdenes=response;		            				
+					inicializarModalVerOrdenes();
+					$("#modalVerOrdenes").modal('toggle');
+				})
+				.fail(function(){
+			    	cargarModalRespuesta(null);
+			 	});        	
+        }
 
         function inicializarModalVerOrdenes(){
+	    	
+	    	// Cargando el sidebar
 	    	var listaOrdenes=$("#listaOrdenes");
 	    	listaOrdenes.empty();
 	    	
@@ -376,15 +384,14 @@
 	    	var numeroTickets=arr.length;
 	    	for (var i = 0; i < numeroTickets; i++){
 	    		listaOrdenes.append("<a id=\""+arr[i].idTicket+"\" href=\"#\" class=\"list-group-item orden\">Ticket # "+arr[i].numeroTicket+"</a>");
-	    	}	    	
-	    	
-	    	//  <a href="#" class="list-group-item active">Activo</a> 
+	    	}	    		    		
 
 	    	arr=datosOrdenes.datosCorreos;
 	    	for (var i = 0, len = arr.length; i < len; i++){
 	    		listaOrdenes.append("<a id=\""+arr[i].corId+"\" href=\"#\" class=\"list-group-item orden\">"+arr[i].corDestinatario+"</a>");
 	    	}	
 
+	    	// Cargando los datos de la orden
 	    	if(numeroTickets>0){
 	    		cargarDatosOrden('TICKET', datosOrdenes.datosTickets[0].idTicket);	
 	    	}
@@ -413,8 +420,7 @@
 
 				$('#tblCorreo').hide();
 				$('#tblTicket').show();
-				$('#tituloHistorial').show();
-				console.log(datosOrdenes);
+				$('#tituloHistorial').show();				
 
 				// Cargando Historial del Ticket
 
@@ -461,6 +467,10 @@
 				cargarDatosOrden("CORREO", $(this).attr('id'));	
 			}			
 		});
+
+		$("#btnVerDescripcion").on('click', function(){
+        	$("#modalVerDescripcion").modal('toggle');
+        });
     });		
 
     $.fn.dataTable.render.accionesDisponibles=function(){
@@ -478,9 +488,9 @@
     			case "0":
     				return '';
     			case "1":
-    				return '<a>'+data.numeroOrdenes+' orden</a>';
+    				return '<a class="linkVerOrdenes">'+data.numeroOrdenes+' orden</a>';
     			default:
-    				return '<a>'+data.numeroOrdenes+' Ordenes</a>';
+    				return '<a class="linkVerOrdenes">'+data.numeroOrdenes+' ordenes</a>';
     		}    		    		
     	}
     }
