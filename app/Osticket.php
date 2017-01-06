@@ -170,7 +170,7 @@ class Osticket extends Model
                     'thread_type' => 'N',
                     'poster' => $nombreFuncionarioPQRSF,
                     'source' => '',
-                    'title' => 'Ticket asignado',
+                    'title' => 'Ticket asignado a ' . $nombreFuncionario,
                     'body' => 'El agente ' . $nombreFuncionarioPQRSF . ' (PQRSF) acaba de asignar el Ticket a: ' .  $nombreFuncionario,
                     'format' => 'html',
                     'ip_address' => $ipFuncionarioPQRSF,
@@ -227,13 +227,19 @@ class Osticket extends Model
 
     }
 
-    public static function obtnDatosTicket($idTicket){
+    public static function obtnDatosTickets($idsTickets){
         $db=DB::connection('osticketdb');
 
-        $sql="SELECT ticket.number AS numeroTicket, CONCAT(staff.firstname, ' ', staff.lastname) AS responsable, dept_name AS dependencia, lastresponse AS fechaUltimaRespuesta, duedate AS fechaVencimiento, thread.body AS servicio FROM ost_ticket ticket JOIN ost_staff staff ON ticket.staff_id=staff.staff_id JOIN ost_department department ON staff.dept_id=department.dept_id JOIN ost_ticket_thread thread ON (ticket.ticket_id=thread.ticket_id AND thread.thread_type='M') WHERE ticket.ticket_id=" . $idTicket;
+        $sql="SELECT ticket.ticket_id AS idTicket, ticket.number AS numeroTicket, CONCAT(staff.firstname, ' ', staff.lastname) AS responsable, dept_name AS dependencia, lastresponse AS fechaUltimaRespuesta, duedate AS fechaVencimiento, thread.body AS servicio FROM ost_ticket ticket JOIN ost_staff staff ON ticket.staff_id=staff.staff_id JOIN ost_department department ON staff.dept_id=department.dept_id JOIN ost_ticket_thread thread ON (ticket.ticket_id=thread.ticket_id AND thread.thread_type='M') WHERE ticket.ticket_id IN (" . $idsTickets .") ORDER BY ticket.ticket_id;";
         
         return $db->select($sql);
+    }
 
+    public static function obtnHistorialTickets($idsTickets){
+        $db=DB::connection('osticketdb');
+        $sql="SELECT ticket_id AS idTicket, thread_type AS tipo, title AS titulo, body AS mensaje, created AS fecha, poster AS autor FROM `ost_ticket_thread` WHERE ticket_id IN (" . $idsTickets . ") AND thread_type!='M' ORDER BY ticket_id";
+
+        return $db->select($sql);        
     }
 
     public static function obtnTodosFuncionarios(){    	

@@ -162,11 +162,8 @@
 	            		<div class="col-lg-3">
 	            			<h4>Ordenes asignadas</h4>
 	            			<section class="sidebar">
-	            				<ul class="list-group">
-								  <li class="list-group-item">
-								    <span class="badge">14</span>
-								    Cras justo odio
-								  </li>
+	            				<ul class="list-group" id="listaOrdenes">
+								  
 								</ul>	
 	            			</section>	            			
 	            		</div>
@@ -258,7 +255,7 @@
     <script type="text/javascript">
 
     $(document).ready(function(){
-    	var ordenes;        
+    	
         var table=$('#pqrsfsTable').DataTable({
             "language": {
                 "emptyTable": "Aún no se han registrado PQRSFs",
@@ -294,13 +291,13 @@
         });
 
         $('#pqrsfsTable tbody').on('click', '.btn-default', function () {
-            var data = table.row( $(this).parents('tr') ).data();
+            var pqrsf = table.row( $(this).parents('tr') ).data();
             
-            $.get( "/admin/pqrsfs/consultas/todasPQRSF/datosRestantes/"+data.codigo)
+            $.get( "/admin/pqrsfs/consultas/todasPQRSF/datosRestantes/"+pqrsf.codigo)
 				.done(function(response) {					
 					response=response[0];					
-					$("#perNombres").text(data.perNombres);
-		            $("#perApellidos").text(data.perApellidos);
+					$("#perNombres").text(pqrsf.perNombres);
+		            $("#perApellidos").text(pqrsf.perApellidos);
 		            $("#perTipo").text(response.perTipo);
 		            $("#perId").text(response.perId);
 		            $("#perTipoId").text(response.perTipoId);
@@ -309,45 +306,58 @@
 		            $("#perTelefono").text(response.perTelefono);
 		            $("#perCelular").text(response.perCelular);
 
-					$("#pqrsfCodigo").text(data.codigo);
-		            $("#pqrsfTipo").text(renderPqrsfTipo(data.pqrsfTipo));
-		            $("#pqrsfAsunto").text(data.pqrsfAsunto);
-		            $("#pqrsfFechaVencimiento").text(data.pqrsfFechaVencimiento);
-		            $("#pqrsfRadicado").text(data.radId);
+					$("#pqrsfCodigo").text(pqrsf.codigo);
+		            $("#pqrsfTipo").text(renderPqrsfTipo(pqrsf.pqrsfTipo));
+		            $("#pqrsfAsunto").text(pqrsf.pqrsfAsunto);
+		            $("#pqrsfFechaVencimiento").text(pqrsf.pqrsfFechaVencimiento);
+		            $("#pqrsfRadicado").text(pqrsf.radId);
 		            $("#pqrsfDescripcion").text(response.pqrsfDescripcion);
 		            $("#pqrsfFechaCreacion").text(response.pqrsfFechaCreacion);
 		            $("#pqrsfMedioRecepcion").text(response.pqrsfMedioRecepcion);
 		            $("#pqrsfEstado").text(renderPqrsfEstado(response.pqrsfEstado));		            
 		            $("#pqrsfFechaCierre").text(response.pqrsfFechaCierre);		                       	      
 		            
-		            if(data.numeroOrdenes=="0"){
+		            if(pqrsf.numeroOrdenes=="0"){
 		            	$("#pqrsfOrdenes").html('<p align="justify">No registra</p></td>');
 		            }
 		            else{
 		            	$("#pqrsfOrdenes").html('<button class="btn-xs btn-success" id="btnVerOrdenes">Ver ordenes</button>');
 
 		            	$("#btnVerOrdenes").on('click', function(){
-		            		ordenes=[];
+		            		
+		            		// Obteniendo los detalles de las ordenes
 
+		            		$.get("/admin/ordenes/"+pqrsf.codigo+"/detalles")
+		            			.done(function(response){
+		            				console.log(response);
+		            			})
+		            			.fail(function(){
+							    	cargarModalRespuesta(null);
+							 	});
+
+							$("#modalVerOrdenes").modal('toggle');
+
+		            		// Obteniendo el historial de las ordenes
+
+		            		/*
 		            		// Obteniendo los ids de las ordenes asociadas a la pqrsf con codigo determinado
 		            		$.get( "/admin/ordenes/pqrsf/"+data.codigo)
-								.done(function(response){									
-
+								.done(function(response){															
 									response.forEach(function(orden, index, array){	
-										
+										console.log(response);
 										// Obteniendo datos de cada orden
 										if(orden.ordTipo=="TICKET"){
 											$.get( "/admin/ticket/"+orden.ordId)
 												.done(function(ticket){
 													ticket=ticket[0];
-													ordenes.push({
-														"ordTipo" : "TICKET",
-														"ordNumeroTicket" : ticket.numeroTicket,
-														"ordDependencia" : ticket.dependencia,
-														"ordResponsable" : ticket.responsable,
-														"ordServicio" : ticket.servicio,
-														"ordUltimaRespuesta" : ticket.fechaUltimaRespuesta,
-														"ordFechaVencimiento" : ticket.fechaVencimiento
+													ordenes.push=new Object({
+														ordTipo : "TICKET",
+														ordNumeroTicket : ticket.numeroTicket,
+														ordDependencia : ticket.dependencia,
+														ordResponsable : ticket.responsable,
+														ordServicio : ticket.servicio,
+														ordUltimaRespuesta : ticket.fechaUltimaRespuesta,
+														ordFechaVencimiento : ticket.fechaVencimiento
 													});
 												})
 												.fail(function(){
@@ -359,13 +369,30 @@
 										}
 										
 									});
-									console.log(ordenes);
+									console.log(ordenes[0]);
+									//var listaOrdenes=$("#listaOrdenes");									
+									$.each( ordenes, function( key, value ) {
+									  	alert( key.ordTipo + ": " + value.ordTipo );
+									  	
+									});
+									/*
+									ordenes.forEach(function(orden, index, array){
+										console.log(orden);
+										if(orden.ordTipo=="TICKET"){
+											listaOrdenes.append("<li class=\"list-group-item\"><span class=\"badge\">14</span>"+orden.ordNumeroTicket+"</li>");
+										}
+										else{
+											// TODO orden de tipo correo
+										}	
+									});
+
+									$("#modalVerOrdenes").modal('toggle');
+
 								})
 								.fail(function(){
 							    	cargarModalRespuesta(null);
-							 	});	
-
-				        	$("#modalVerOrdenes").modal('toggle');
+							 	});
+							 */					        
 				        });		            	
 		            }
 		            
@@ -379,8 +406,8 @@
         
         $("#btnVerDescripcion").on('click', function(){
         	$("#modalVerDescripcion").modal('toggle');
-        });        
-    });
+        });              
+    });	
     
     $.fn.dataTable.render.accionesDisponibles=function(){
     	return function(data, type, row){    	

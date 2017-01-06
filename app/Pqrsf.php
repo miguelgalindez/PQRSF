@@ -41,9 +41,9 @@ class Pqrsf extends Model
         return DB::select($sql);   
     }
 
-    public static function obtnIdOrdenes($pqrsfCodigo){
+    public static function obtnIdsOrdenes($pqrsfCodigo){
         $sql="SELECT ordId, ordTipo FROM ordenes WHERE pqrsfCodigo='" . $pqrsfCodigo . "'";
-        return DB::select($sql);   
+        return DB::select($sql);        
     }    
 
     public static function obtnNoDireccionadas(){
