@@ -237,7 +237,7 @@ class Osticket extends Model
 
     public static function obtnHistorialTickets($idsTickets){
         $db=DB::connection('osticketdb');
-        $sql="SELECT ticket_id AS idTicket, thread_type AS tipo, title AS titulo, body AS mensaje, created AS fecha, poster AS autor FROM `ost_ticket_thread` WHERE ticket_id IN (" . $idsTickets . ") AND thread_type!='M' ORDER BY ticket_id";
+        $sql="SELECT ticket_id AS idTicket, thread_type AS tipo, title AS titulo, body AS mensaje, created AS fecha, poster AS autor FROM `ost_ticket_thread` WHERE ticket_id IN (" . $idsTickets . ") AND thread_type!='M' ORDER BY ticket_id ASC, created DESC";
 
         return $db->select($sql);        
     }

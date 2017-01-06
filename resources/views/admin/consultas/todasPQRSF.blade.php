@@ -161,11 +161,9 @@
 	            	<div class="row">            		
 	            		<div class="col-lg-3">
 	            			<h4>Ordenes asignadas</h4>
-	            			<section class="sidebar">
-	            				<ul class="list-group" id="listaOrdenes">
-								  
-								</ul>	
-	            			</section>	            			
+	            			<div class="list-group" id="listaOrdenes">
+								  <!-- <a href="#" class="list-group-item active">Activo</a>  -->
+							</div>	            				            	
 	            		</div>
 	            		<div class="col-lg-7 col-lg-offset-1">
 	            			<div class="row">
@@ -217,11 +215,9 @@
 
 				            			</tbody>
 				            		</table>	
-	            			</div>
-	            			<div class="row">
-	            				<h4>Historial de la Orden</h4>	
-	            			</div>
-	            		</div>				
+	            			</div>	            			            			
+	            		</div>
+	            		<div class="col-lg-12" id="divHistorial"></div>				
 	            	</div>
 	            	               
 	          </div>          
@@ -379,12 +375,14 @@
 	    	var arr=datosOrdenes.datosTickets;
 	    	var numeroTickets=arr.length;
 	    	for (var i = 0; i < numeroTickets; i++){
-	    		listaOrdenes.append("<li class=\"list-group-item\"><span class=\"badge\">14</span><a id=\""+arr[i].idTicket+"\" href=\"#\" class=\"orden\">Ticket # "+arr[i].numeroTicket+"</a></li>");
+	    		listaOrdenes.append("<a id=\""+arr[i].idTicket+"\" href=\"#\" class=\"list-group-item orden\">Ticket # "+arr[i].numeroTicket+"</a>");
 	    	}	    	
 	    	
+	    	//  <a href="#" class="list-group-item active">Activo</a> 
+
 	    	arr=datosOrdenes.datosCorreos;
 	    	for (var i = 0, len = arr.length; i < len; i++){
-	    		listaOrdenes.append("<li class=\"list-group-item\"><span class=\"badge\">14</span><a id=\""+arr[i].corId+"\" href=\"#\" class=\"orden\">"+arr[i].corDestinatario+"</a></li>");
+	    		listaOrdenes.append("<a id=\""+arr[i].corId+"\" href=\"#\" class=\"list-group-item orden\">"+arr[i].corDestinatario+"</a>");
 	    	}	
 
 	    	if(numeroTickets>0){
@@ -397,6 +395,7 @@
 
 		function cargarDatosOrden(ordTipo, ordId){
 			var orden, arr;
+			var divHistorial=$("#divHistorial");
 			if(ordTipo=='TICKET'){
 				
 				arr=datosOrdenes.datosTickets;
@@ -414,6 +413,24 @@
 
 				$('#tblCorreo').hide();
 				$('#tblTicket').show();
+				$('#tituloHistorial').show();
+				console.log(datosOrdenes);
+
+				// Cargando Historial del Ticket
+
+				var historial=datosOrdenes.historialTickets;
+				var estilo;
+				divHistorial.empty();
+				divHistorial.append("<h4>Historial de la Orden</h4>");
+				for(var i=0, len=historial.length; i<len; i++){
+					if(historial[i].tipo=="R"){
+						estilo="panel panel-success";
+					}
+					else{
+						estilo="panel panel-primary";
+					}
+					divHistorial.append("<div class=\""+estilo+"\"><div class=\"panel-heading\"><span class=\"pull-left\">Fecha: "+historial[i].fecha+"</span><span class=\"pull-right\">Autor: "+historial[i].autor+"</span><div class=\"clearfix\"></div>Novedad: "+historial[i].titulo+"</div><div class=\"panel-body\">"+historial[i].mensaje+"</div></div>");
+				}
 			}
 			else{
 				
@@ -430,6 +447,7 @@
 				$("#ordMensaje").text(orden.corMensaje);
 				
 				$('#tblTicket').hide();
+				divHistorial.empty();
 				$('#tblCorreo').show();
 			}
 		}
@@ -443,8 +461,8 @@
 				cargarDatosOrden("CORREO", $(this).attr('id'));	
 			}			
 		});
-    });	
-    
+    });		
+
     $.fn.dataTable.render.accionesDisponibles=function(){
     	return function(data, type, row){    	
     		if(!data.radId){
