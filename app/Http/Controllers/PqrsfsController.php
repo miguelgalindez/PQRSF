@@ -49,30 +49,32 @@ class PqrsfsController extends Controller
     // --- TODO solicitudes tipo CORREO
 
         $correoA=[
-            'idCorreo' => 1,
-            'destinatario' => 'foo@bar.co',
-            'asunto' => 'foo',
-            'mensaje' => 'foo and bar',
+            'corId' => 1,
+            'corDestinatario' => 'foo@bar.co',
+            'corAsunto' => 'foo',
+            'corMensaje' => 'foo and bar',
+            'corFecha' => 'fecha Foo',
         ];
 
         $correoB=[
-            'idCorreo' => 2,
-            'destinatario' => 'bar@bar.co',
-            'asunto' => 'bar',
-            'mensaje' => 'bar and bar',
+            'corId' => 2,
+            'corDestinatario' => 'bar@bar.co',
+            'corAsunto' => 'bar',
+            'corMensaje' => 'bar and bar',
+            'corFecha' => 'fecha Foo',
         ];
 
         $datosCorreos=array((object)$correoA, (object)$correoB);        
 
     // ---FIN  TODO solicitudes tipo CORREO
 
-    	$detallesOrdenes=[
+    	$datosOrdenes=[
             'datosCorreos' => $datosCorreos,
             'datosTickets' => $datosTickets,
             'historialTickets' => $historialTickets,
         ];
 
-        return response()->json($detallesOrdenes);
+        return response()->json($datosOrdenes);
     }    
 
 }

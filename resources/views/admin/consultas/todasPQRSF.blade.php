@@ -255,7 +255,7 @@
     <script type="text/javascript">
 
     $(document).ready(function(){
-    	
+    	var datosOrdenes;    	
         var table=$('#pqrsfsTable').DataTable({
             "language": {
                 "emptyTable": "Aún no se han registrado PQRSFs",
@@ -325,74 +325,16 @@
 
 		            	$("#btnVerOrdenes").on('click', function(){
 		            		
-		            		// Obteniendo los detalles de las ordenes
-
+		            		// Obteniendo los datos de las ordenes
 		            		$.get("/admin/ordenes/"+pqrsf.codigo+"/detalles")
 		            			.done(function(response){
-		            				console.log(response);
+		            				datosOrdenes=response;		            				
+		            				inicializarModalVerOrdenes();		            				
 		            			})
 		            			.fail(function(){
 							    	cargarModalRespuesta(null);
 							 	});
-
-							$("#modalVerOrdenes").modal('toggle');
-
-		            		// Obteniendo el historial de las ordenes
-
-		            		/*
-		            		// Obteniendo los ids de las ordenes asociadas a la pqrsf con codigo determinado
-		            		$.get( "/admin/ordenes/pqrsf/"+data.codigo)
-								.done(function(response){															
-									response.forEach(function(orden, index, array){	
-										console.log(response);
-										// Obteniendo datos de cada orden
-										if(orden.ordTipo=="TICKET"){
-											$.get( "/admin/ticket/"+orden.ordId)
-												.done(function(ticket){
-													ticket=ticket[0];
-													ordenes.push=new Object({
-														ordTipo : "TICKET",
-														ordNumeroTicket : ticket.numeroTicket,
-														ordDependencia : ticket.dependencia,
-														ordResponsable : ticket.responsable,
-														ordServicio : ticket.servicio,
-														ordUltimaRespuesta : ticket.fechaUltimaRespuesta,
-														ordFechaVencimiento : ticket.fechaVencimiento
-													});
-												})
-												.fail(function(){
-											    	cargarModalRespuesta(null);
-											 	});
-										}
-										else{
-											// TODO Orden por Correo
-										}
-										
-									});
-									console.log(ordenes[0]);
-									//var listaOrdenes=$("#listaOrdenes");									
-									$.each( ordenes, function( key, value ) {
-									  	alert( key.ordTipo + ": " + value.ordTipo );
-									  	
-									});
-									/*
-									ordenes.forEach(function(orden, index, array){
-										console.log(orden);
-										if(orden.ordTipo=="TICKET"){
-											listaOrdenes.append("<li class=\"list-group-item\"><span class=\"badge\">14</span>"+orden.ordNumeroTicket+"</li>");
-										}
-										else{
-											// TODO orden de tipo correo
-										}	
-									});
-
-									$("#modalVerOrdenes").modal('toggle');
-
-								})
-								.fail(function(){
-							    	cargarModalRespuesta(null);
-							 	});
-							 */					        
+							$("#modalVerOrdenes").modal('toggle');		            		
 				        });		            	
 		            }
 		            
@@ -406,7 +348,53 @@
         
         $("#btnVerDescripcion").on('click', function(){
         	$("#modalVerDescripcion").modal('toggle');
-        });              
+        });
+
+        function inicializarModalVerOrdenes(){
+	    	var listaOrdenes=$("#listaOrdenes");
+	    	listaOrdenes.empty();
+	    	
+	    	var arr=datosOrdenes.datosTickets;
+	    	for (var i = 0, len = arr.length; i < len; i++){
+	    		listaOrdenes.append("<li class=\"list-group-item\"><span class=\"badge\">14</span>"+arr[i].idTicket+"</li>");
+	    	}	    
+	    	
+	    	arr=datosOrdenes.datosCorreos;
+	    	for (var i = 0, len = arr.length; i < len; i++){
+	    		listaOrdenes.append("<li class=\"list-group-item\"><span class=\"badge\">14</span>"+arr[i].corDestinatario+"</li>");
+	    	}
+
+	  		cargarDatosOrden('TICKET', datosOrdenes.datosTickets[0].idTicket);
+	    }
+
+		function cargarDatosOrden(ordTipo, ordId){
+			var orden, arr;
+			if(ordTipo=='TICKET'){
+				arr=datosOrdenes.datosTickets;
+				for (var i = 0, len = arr.length; i < len; i++){
+					if(arr[i].idTicket == ordId){
+						orden=arr[i];
+						break;
+					}
+				}												
+				// TODO hacer visible la tabla de datos para tickets y ocultar la de correos 
+				$("#ordResponsable").text(orden.responsable);
+				$("#ordDependencia").text(orden.dependencia);
+				$("#ordServicio").text(orden.servicio);
+				$("#ordUltimaRespuesta").text(orden.fechaUltimaRespuesta);
+				$("#ordFechaVencimiento").text(orden.fechaVencimiento);
+			}
+			else{
+				arr=datosOrdenes.datosCorreos;
+				for (var i = 0, len = arr.length; i < len; i++){
+					if(arr[i].corId == ordId){
+						orden=arr[i];
+						break;
+					}
+				}					
+				// TODO hacer visible la tabla de datos para correos y ocultar la de tickets
+			}
+		}
     });	
     
     $.fn.dataTable.render.accionesDisponibles=function(){
@@ -430,6 +418,7 @@
     		}    		    		
     	}
     }
+
 
     function renderPqrsfEstado(estado){
     	switch(estado){
