@@ -29,7 +29,7 @@ class PqrsfsController extends Controller
 
     public function radicarPQRSF(Request $request){        
         $response=Pqrsf::radicar(
-            $request->get('codigoPQRSF'),
+            $request->get('mRadCodigoPQRSF'),
             $request->get('idRadicado'),
             $request->get('fechaRadicado'),
             $request->get('fechaVencimientoPQRSF'),

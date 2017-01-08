@@ -60,4 +60,14 @@ OJO. Para direccionar dejar la opcion de que se cree el ticket o se envie simple
 
 --------------------------------------------------------------------------
 
+OJO
+		Cambiar el nombre de los elementos html en cada partial. Que incluya unas inciales del nombre del partial
+		para que no se confundan con los elementos de los demás partials
+
+		Estandarizar los botones de las tablas. QUE TODOS FUNCIONEN
+
+		Cuadrar el Modal respuesta (mensajes distintos para direccionar y distinto para radicado)
+
+--------------------------------------------------------------------------
+
 php artisan view:clear

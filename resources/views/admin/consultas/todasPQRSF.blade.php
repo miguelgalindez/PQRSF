@@ -23,259 +23,18 @@
         </table>              
     </div>
 
-    <!-- Modal -->
-    <div id="modalVerPQRSF" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog modal-lg">
+@include('admin.partial.modalVerPQRSF')
+@include('admin.partial.modalVerOrdenes')
+@include('admin.partial.modalDireccionarPQRSF')
+@include('admin.partial.modalRadicarPQRSF')
+@include('admin.partial.modalRespuesta')
+@include('admin.partial.modalVerDescripcion')
 
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">X</button>            
-          </div>
-            <div class="modal-body">	            
-            	<div class="row">            		
-            		<div class="col-lg-6">
-            		<table border="0" cellpadding="4" cellspacing="20" width="100%">
-            			<tbody>
-            				<tr>
-            					<th width="40%">Codigo</th>
-            					<td width="60%"><p align="justify" id="pqrsfCodigo"></p></td>
-            				</tr>
-            				
-            				<tr>
-            					<th width="40%">Estado</th>
-            					<td width="60%"><p align="justify" id="pqrsfEstado"></p></td>
-            				</tr>
-            				<tr>
-            					<th width="40%">Tipo</th>
-            					<td width="60%"><p align="justify" id="pqrsfTipo"></p></td>
-            				</tr>
-
-            				<tr>
-            					<th width="40%">Asunto</th>
-            					<td width="60%"><p align="justify" id="pqrsfAsunto"></p></td>
-            				</tr>
-            				<tr>
-            					<th width="40%">Descripcion</th>
-            					<td width="60%"><button class="btn-xs btn-primary" id="btnVerDescripcion">Ver descripción</button></td>
-            				</tr>
-            				<tr>
-            					<th width="40%">Ordenes</th>
-            					<td width="60%" id="pqrsfOrdenes"></td>
-            				</tr>
-            				<tr>
-            					<th width="40%">Fecha de Vencimiento</th>
-            					<td width="60%"><p align="justify" id="pqrsfFechaVencimiento"></p></td>
-            				</tr>
-            				<tr>
-            					<th width="40%">Fecha de Creación</th>
-            					<td width="60%"><p align="justify" id="pqrsfFechaCreacion"></p></td>
-            				</tr>
-            				<tr>
-            					<th width="40%">Medio de Recepción</th>
-            					<td width="60%"><p align="justify" id="pqrsfMedioRecepcion"></p></td>
-            				</tr>
-
-            				<tr>
-            					<th width="40%">Radicado</th>
-            					<td width="60%"><p align="justify" id="pqrsfRadicado"></p></td>
-            				</tr>
-            				
-            				<tr>
-            					<th width="40%">Fecha de Cierre</th>
-            					<td width="60%"><p align="justify" id="pqrsfFechaCierre"></p></td>
-            				</tr>            			
-
-            			</tbody>
-            		</table>
-            	</div>
-
-            	<div class="col-lg-5 col-lg-offset-1">
-            		<table border="0" cellpadding="4" cellspacing="20" width="100%">
-            			<tbody>
-            				
-            				<tr>
-            					<th width="40%">Tipo</th>
-            					<td width="60%"><p align="justify" id="perTipo"></p></td>
-            				</tr>
-
-            				<tr>
-            					<th width="40%">Tipo Identificación</th>
-            					<td width="60%"><p align="justify" id="perTipoId"></p></td>
-            				</tr>
-            				
-            				<tr>
-            					<th width="40%">Identificación</th>
-            					<td width="60%"><p align="justify" id="perId"></p></td>
-            				</tr>
-            				<tr>
-            					<th width="40%">Nombres</th>
-            					<td width="60%"><p align="justify" id="perNombres"></p></td>
-            				</tr>
-
-            				<tr>
-            					<th width="40%">Apellidos</th>
-            					<td width="60%"><p align="justify" id="perApellidos"></p></td>
-            				</tr>
-            				<tr>
-            					<th width="40%">Email</th>
-            					<td width="60%"><p align="justify" id="perEmail"></p></td>
-            				</tr>
-            				<tr>
-            					<th width="40%">Dirección</th>
-            					<td width="60%"><p align="justify" id="perDireccion"></p></td>
-            				</tr>
-            				<tr>
-            					<th width="40%">Teléfono</th>
-            					<td width="60%"><p align="justify" id="perTelefono"></p></td>
-            				</tr>
-            				<tr>
-            					<th width="40%">Celular</th>
-            					<td width="60%"><p align="justify" id="perCelular"></p></td>
-            				</tr>            				
-            			</tbody>
-            		</table>
-            	</div>	
-            	</div>
-            	               
-          </div>          
-          	<div class="modal-footer">           
-             	<a class="btn btn-default pull-right" data-dismiss="modal">Cerrar</a>                         
-        	</div>
-        </div>
-        
-
-        </div>
-    </div>
-
-
-<!-- Modal Ver Ordenes-->
-
-    <div id="modalVerOrdenes" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog modal-lg">
-
-	        <!-- Modal content-->
-	        <div class="modal-content">	
-		        <div class="modal-header">
-	            	<button type="button" class="close" data-dismiss="modal">X</button>            
-	          	</div>          
-	            <div class="modal-body">		            
-	            	<div class="row">            		
-	            		<div class="col-lg-3">
-	            			<h4>Ordenes asignadas</h4>
-	            			<div class="list-group" id="listaOrdenes">
-	            					<!-- TODO
-	            						Que la lista pueda ser scrollable, colocar iconos de correo y de ticket y que ademas se marque el que esta activo
-								  	 <a href="#" class="list-group-item active">Activo</a>  -->
-							</div>	            				            	
-	            		</div>
-	            		<div class="col-lg-7 col-lg-offset-1">
-	            			<div class="row">
-	            				<h4>Descripcion de la Orden</h4>
-	            					<table id="tblTicket" border="0" cellpadding="4" cellspacing="20" width="100%">
-				            			<tbody>
-				            				<tr>
-				            					<th width="40%">Responsable</th>
-				            					<td width="60%"><p align="justify" id="ordResponsable"></p></td>
-				            				</tr>				            				
-				            				<tr>
-				            					<th width="40%">Dependencia</th>
-				            					<td width="60%"><p align="justify" id="ordDependencia"></p></td>
-				            				</tr>            				            		
-				            				<tr>
-				            					<th width="40%">Fecha de vencimiento</th>
-				            					<td width="60%"><p align="justify" id="ordFechaVencimiento"></p></td>
-				            				</tr>
-				            				<tr>
-				            					<th width="40%">Ultima respuesta</th>
-				            					<td width="60%"><p align="justify" id="ordUltimaRespuesta"></p></td>
-				            				</tr>
-
-				            				<tr>
-				            					<th width="40%">Servicio solicitado</th>
-				            					<td width="60%"><p align="justify" id="ordServicio"></p></td>
-				            				</tr>
-				            			</tbody>
-				            		</table>
-
-				            		<table id="tblCorreo" border="0" cellpadding="4" cellspacing="20" width="100%">
-				            			<tbody>
-				            				<tr>
-				            					<th width="40%">Destinatario</th>
-				            					<td width="60%"><p align="justify" id="ordDestinatario"></p></td>
-				            				</tr>				            				
-				            				<tr>
-				            					<th width="40%">Asunto</th>
-				            					<td width="60%"><p align="justify" id="ordAsunto"></p></td>
-				            				</tr>            				            		
-				            				<tr>
-				            					<th width="40%">Mensaje</th>
-				            					<td width="60%"><p align="justify" id="ordMensaje"></p></td>
-				            				</tr>
-				            				<tr>
-				            					<th width="40%">Fecha</th>
-				            					<td width="60%"><p align="justify" id="ordFecha"></p></td>
-				            				</tr>
-
-				            			</tbody>
-				            		</table>	
-	            			</div>	            			            			
-	            		</div>
-	            		<div class="col-lg-12" id="divHistorial"></div>		            		
-	            	</div>
-	            	               
-	          </div>          
-	          	<div class="modal-footer">           
-	             	<a class="btn btn-default pull-right" data-dismiss="modal">Cerrar</a>                         
-	        	</div>
-	        </div>       
-        </div>
-    </div>
-
-    <!-- Modal Respuesta-->
-    <div id="modalRespuesta" class="modal fade" role="dialog">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">X</button>
-		        <h4 id="modalRespuestaTitulo" class="modal-title"></h4>
-		      </div>
-		      <div class="modal-body">
-		        <p id="modalRespuestaTexto"></p>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-outline" data-dismiss="modal">Cerrar</button>
-		      </div>
-		    </div>
-		    <!-- /.modal-content -->
-		  </div>
-		  <!-- /.modal-dialog -->
-	</div>
-
-	<!-- Modal ver descripcion-->
-    <div id="modalVerDescripcion" class="modal fade" role="dialog">
-		  <div class="modal-dialog modal-sm">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">x</span></button>
-		        <h4 class="modal-title">Descripción de la PQRSF</h4>
-		      </div>
-		      <div class="modal-body">
-		        <p id="pqrsfDescripcion"></p>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-		      </div>
-		    </div>
-		    <!-- /.modal-content -->
-		  </div>
-		  <!-- /.modal-dialog -->
-	</div>
 
     <script type="text/javascript">
 
     $(document).ready(function(){
+    	var modalActual;
     	var datosOrdenes;    	
         var table=$('#pqrsfsTable').DataTable({
             "language": {
@@ -471,14 +230,171 @@
 		$("#btnVerDescripcion").on('click', function(){
         	$("#modalVerDescripcion").modal('toggle');
         });
+
+		// --------------------------------------------------------------
+		// Funcionalidad de direccionar
+
+        var dependencias=[];
+        var funcionarios=[];
+
+        $.get('/admin/pqrsfs/direccionar/datosDireccionamiento', function(data){
+            dependencias=data.dependencias;
+            funcionarios=data.funcionarios;
+            
+            $('#dependencia').append("<option value=''>Elegir...</option>");
+            $.each(data.dependencias, function(index, dependencia){
+                $('#dependencia').append("<option value='"+ dependencia.dept_id + "'>" +dependencia.dept_name+"</option>");
+            });
+
+            $('#prioridad').append("<option value=''>Elegir...</option>"); 
+            $.each(data.prioridades, function(index, prioridad){
+               $('#prioridad').append("<option value='"+ prioridad.priority_id + "'>" +prioridad.priority_desc+"</option>"); 
+            });
+        });
+
+        $('#dependencia').change(function(){
+            $('#funcionario').empty();
+            $('#funcionario').append("<option value=''>Elegir...</option>");
+            var dependenciaSeleccionada=$(this).val();
+            $.each(funcionarios, function(index, funcionario){
+                if(funcionario.dept_id == dependenciaSeleccionada){
+                    $('#funcionario').append("<option value='"+ funcionario.staff_id + "'>" +funcionario.firstname+ " "+ funcionario.lastname + "</option>");
+                }
+            });
+        });
+        
+        $('#pqrsfsTable tbody').on('click', '.btnDireccionar', function () {
+
+            var data = table.row( $(this).parents('tr') ).data();
+            $('#fechaVencimiento').datetimepicker({
+	            locale: 'es',
+	            format: "D [de] MMMM [de] YYYY",
+	            daysOfWeekDisabled: [0, 6],
+	            minDate: new Date(),
+	            maxDate: data.pqrsfFechaVencimiento,
+	            defaultDate: new Date(),
+	            showTodayButton: true            
+	        });
+
+            $("#codigoPQRSF").val(data.codigo);
+            $("#idPersona").val(data.perId);
+            $("#asunto").val(data.pqrsfAsunto);
+            $("#descripcion").val(data.pqrsfDescripcion);
+            
+            modalActual=$('#modalDireccionar');
+            modalActual.modal('toggle');
+        });
+        
+        $("#btnModalDireccionar").on('click', function(){
+            var datosFormulario = $("#formularioDireccionarPQRSF").serialize();
+            var request=$.ajax({
+                type: "POST",
+                url: "/admin/direccionarPqrsf",
+                data: datosFormulario,
+                dataType: "json"
+            });
+
+            request.done(function(response){
+                cargarModalRespuesta(response);                    
+            });
+            request.fail(function(jqXHR, textStatus){
+                cargarModalRespuesta(null);                
+            });
+        });
+
+        // -----------------------------------------------------------------------------
+        // Funcionalidad de radicar
+
+        var maxfechaRadicado=new Date();
+        var minFechaVencimiento=new Date();
+        
+        try{
+            cargarDateTimePicker(maxfechaRadicado, minFechaVencimiento);            
+        }
+        catch(err){                                            
+            maxfechaRadicado.setDate(maxfechaRadicado.getDate() - ((maxfechaRadicado.getDay()+2) % 7));              
+            minFechaVencimiento.setDate(minFechaVencimiento.getDate() + ((8-minFechaVencimiento.getDay()) % 7));
+            cargarDateTimePicker(maxfechaRadicado, minFechaVencimiento);        
+        }             
+
+        $('#pqrsfsTable tbody').on('click', '.btnRadicar', function () {
+
+            var data = table.row( $(this).parents('tr') ).data();
+            $("#mRadCodigoPQRSF").val(data.codigo);
+            modalActual=$('#modalRadicar');
+            modalActual.modal('toggle');
+        });        
+
+        $('#btnModalRadicar').on('click', function(){
+
+            var datosFormulario=$('#formularioRadicarPQRSF').serialize();
+            var request=$.ajax({
+                type: 'POST',
+                url: '/admin/pqrsf/radicarPQRSF',
+                data: datosFormulario,
+                dataType: 'json' 
+            });
+               
+            request.done(function(response){                    
+                cargarModalRespuesta(response);                                             
+            });
+            
+            request.fail(function (jqXHR, textStatus){                                  
+                cargarModalRespuesta(null);
+            });
+        });
+
+	    function cargarDateTimePicker(maxfechaRadicado, minFechaVencimiento){           
+	        $('#fechaRadicado').datetimepicker({
+	            locale: 'es',            
+	            //format: "D [de] MMMM [de] YYYY [     Hora:] hh:mm A",
+	            format: "D [de] MMMM [de] YYYY",
+	            daysOfWeekDisabled: [0, 6],                                    
+	            maxDate: maxfechaRadicado,
+	            defaultDate: maxfechaRadicado
+	        });
+	        
+	        $('#fechaVencimientoPQRSF').datetimepicker({
+	            locale: 'es',
+	            format: "D [de] MMMM [de] YYYY",
+	            daysOfWeekDisabled: [0, 6],                                    
+	            minDate: minFechaVencimiento,
+	            defaultDate: minFechaVencimiento
+	        });
+	    }    
+
+	    // -----------------------------------------------------------------------------
+
+        function cargarModalRespuesta(response){
+            
+            var modalRespuesta=$("#modalRespuesta");
+
+            if(response && response.status=='success'){
+                $("#modalRespuestaTitulo").text('Direccionamiento exitoso');
+                $("#modalRespuestaTexto").html("<strong>La PQRSF ha sido asignada al funcionario" +response.nombreFuncionario+ ". </strong></br>Número de Ticket: "+response.numeroTicket);
+                modalRespuesta.removeClass('modal-danger');
+                modalRespuesta.addClass('modal-success');                   
+                modalActual.modal('hide');
+                modalRespuesta.modal('toggle');            
+                table.ajax.reload();                           
+            }   
+            else{
+                    $("#modalRespuestaTitulo").text('Error');
+                    $("#modalRespuestaTexto").text('Ha ocurrido un error mientras se direccionaba la PQRSF. Si el problema persiste, por favor comuníquese con la División de Tecnologías de la Información y las Comunicaciones de la Universidad del Cauca - Teléfono: 8209900 extensión 55 - Correo electrónico: contacto@unicauca.edu.co');
+                    modalRespuesta.removeClass('modal-success');
+                    modalRespuesta.addClass('modal-danger');
+                    modalRespuesta.modal('toggle');
+            }               
+        }       
+
     });		
 
     $.fn.dataTable.render.accionesDisponibles=function(){
     	return function(data, type, row){    	
     		if(!data.radId){
-    			return "<button class='btn-xs btn-default'>Ver</button> <button class='btn-xs btn-primary'>Imprimir</button> <button class='btn-xs btn-success'>Radicar</button>"
+    			return "<button class='btn-xs btn-default'>Ver</button> <button class='btn-xs btn-primary'>Imprimir</button> <button class='btn-xs btn-success btnRadicar'>Radicar</button>"
     		}
-    		return "<button class='btn-xs btn-default'>Ver</button> <button class='btn-xs btn-success'>Direccionar</button>";
+    		return "<button class='btn-xs btn-default'>Ver</button> <button class='btn-xs btn-success btnDireccionar'>Direccionar</button>";
     	}
     }   
 
@@ -532,28 +448,7 @@
         return function(data, type, row){
             return row.perNombres + " " + row.perApellidos; 
         }
-    };
-
-    function cargarModalRespuesta(response){
-    		
-    		var modalRespuesta=$("#modalRespuesta");
-
-    		if(response && response.status=='success'){
-    			$("#modalRespuestaTitulo").text('Registro satisfactorio');
-				$("#modalRespuestaTexto").html("<strong>La PQRSF ha sido registrada exitosamente.</strong></br>Codigo: "+response.codigoPQRSF);
-				modalRespuesta.removeClass('modal-danger');
-				modalRespuesta.addClass('modal-success');					
-				reiniciarFormulario();
-				modalRespuesta.modal('toggle');							
-	    	}	
-	    	else{
-	    			$("#modalRespuestaTitulo").text('Error');
-					$("#modalRespuestaTexto").text('Ha ocurrido un error mientras se completaba la operación. Si el problema persiste, por favor comuníquese con la División de Tecnologías de la Información y las Comunicaciones de la Universidad del Cauca - Teléfono: 8209900 extensión 55 - Correo electrónico: contacto@unicauca.edu.co');
-					modalRespuesta.removeClass('modal-success');
-					modalRespuesta.addClass('modal-danger');
-					modalRespuesta.modal('toggle');
-	    	}	    		
-    	}
+    };    
 </script>
 @endsection
 

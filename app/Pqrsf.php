@@ -30,7 +30,7 @@ class Pqrsf extends Model
     }
 
     public static function obtnTodas(){
-        $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, perNombres, perApellidos, pqrsfFechaVencimiento FROM pqrsfs NATURAL JOIN personas";
+        $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, pqrsfDescripcion, perId, perNombres, perApellidos, pqrsfFechaVencimiento FROM pqrsfs NATURAL JOIN personas";
 
         return DB::select($sql);
     }
