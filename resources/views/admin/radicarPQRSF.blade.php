@@ -93,8 +93,7 @@
 
     <script type="text/javascript">
 
-    $(document).ready(function(){
-        
+    $(document).ready(function(){        
         var table=$('#pqrsfsTable').DataTable({
             
         	"language": {
@@ -124,22 +123,23 @@
                 }
             ]            
         });
-
+        
+        var now=new Date();
         $('#fechaRadicado').datetimepicker({
-            locale: 'es',
+            locale: 'es',            
             //format: "D [de] MMMM [de] YYYY [     Hora:] hh:mm A",
             format: "D [de] MMMM [de] YYYY",
             daysOfWeekDisabled: [0, 6],                                    
-            maxDate: new Date(),
-            defaultDate: new Date()
+            maxDate: now,
+            defaultDate: now
         });
 
         $('#fechaVencimientoPQRSF').datetimepicker({
             locale: 'es',
             format: "D [de] MMMM [de] YYYY",
             daysOfWeekDisabled: [0, 6],                                    
-            minDate: new Date(),
-            defaultDate: new Date()
+            minDate: now,
+            defaultDate: now
         });
 
 

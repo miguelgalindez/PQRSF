@@ -23,8 +23,8 @@ class CreatePqrsfsTable extends Migration
             $table->string('pqrsfDescripcion', '1024');
             $table->date('pqrsfFechaCreacion');
             $table->string('pqrsfMedioRecepcion', '32');
-            $table->tinyInteger('pqrsfDireccionada')->default(0);
-            $table->tinyInteger('pqrsfEstado');
+            $table->string('pqrsfDireccionada', '1')->default('0'); // 0 NO Direccionada    1 SI direccionada
+            $table->string('pqrsfEstado', '1') ->default('0'); // 0 Pendiente   1  Atendiendo   2 Atendida
             $table->date('pqrsfFechaVencimiento')->nullable();
             $table->date('pqrsfFechaCierre')->nullable();   
 

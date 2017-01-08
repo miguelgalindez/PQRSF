@@ -206,7 +206,7 @@ class Osticket extends Model
 
             DB::table('pqrsfs')
                 ->where('pqrsfCodigo', $codigoPQRSF)
-                ->update(['pqrsfDireccionada' => 1]);
+                ->update(['pqrsfDireccionada' => '1']);
 
             $db->commit();
 

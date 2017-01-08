@@ -14,10 +14,11 @@ class CreateCorreosTable extends Migration
     public function up()
     {
         Schema::create('correos', function (Blueprint $table) {                                
+            $table->increments('corId');
             $table->string('corDestinatario');
             $table->string('corAsunto');
             $table->string('corMensaje');
-            $table->date('corFecha');        
+            $table->date('corFecha');            
         });
     }
 

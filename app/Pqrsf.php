@@ -48,7 +48,7 @@ class Pqrsf extends Model
 
     public static function obtnNoDireccionadas(){
         
-        $sql= "SELECT pqrsf.pqrsfCodigo, pqrsf.radId, pqrsf.pqrsfTipo, pqrsf.pqrsfAsunto, pqrsf.pqrsfDescripcion, pqrsf.pqrsfFechaCreacion, pqrsf.pqrsfMedioRecepcion, persona.perId, persona.perNombres, persona.perApellidos FROM pqrsfs pqrsf JOIN personas persona ON pqrsf.radId IS NOT NULL AND pqrsf.pqrsfDireccionada=0 AND pqrsf.perId=persona.perId AND pqrsf.perTipoId=persona.perTipoId";
+        $sql= "SELECT pqrsf.pqrsfCodigo, pqrsf.radId, pqrsf.pqrsfTipo, pqrsf.pqrsfAsunto, pqrsf.pqrsfDescripcion, pqrsf.pqrsfFechaCreacion, pqrsf.pqrsfMedioRecepcion, persona.perId, persona.perNombres, persona.perApellidos FROM pqrsfs pqrsf JOIN personas persona ON pqrsf.radId IS NOT NULL AND pqrsf.pqrsfDireccionada='0' AND pqrsf.perId=persona.perId AND pqrsf.perTipoId=persona.perTipoId";
 
         return DB::select( $sql );
     }
@@ -77,7 +77,7 @@ class Pqrsf extends Model
                     'pqrsfDescripcion' => $descripcion,
                     'pqrsfFechaCreacion' => date('Y-m-d H:i:s'),
                     'pqrsfMedioRecepcion' => $medioRecepcion,
-                    'pqrsfEstado' => 0                  
+                    'pqrsfEstado' => '0'                 
             ]);
 
             $db->commit();

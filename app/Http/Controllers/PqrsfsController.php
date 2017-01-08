@@ -88,6 +88,8 @@ class PqrsfsController extends Controller
             'historialTickets' => $historialTickets,
         ];
 
+        Log::info(date('Y-m-d H:i:s'));
+
         return response()->json($datosOrdenes);
     }    
 
