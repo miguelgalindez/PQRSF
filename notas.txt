@@ -8,14 +8,6 @@
 	4. Que exista tema de ayuda PQRSF
 	5. Modificar el archivo de configuracion de la aplicacion con la direccion de las dos BD (osticketdb y PQRSF)
 
-
-
-
-
-
-
-
-
 --------------------------------------------------------------------------------------------------------------------
 
 Para que no se lanzara la excepción que indicaba error al intentar validar las credenciales por la falta de contraseña Y LOGRAR QUE FUNCIONARA LA AUTENTICACIÓN CON GOOGLE, se modificó el archivo 
@@ -60,15 +52,12 @@ Modal direccionar debe poderse modificar la descripcion del servicio (PQRSF) par
 
 Ojo con la hora del radicado: no deja escoger una hora superior de un dia anterior
 
----------------------------------
+-----------------------------------------
 
-Falta registrar la fecha de vencimiento de la PQRSF cuando se RADIQUE LA PQRSF
+OJO. Para direccionar dejar la opcion de que se cree el ticket o se envie simplemente el correo		
 
---------------------------------------------
+		Falta programar funcionalidad para ver visualizar las respuestas a las ordenes por correo Consultas/todasPQRSF ver ordenes
 
-OJO. Para direccionar dejar la opcion de que se cree el ticket o se envie simplemente el correo
-	
-		Modificar tabla ordenes donde ordId apunte a un id de correo
-		Modiciar tabla correos para que tenga un corId
+--------------------------------------------------------------------------
 
-		Falta programar funcionalidad para ver datos de las ordenes por correo en Consultas/todasPQRSF ver ordenes
+php artisan view:clear

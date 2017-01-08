@@ -27,8 +27,7 @@ class PqrsfsController extends Controller
     	return response()->json(Pqrsf::obtnDatosRestantes($pqrsfCodigo));
     }
 
-    public function radicarPQRSF(Request $request){
-
+    public function radicarPQRSF(Request $request){        
         $response=Pqrsf::radicar(
             $request->get('codigoPQRSF'),
             $request->get('idRadicado'),

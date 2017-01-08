@@ -48,13 +48,13 @@ class Pqrsf extends Model
 
     public static function obtnNoDireccionadas(){
         
-        $sql= "SELECT pqrsf.pqrsfCodigo, pqrsf.radId, pqrsf.pqrsfTipo, pqrsf.pqrsfAsunto, pqrsf.pqrsfDescripcion, pqrsf.pqrsfFechaCreacion, pqrsf.pqrsfMedioRecepcion, persona.perId, persona.perNombres, persona.perApellidos FROM pqrsfs pqrsf JOIN personas persona ON pqrsf.radId IS NOT NULL AND pqrsf.pqrsfDireccionada='0' AND pqrsf.perId=persona.perId AND pqrsf.perTipoId=persona.perTipoId";
+        $sql= "SELECT pqrsf.pqrsfCodigo, pqrsf.radId, pqrsf.pqrsfTipo, pqrsf.pqrsfAsunto, pqrsf.pqrsfDescripcion, pqrsf.pqrsfFechaCreacion, pqrsf.pqrsfMedioRecepcion, persona.perId, persona.perNombres, persona.perApellidos FROM pqrsfs pqrsf JOIN personas persona ON pqrsf.radId IS NOT NULL AND pqrsf.radId!='' AND pqrsf.pqrsfDireccionada='0' AND pqrsf.perId=persona.perId AND pqrsf.perTipoId=persona.perTipoId";
 
         return DB::select( $sql );
     }
 
     public static function obtnNoRadicadas(){
-        $sql= "SELECT pqrsf.pqrsfCodigo, pqrsf.pqrsfTipo, pqrsf.pqrsfAsunto, pqrsf.pqrsfDescripcion, pqrsf.pqrsfFechaCreacion, pqrsf.pqrsfMedioRecepcion, persona.perId, persona.perNombres, persona.perApellidos FROM pqrsfs pqrsf join personas persona on pqrsf.perId =persona.perId AND pqrsf.perTipoId=persona.perTipoId AND pqrsf.radId IS NULL";
+        $sql= "SELECT pqrsf.pqrsfCodigo, pqrsf.pqrsfTipo, pqrsf.pqrsfAsunto, pqrsf.pqrsfDescripcion, pqrsf.pqrsfFechaCreacion, pqrsf.pqrsfMedioRecepcion, persona.perId, persona.perNombres, persona.perApellidos FROM pqrsfs pqrsf join personas persona on pqrsf.perId =persona.perId AND pqrsf.perTipoId=persona.perTipoId AND (pqrsf.radId IS NULL OR  pqrsf.radId = '')";
 
         return DB::select( $sql );
     }
@@ -100,6 +100,12 @@ class Pqrsf extends Model
 
     public static function radicar($codigoPQRSF, $idRadicado, $fechaRadicado, $fechaVencimientoPQRSF, $usuarioPQRSF){
 
+        if($idRadicado==""){
+            return array(
+                'status' => 'fail'
+            );
+        }
+        
         $partes=explode(' ', $fechaRadicado);        
         $fechaRadicado=$partes[4] . "-" . Self::obtnnumeroMes($partes[2]) . "-" . (string)$partes[0] . " 23:59:59";
     /*      Para incluir la hora
