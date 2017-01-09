@@ -124,25 +124,18 @@
             ]            
         });
         
-        var now=new Date();
-        $('#fechaRadicado').datetimepicker({
-            locale: 'es',            
-            //format: "D [de] MMMM [de] YYYY [     Hora:] hh:mm A",
-            format: "D [de] MMMM [de] YYYY",
-            daysOfWeekDisabled: [0, 6],                                    
-            maxDate: now,
-            defaultDate: now
-        });
-
-        $('#fechaVencimientoPQRSF').datetimepicker({
-            locale: 'es',
-            format: "D [de] MMMM [de] YYYY",
-            daysOfWeekDisabled: [0, 6],                                    
-            minDate: now,
-            defaultDate: now
-        });
-
-
+        var maxfechaRadicado=new Date();
+        var minFechaVencimiento=new Date();
+        
+        try{
+            cargarDateTimePicker(maxfechaRadicado, minFechaVencimiento);            
+        }
+        catch(err){                                            
+            maxfechaRadicado.setDate(maxfechaRadicado.getDate() - ((maxfechaRadicado.getDay()+2) % 7));              
+            minFechaVencimiento.setDate(minFechaVencimiento.getDate() + ((8-minFechaVencimiento.getDay()) % 7));
+            cargarDateTimePicker(maxfechaRadicado, minFechaVencimiento);        
+        }
+        
         $('#pqrsfsTable tbody').on('click', '.btn-default', function () {
             var data = table.row( $(this).parents('tr') ).data();
             alert('Ver PQRSF' + data.pqrsfCodigo);
@@ -179,6 +172,24 @@
             });
         });
 
+    function cargarDateTimePicker(maxfechaRadicado, minFechaVencimiento){           
+        $('#fechaRadicado').datetimepicker({
+            locale: 'es',            
+            //format: "D [de] MMMM [de] YYYY [     Hora:] hh:mm A",
+            format: "D [de] MMMM [de] YYYY",
+            daysOfWeekDisabled: [0, 6],                                    
+            maxDate: maxfechaRadicado,
+            defaultDate: maxfechaRadicado
+        });
+        
+        $('#fechaVencimientoPQRSF').datetimepicker({
+            locale: 'es',
+            format: "D [de] MMMM [de] YYYY",
+            daysOfWeekDisabled: [0, 6],                                    
+            minDate: minFechaVencimiento,
+            defaultDate: minFechaVencimiento
+        });    
+    }
 
     function cargarModalRespuesta(response){
            
@@ -203,6 +214,7 @@
         }
 
     });
+
     
     $.fn.dataTable.render.pqrsfTipo= function(){
         return function(data, type, row){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Persona;
 use App\Pqrsf;
+use Log;
 
 class AdminController extends Controller
 {
@@ -29,7 +30,7 @@ class AdminController extends Controller
     	return view('admin.radicarPQRSF');
     }
 
-    public function index(){
+    public function index(){    	
     	return view('admin.index');
     }
 
