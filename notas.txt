@@ -68,6 +68,9 @@ OJO
 
 		Cuadrar el Modal respuesta (mensajes distintos para direccionar y distinto para radicado)
 
+		Crear las dummy css class necesarias para identificar el boton en la dataTable
+			btnVer
+
 --------------------------------------------------------------------------
 
 php artisan view:clear

@@ -81,34 +81,34 @@
             $.get( "/admin/pqrsfs/consultas/todasPQRSF/datosRestantes/"+pqrsf.codigo)
 				.done(function(response) {					
 					response=response[0];					
-					$("#perNombres").text(pqrsf.perNombres);
-		            $("#perApellidos").text(pqrsf.perApellidos);
-		            $("#perTipo").text(response.perTipo);
-		            $("#perId").text(response.perId);
-		            $("#perTipoId").text(response.perTipoId);
-		            $("#perEmail").text(response.perEmail);
-		            $("#perDireccion").text(response.perDireccion);
-		            $("#perTelefono").text(response.perTelefono);
-		            $("#perCelular").text(response.perCelular);
+					$("#mVerPerNombres").text(pqrsf.perNombres);
+		            $("#mVerPerApellidos").text(pqrsf.perApellidos);
+		            $("#mVerPerTipo").text(response.perTipo);
+		            $("#mVerPerId").text(response.perId);
+		            $("#mVerPerTipoId").text(response.perTipoId);
+		            $("#mVerPerEmail").text(response.perEmail);
+		            $("#mVerPerDireccion").text(response.perDireccion);
+		            $("#mVerPerTelefono").text(response.perTelefono);
+		            $("#mVerPerCelular").text(response.perCelular);
 
-					$("#pqrsfCodigo").text(pqrsf.codigo);
-		            $("#pqrsfTipo").text(renderPqrsfTipo(pqrsf.pqrsfTipo));
-		            $("#pqrsfAsunto").text(pqrsf.pqrsfAsunto);
-		            $("#pqrsfFechaVencimiento").text(pqrsf.pqrsfFechaVencimiento);
-		            $("#pqrsfRadicado").text(pqrsf.radId);
-		            $("#pqrsfDescripcion").text(response.pqrsfDescripcion);
-		            $("#pqrsfFechaCreacion").text(response.pqrsfFechaCreacion);
-		            $("#pqrsfMedioRecepcion").text(response.pqrsfMedioRecepcion);
-		            $("#pqrsfEstado").text(renderPqrsfEstado(response.pqrsfEstado));		            
-		            $("#pqrsfFechaCierre").text(response.pqrsfFechaCierre);		                       	      
+					$("#mVerPqrsfCodigo").text(pqrsf.codigo);
+		            $("#mVerPqrsfTipo").text(renderPqrsfTipo(pqrsf.pqrsfTipo));
+		            $("#mVerPqrsfAsunto").text(pqrsf.pqrsfAsunto);
+		            $("#mVerPqrsfFechaVencimiento").text(pqrsf.pqrsfFechaVencimiento);
+		            $("#mVerPqrsfRadicado").text(pqrsf.radId);
+		            $("#mVerPqrsfDescripcion").text(response.pqrsfDescripcion);
+		            $("#mVerPqrsfFechaCreacion").text(response.pqrsfFechaCreacion);
+		            $("#mVerPqrsfMedioRecepcion").text(response.pqrsfMedioRecepcion);
+		            $("#mVerPqrsfEstado").text(renderPqrsfEstado(response.pqrsfEstado));		            
+		            $("#mVerPqrsfFechaCierre").text(response.pqrsfFechaCierre);		                       	      
 		            
 		            if(pqrsf.numeroOrdenes=="0"){
-		            	$("#pqrsfOrdenes").html('<p align="justify">No registra</p></td>');
+		            	$("#mVerPqrsfOrdenes").html('<p align="justify">No registra</p></td>');
 		            }
 		            else{
-		            	$("#pqrsfOrdenes").html('<button class="btn-xs btn-success" id="btnVerOrdenes">Ver ordenes</button>');
+		            	$("#mVerPqrsfOrdenes").html('<button class="btn-xs btn-success" id="btnVerOrdenes">Ver ordenes</button>');
 
-		            	$("#btnVerOrdenes").on('click', function(){
+		            	$("#mVerBtnVerOrdenes").on('click', function(){
 		            		abrirModalVerOrdenes(pqrsf.codigo);		            		
 		            	});
 		            }		           
@@ -227,7 +227,7 @@
 			}			
 		});
 
-		$("#btnVerDescripcion").on('click', function(){
+		$("#mVerBtnVerDescripcion").on('click', function(){
         	$("#modalVerDescripcion").modal('toggle');
         });
 
@@ -265,15 +265,18 @@
         
         $('#pqrsfsTable tbody').on('click', '.btnDireccionar', function () {
 
-            var data = table.row( $(this).parents('tr') ).data();
+            var data = table.row( $(this).parents('tr') ).data();            
+            var now=moment().format('YYYY-MM-DD');
+            
             $('#fechaVencimiento').datetimepicker({
 	            locale: 'es',
 	            format: "D [de] MMMM [de] YYYY",
 	            daysOfWeekDisabled: [0, 6],
-	            minDate: new Date(),
+                // para que no salga el error de que minDate es mayor que maxDate
+	            minDate: now,
 	            maxDate: data.pqrsfFechaVencimiento,
-	            defaultDate: new Date(),
-	            showTodayButton: true            
+	            defaultDate: now,
+	            showTodayButton: true
 	        });
 
             $("#codigoPQRSF").val(data.codigo);

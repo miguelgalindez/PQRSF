@@ -55,15 +55,7 @@
                     "defaultContent": "<button class='btn-xs btn-success'>Direccionar</button>"
                 }                            
             ]
-        });
-
-        $('#fechaVencimiento').datetimepicker({
-            locale: 'es',
-            format: "D [de] MMMM [de] YYYY",
-            daysOfWeekDisabled: [0, 6],
-            minDate: new Date(),
-            showTodayButton: true            
-        });
+        });        
 
         var dependencias=[];
         var funcionarios=[];
@@ -97,6 +89,18 @@
         $('#pqrsfsTable tbody').on('click', 'button', function () {
 
             var data = table.row( $(this).parents('tr') ).data();
+
+            var now=moment().format('YYYY-MM-DD');
+            $('#fechaVencimiento').datetimepicker({
+                locale: 'es',
+                format: "D [de] MMMM [de] YYYY",
+                daysOfWeekDisabled: [0, 6],
+                // para que no salga el error de que minDate es mayor que maxDate
+                minDate: now,
+                maxDate: data.pqrsfFechaVencimiento,
+                defaultDate: now,
+                showTodayButton: true            
+            });
 
             $("#codigoPQRSF").val(data.pqrsfCodigo);
             $("#idPersona").val(data.perId);

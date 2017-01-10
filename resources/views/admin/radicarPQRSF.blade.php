@@ -18,7 +18,9 @@
     </div>
 
 @include('admin.partial.modalRadicarPQRSF')
+@include('admin.partial.modalVerPQRSF')
 @include('admin.partial.modalRespuesta')
+@include('admin.partial.modalVerDescripcion')
 
     <script type="text/javascript">
 
@@ -44,7 +46,7 @@
                 {"data": "pqrsfAsunto"},                
                 {
                     "data": null,
-                    "defaultContent": "<button class='btn-xs btn-default'>Ver</button> <button class='btn-xs btn-primary'>Imprimir</button> <button class='btn-xs btn-success'>Radicar</button>"
+                    "defaultContent": "<button class='btn-xs btn-default btnVer'>Ver</button> <button class='btn-xs btn-primary'>Imprimir</button> <button class='btn-xs btn-success'>Radicar</button>"
                 },
                 {"data": "pqrsfFechaCreacion"},                
                 {   "data": null, 
@@ -65,9 +67,42 @@
             cargarDateTimePicker(maxfechaRadicado, minFechaVencimiento);        
         }
         
-        $('#pqrsfsTable tbody').on('click', '.btn-default', function () {
-            var data = table.row( $(this).parents('tr') ).data();
-            alert('Ver PQRSF' + data.pqrsfCodigo);
+        $('#pqrsfsTable tbody').on('click', '.btnVer', function () {
+            var pqrsf = table.row( $(this).parents('tr') ).data();
+            
+            $.get( "/admin/pqrsfs/consultas/todasPQRSF/datosRestantes/"+pqrsf.pqrsfCodigo)
+                .done(function(response) {                  
+                    response=response[0];                   
+                    $("#mVerPerNombres").text(pqrsf.perNombres);
+                    $("#mVerPerApellidos").text(pqrsf.perApellidos);
+                    $("#mVerPerTipo").text(response.perTipo);
+                    $("#mVerPerId").text(response.perId);
+                    $("#mVerPerTipoId").text(response.perTipoId);
+                    $("#mVerPerEmail").text(response.perEmail);
+                    $("#mVerPerDireccion").text(response.perDireccion);
+                    $("#mVerPerTelefono").text(response.perTelefono);
+                    $("#mVerPerCelular").text(response.perCelular);
+
+                    $("#mVerPqrsfCodigo").text(pqrsf.pqrsfCodigo);
+                    $("#mVerPqrsfTipo").text(renderPqrsfTipo(pqrsf.pqrsfTipo));
+                    $("#mVerPqrsfAsunto").text(pqrsf.pqrsfAsunto);
+                    $("#mVerPqrsfFechaVencimiento").text(pqrsf.pqrsfFechaVencimiento);
+                    $("#mVerPqrsfRadicado").text(pqrsf.radId);
+                    $("#mVerPqrsfDescripcion").text(response.pqrsfDescripcion);
+                    $("#mVerPqrsfFechaCreacion").text(response.pqrsfFechaCreacion);
+                    $("#mVerPqrsfMedioRecepcion").text(response.pqrsfMedioRecepcion);
+                    $("#mVerPqrsfEstado").text(renderPqrsfEstado(response.pqrsfEstado));                    
+                    $("#mVerPqrsfFechaCierre").text(response.pqrsfFechaCierre);                                             
+                    
+                    $("#mVerPqrsfOrdenes").html('<p align="justify">No registra</p></td>');
+                    
+                    
+                    $("#modalVerPQRSF").modal('toggle');        
+                })
+                .fail(function() {
+                    cargarModalRespuesta(null);
+                });
+            
         });
 
         $('#pqrsfsTable tbody').on('click', '.btn-primary', function () {
@@ -99,6 +134,10 @@
             request.fail(function (jqXHR, textStatus){                                  
                 cargarModalRespuesta(null);
             });
+        });
+
+        $("#mVerBtnVerDescripcion").on('click', function(){
+            $("#modalVerDescripcion").modal('toggle');
         });
 
     function cargarDateTimePicker(maxfechaRadicado, minFechaVencimiento){           
@@ -145,20 +184,35 @@
     });
 
     
+    function renderPqrsfTipo(tipo){
+        switch(tipo){
+            case "P":
+                return "Petición";
+            case "Q":
+                return "Queja";
+            case "R":
+                return "Reclamo";
+            case "S":
+                return "Sugerencia";
+            case "F":
+                return "Felicitación";
+        }
+    }
+
+    function renderPqrsfEstado(estado){
+        switch(estado){
+            case "0":
+                return "Pendiente";
+            case "1":
+                return "En proceso";
+            case "2":
+                return "Atendida";
+        }
+    }
+
     $.fn.dataTable.render.pqrsfTipo= function(){
         return function(data, type, row){
-            switch(data){
-                case "P":
-                    return "Petición";
-                case "Q":
-                    return "Queja";
-                case "R":
-                    return "Reclamo";
-                case "S":
-                    return "Sugerencia";
-                case "F":
-                    return "Felicitación";
-            }
+            return renderPqrsfTipo(data)
         }
     };
 
