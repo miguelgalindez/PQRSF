@@ -45,3 +45,8 @@ Route::get('/admin/pqrsfs/todas', 'PqrsfsController@obtnTodas');
 Route::get('/admin/pqrsfs/consultas/todasPQRSF/datosRestantes/{pqrsfCodigo}', 'PqrsfsController@obtnDatosRestantes');
 // Obtener los detalles de las ordenes
 Route::get('/admin/ordenes/{pqrsfCodigo}/detalles', 'PqrsfsController@obtnDetallesOrdenes');
+
+
+// Admin/Consultas/vencimientoPQRSF
+
+Route::get('/admin/consultas/vencimientoPQRSF/{diasParaVencimiento}', 'AdminController@mostrarVencimientoPQRSF');

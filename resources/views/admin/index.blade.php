@@ -5,7 +5,7 @@
       <!-- Small boxes (Stat box) -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <div class="small-box bg-red">
+          <div class="small-box bg-red" onclick="location.href='/admin/consultas/vencimientoPQRSF/0';">
             <div class="inner">
               <h3>15</h3>
 
@@ -14,14 +14,14 @@
             <div class="icon">
               <i class="ion ion-nuclear"></i>
             </div>
-            <a href="#" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="/admin/consultas/vencimientoPQRSF/0" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
 
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <div class="small-box bg-orange">
+          <div class="small-box bg-orange" onclick="location.href='/admin/consultas/vencimientoPQRSF/8';">
             <div class="inner">
               <h3>20</h3>
 
@@ -30,7 +30,7 @@
             <div class="icon">
               <i class="ion ion-alert-circled"></i>
             </div>
-            <a href="#" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="/admin/consultas/vencimientoPQRSF/8" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
 

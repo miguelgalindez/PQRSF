@@ -21,6 +21,23 @@ class AdminController extends Controller
 
 	}
 
+	public function mostrarVencimientoPQRSF($diasParaVencimiento){
+		$tituloPagina="";
+		$descripcionPagina="";
+
+		if($diasParaVencimiento==0){
+			$tituloPagina="PQRSFs vencidas";
+			$descripcionPagina="A continuación se muestran las PQRSFs que se encuentran vencidas a la fecha";
+		}
+		else{			
+			$tituloPagina="PQRSFs proximas a vencerse";
+			$descripcionPagina="A continuación se muestran las PQRSFs que se vencerán dentro de " . $diasParaVencimiento . " días";
+		}
+		return view('admin.consultas.vencimientoPQRSF', [
+			'tituloPagina' => $tituloPagina,
+			'descripcionPagina' => $descripcionPagina
+		]);
+	}
 	
     public function mostrarDireccionarPqrsf(){
         return view('admin.direccionarPqrsf');
