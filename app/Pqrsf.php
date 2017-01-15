@@ -32,10 +32,10 @@ class Pqrsf extends Model
     public static function obtnPqrsfsPorVencimiento($diasParaVencimiento){
         $sql="";
         if($diasParaVencimiento==0){
-            $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, pqrsfDescripcion, perId, perNombres, perApellidos, datediff(DATE(NOW()), DATE(pqrsfFechaVencimiento)) AS diasVencimiento FROM pqrsfs NATURAL JOIN personas WHERE pqrsfEstado!='2' AND DATE(NOW())>DATE(pqrsfFechaVencimiento)";
+            $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, pqrsfDescripcion, perId, perNombres, perApellidos, pqrsfFechaVencimiento, datediff(DATE(NOW()), DATE(pqrsfFechaVencimiento)) AS diasVencimiento FROM pqrsfs NATURAL JOIN personas WHERE pqrsfEstado!='2' AND DATE(NOW())>DATE(pqrsfFechaVencimiento)";
         }
         else{
-            $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, pqrsfDescripcion, perId, perNombres, perApellidos, datediff(DATE(pqrsfFechaVencimiento), DATE(NOW())) AS diasVencimiento FROM pqrsfs NATURAL JOIN personas WHERE pqrsfEstado!='2' AND DATE(pqrsfFechaVencimiento)>=DATE(NOW()) AND datediff(DATE(pqrsfFechaVencimiento), DATE(NOW()))<=" . $diasParaVencimiento;
+            $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, pqrsfDescripcion, perId, perNombres, perApellidos, pqrsfFechaVencimiento, datediff(DATE(pqrsfFechaVencimiento), DATE(NOW())) AS diasVencimiento FROM pqrsfs NATURAL JOIN personas WHERE pqrsfEstado!='2' AND DATE(pqrsfFechaVencimiento)>=DATE(NOW()) AND datediff(DATE(pqrsfFechaVencimiento), DATE(NOW()))<=" . $diasParaVencimiento;
         }
         return DB::select($sql);
     }
