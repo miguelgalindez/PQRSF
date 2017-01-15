@@ -73,4 +73,27 @@ OJO
 
 --------------------------------------------------------------------------
 
+	INDICADORES del index
+
+		Falta probar los indicadores: que no se crucen las vencidas con las atendiendiendo y las pendientes
+									las que ya estan vencidas no se pueden contar como atendiendo ni como pendientes aunque asi tengan el estado YA ESTARAN VENCIDAs.
+
+									Verificar los demas indicadores
+
+										OJO YA HAY UN INDICADOR QUE ESTA MAL !! el de PQRSFS pendientes por direccionar esta contando tambien las que ya están vencidas. Esas ya no se pueden direccionar ?? si es asi entonces ya no se pueden contar como pendientes
+
+--------------------------------------------------------------------
+
+	CONSULTAS/TODAS LAS PQRSFS
+
+		OJO !!
+
+			Marcar con color rojo las pqrsfs que ya estén vencidas
+			Marcar con color amarillo las pqrsfs que estén proximas a vencerse
+
+			¿ LAS PQRSFS YA VENCIDAS QUE !!? ¿ SE DEBEN PODER DIRECCIONAR ?
+
+--------------------------------------------------------------------
+
+
 php artisan view:clear

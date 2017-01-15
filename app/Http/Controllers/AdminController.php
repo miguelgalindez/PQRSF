@@ -47,8 +47,24 @@ class AdminController extends Controller
     	return view('admin.radicarPQRSF');
     }
 
-    public function index(){    	
-    	return view('admin.index');
+    public function index(){
+    	$pqrsfsVencidas=Pqrsf::obtnNumeroVencidas()[0]->numeroVencidas;
+    	$pqrsfsProximasVencidas=Pqrsf::obtnNumeroProximasVencidas()[0]->numeroProximasVencidas;
+    	$pqrsfsNoRadicadas=Pqrsf::obtnNumeroNoRadicadas()[0]->numeroNoRadicadas;
+    	$pqrsfsNoDireccionadas=Pqrsf::obtnNumeroNoDireccionadas()[0]->numeroNoDireccionadas;
+    	$pqrsfsAtendidas=Pqrsf::obtnNumeroAtendidas()[0]->numeroAtendidas;
+    	$pqrsfsAtendiendo=Pqrsf::obtnNumeroAtendiendo()[0]->numeroAtendiendo;
+    	$pqrsfsPendientes=Pqrsf::obtnNumeroPendientes()[0]->numeroPendientes;
+
+    	return view('admin.index', [
+    		'pqrsfsVencidas' => $pqrsfsVencidas,
+    		'pqrsfsProximasVencidas' => $pqrsfsProximasVencidas,
+    		'pqrsfsNoRadicadas' => $pqrsfsNoRadicadas,
+    		'pqrsfsNoDireccionadas' => $pqrsfsNoDireccionadas,
+    		'pqrsfsAtendidas' => $pqrsfsAtendidas,
+    		'pqrsfsAtendiendo' => $pqrsfsAtendiendo,
+    		'pqrsfsPendientes' => $pqrsfsPendientes
+    	]);
     }
 
     public function mostrarTodasPqrsfs(){

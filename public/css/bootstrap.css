@@ -7025,3 +7025,8 @@ overflow: hidden;
   margin: 0;
   padding: 0;
 }
+
+.white-icon {
+  font-size: 64px;
+  color : white;
+}

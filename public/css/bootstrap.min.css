@@ -1477,3 +1477,7 @@ a.list-group-item-warning.active:focus,a.list-group-item-warning.active:hover{ba
 a.list-group-item-danger.active{background-color:#e74c3c}
 a.list-group-item-danger.active:focus,a.list-group-item-danger.active:hover{background-color:#e43725}
 .modal .close,.panel-default .close,.popover{color:#2c3e50}
+.white-icon {
+  font-size: 64px;
+  color : white;
+}

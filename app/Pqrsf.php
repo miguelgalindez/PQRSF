@@ -29,6 +29,42 @@ class Pqrsf extends Model
     	);
     }
 
+    public static function obtnNumeroVencidas(){
+        $sql="SELECT COUNT(pqrsfCodigo) AS numeroVencidas FROM pqrsfs WHERE pqrsfEstado!='2' AND NOW()>pqrsfFechaVencimiento";
+        return DB::select($sql);
+    }
+
+    public static function obtnNumeroProximasVencidas(){
+        $sql="SELECT COUNT(pqrsfCodigo) AS numeroProximasVencidas FROM pqrsfs WHERE pqrsfEstado!='2' AND datediff(pqrsfFechaVencimiento, NOW())>0 AND datediff(pqrsfFechaVencimiento, NOW())<=8";
+
+        return DB::select($sql);
+    }
+
+    public static function obtnNumeroNoRadicadas(){
+        $sql="SELECT COUNT(pqrsfCodigo) AS numeroNoRadicadas FROM pqrsfs WHERE radId IS NULL OR radId = ''";
+        return DB::select($sql);
+    }
+
+    public static function obtnNumeroNoDireccionadas(){
+        $sql="SELECT COUNT(pqrsfCodigo) AS numeroNoDireccionadas FROM pqrsfs WHERE radId IS NOT NULL AND radId!='' AND pqrsfDireccionada='0'";
+        return DB::select($sql);
+    }
+
+    public static function obtnNumeroAtendidas(){
+        $sql="SELECT COUNT(pqrsfCodigo) AS numeroAtendidas FROM pqrsfs WHERE pqrsfEstado='2'";
+        return DB::select($sql);
+    }
+
+    public static function obtnNumeroAtendiendo(){
+        $sql="SELECT COUNT(pqrsfCodigo) AS numeroAtendiendo FROM pqrsfs WHERE pqrsfEstado='1' AND DATE(NOW())<=pqrsfFechaVencimiento";
+        return DB::select($sql);   
+    }
+
+    public static function obtnNumeroPendientes(){
+        $sql="SELECT COUNT(pqrsfCodigo) AS numeroPendientes FROM pqrsfs WHERE pqrsfEstado='0' AND DATE(NOW())<=pqrsfFechaVencimiento";
+        return DB::select($sql);   
+    }
+
     public static function obtnTodas(){
         $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, pqrsfDescripcion, perId, perNombres, perApellidos, pqrsfFechaVencimiento FROM pqrsfs NATURAL JOIN personas";
 
