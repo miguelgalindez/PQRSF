@@ -35,7 +35,27 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
-            var datosOrdenes;
+            
+            var diasParaVencimiento=$("#diasParaVencimiento").val();
+
+            $.fn.dataTable.render.diasVencimiento= function(){
+                return function(data, type, row){
+                    
+                    if(diasParaVencimiento=="0"){
+                        return "Hace " + data.diasVencimiento + " día(s)";
+                    }
+                    else{
+                        if(data.diasVencimiento=="0"){
+                            return "Vence Hoy";
+                        }
+                        else{
+                            return "Dentro de " + data.diasVencimiento + " día(s)";
+                        }
+                    }
+                }
+            }
+
+            var datosOrdenes;                    
             var table=$("#pqrsfsTable").DataTable({
                 "language": {
                     "emptyTable": "Aún no se han registrado PQRSFs",
@@ -45,7 +65,7 @@
                 },
 
                 ajax:{
-                    url :  '/admin/pqrsfs/vencimiento/' + $("#diasParaVencimiento").val(),
+                    url :  '/admin/pqrsfs/vencimiento/' + diasParaVencimiento,
                     dataSrc: ''
 
                 },    
@@ -62,7 +82,10 @@
                     {   "data": null, 
                         render: $.fn.dataTable.render.personaNombreCompleto()
                     },                
-                    {"data": "pqrsfFechaVencimiento"},
+                    {
+                        "data": null,
+                        "render": $.fn.dataTable.render.diasVencimiento()
+                    },
                     {
                         "data": null,
                         render: $.fn.dataTable.render.accionesDisponibles()                    
@@ -153,68 +176,68 @@
             }
 
             function cargarDatosOrden(ordTipo, ordId){
-            var orden, arr;
-            var divHistorial=$("#divHistorial");
-            if(ordTipo=='TICKET'){
-                
-                arr=datosOrdenes.datosTickets;
-                for (var i = 0, len = arr.length; i < len; i++){
-                    if(arr[i].idTicket == ordId){
-                        orden=arr[i];
-                        break;
+                var orden, arr;
+                var divHistorial=$("#divHistorial");
+                if(ordTipo=='TICKET'){
+                    
+                    arr=datosOrdenes.datosTickets;
+                    for (var i = 0, len = arr.length; i < len; i++){
+                        if(arr[i].idTicket == ordId){
+                            orden=arr[i];
+                            break;
+                        }
+                    }                                                               
+                    $("#ordResponsable").text(orden.responsable);
+                    $("#ordDependencia").text(orden.dependencia);
+                    $("#ordServicio").text(orden.servicio);
+                    $("#ordUltimaRespuesta").text(orden.fechaUltimaRespuesta);
+                    $("#ordFechaVencimiento").text(orden.fechaVencimiento);
+
+                    $('#tblCorreo').hide();
+                    $('#tblTicket').show();
+                    $('#tituloHistorial').show();               
+
+                    // Cargando Historial del Ticket
+
+                    var historial=datosOrdenes.historialTickets;
+                    var estilo;
+                    divHistorial.empty();
+                    divHistorial.append("<h4>Historial de la Orden</h4>");
+                    var pos=0, len=historial.length;
+                    
+                    while(pos<len && historial[pos].idTicket!=ordId){
+                        pos++;
                     }
-                }                                                               
-                $("#ordResponsable").text(orden.responsable);
-                $("#ordDependencia").text(orden.dependencia);
-                $("#ordServicio").text(orden.servicio);
-                $("#ordUltimaRespuesta").text(orden.fechaUltimaRespuesta);
-                $("#ordFechaVencimiento").text(orden.fechaVencimiento);
-
-                $('#tblCorreo').hide();
-                $('#tblTicket').show();
-                $('#tituloHistorial').show();               
-
-                // Cargando Historial del Ticket
-
-                var historial=datosOrdenes.historialTickets;
-                var estilo;
-                divHistorial.empty();
-                divHistorial.append("<h4>Historial de la Orden</h4>");
-                var pos=0, len=historial.length;
-                
-                while(pos<len && historial[pos].idTicket!=ordId){
-                    pos++;
+                    while(pos<len && historial[pos].idTicket==ordId){
+                        if(historial[pos].tipo=="R"){
+                            estilo="panel panel-success";
+                        }
+                        else{
+                            estilo="panel panel-primary";
+                        }
+                        divHistorial.append("<div class=\""+estilo+"\"><div class=\"panel-heading\"><span class=\"pull-left\">Fecha: "+historial[pos].fecha+"</span><span class=\"pull-right\">Autor: "+historial[pos].autor+"</span><div class=\"clearfix\"></div>Novedad: "+historial[pos].titulo+"</div><div class=\"panel-body\">"+historial[pos].mensaje+"</div></div>");
+                        pos++;
+                    }                                                            
                 }
-                while(pos<len && historial[pos].idTicket==ordId){
-                    if(historial[pos].tipo=="R"){
-                        estilo="panel panel-success";
+                else{
+                    
+                    arr=datosOrdenes.datosCorreos;
+                    for (var i = 0, len = arr.length; i < len; i++){
+                        if(arr[i].corId == ordId){
+                            orden=arr[i];
+                            break;
+                        }
                     }
-                    else{
-                        estilo="panel panel-primary";
-                    }
-                    divHistorial.append("<div class=\""+estilo+"\"><div class=\"panel-heading\"><span class=\"pull-left\">Fecha: "+historial[pos].fecha+"</span><span class=\"pull-right\">Autor: "+historial[pos].autor+"</span><div class=\"clearfix\"></div>Novedad: "+historial[pos].titulo+"</div><div class=\"panel-body\">"+historial[pos].mensaje+"</div></div>");
-                    pos++;
-                }                                                            
-            }
-            else{
-                
-                arr=datosOrdenes.datosCorreos;
-                for (var i = 0, len = arr.length; i < len; i++){
-                    if(arr[i].corId == ordId){
-                        orden=arr[i];
-                        break;
-                    }
+                    $("#ordFecha").text(orden.corFecha);
+                    $("#ordDestinatario").text(orden.corDestinatario);
+                    $("#ordAsunto").text(orden.corAsunto);
+                    $("#ordMensaje").text(orden.corMensaje);
+                    
+                    $('#tblTicket').hide();
+                    divHistorial.empty();
+                    $('#tblCorreo').show();
                 }
-                $("#ordFecha").text(orden.corFecha);
-                $("#ordDestinatario").text(orden.corDestinatario);
-                $("#ordAsunto").text(orden.corAsunto);
-                $("#ordMensaje").text(orden.corMensaje);
-                
-                $('#tblTicket').hide();
-                divHistorial.empty();
-                $('#tblCorreo').show();
             }
-        }
 
             $("#listaOrdenes").on("click", ".orden", function(event){           
                 if($(this).text().includes('Ticket')){
@@ -233,6 +256,7 @@
                 var pqrsf = table.row( $(this).parents('tr') ).data();
                 abrirModalVerOrdenes(pqrsf.codigo);
             });
+
         });
 
         function cargarModalRespuesta(response){
@@ -255,7 +279,7 @@
                     modalRespuesta.addClass('modal-danger');
                     modalRespuesta.modal('toggle');
             }               
-        }
+        }        
 
         $.fn.dataTable.render.accionesDisponibles=function(){
             return function(data, type, row){       
@@ -310,7 +334,7 @@
             return function(data, type, row){
                 return renderPqrsfTipo(data)
             }
-        }
+        }    
 
         $.fn.dataTable.render.personaNombreCompleto=function(){
             return function(data, type, row){

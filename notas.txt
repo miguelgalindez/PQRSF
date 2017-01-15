@@ -103,12 +103,6 @@ OJO
 
 --------------------------------------------------------------------
 
-	DIRECCIONAR - CREACION DEL TICKET
-
-		Revisar que cuando se direccione/cree el ticket, se actualice la columna PqrsfEstado con el valor de '1'     (Atendiendo)
-
---------------------------------------------------------------------
-
 	En vista DireccionarPqrsf
 
 		Quitar la columna creada y mas bien colocar el boton ver para mas detalles
@@ -117,5 +111,16 @@ OJO
 		Marcar con color amarillo las pqrsfs que estén proximas a vencerse
 
 --------------------------------------------------------------------
+
+	CrearTikcet Osticket
+
+		Cuando se cree el ticket colocar en la novedad de asignación ticket asignado a: + nombreFuncionario + de + nombre de la dependencia/directivo
+
+--------------------------------------------------------------------
+
+	OJO
+
+		cambiar el estandar definido para las PQRSF vencidas y por vencerse
+			para las que estan vencidas colocar diasParaVencimiento=-1 en lugar de diasParaVencimiento=0 porque si faltan 0 dias para el vencimiento aun no esta vencida la PQRSF (vence el mismo dia)
 
 php artisan view:clear

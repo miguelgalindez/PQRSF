@@ -32,21 +32,21 @@ class Pqrsf extends Model
     public static function obtnPqrsfsPorVencimiento($diasParaVencimiento){
         $sql="";
         if($diasParaVencimiento==0){
-            $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, pqrsfDescripcion, perId, perNombres, perApellidos, pqrsfFechaVencimiento FROM pqrsfs NATURAL JOIN personas WHERE pqrsfEstado!='2' AND NOW()>pqrsfFechaVencimiento";
+            $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, pqrsfDescripcion, perId, perNombres, perApellidos, datediff(DATE(NOW()), DATE(pqrsfFechaVencimiento)) AS diasVencimiento FROM pqrsfs NATURAL JOIN personas WHERE pqrsfEstado!='2' AND DATE(NOW())>DATE(pqrsfFechaVencimiento)";
         }
         else{
-            $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, pqrsfDescripcion, perId, perNombres, perApellidos, pqrsfFechaVencimiento FROM pqrsfs NATURAL JOIN personas WHERE pqrsfEstado!='2' AND datediff(pqrsfFechaVencimiento, NOW())>0 AND datediff(pqrsfFechaVencimiento, NOW())<=" . $diasParaVencimiento;
+            $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, pqrsfDescripcion, perId, perNombres, perApellidos, datediff(DATE(pqrsfFechaVencimiento), DATE(NOW())) AS diasVencimiento FROM pqrsfs NATURAL JOIN personas WHERE pqrsfEstado!='2' AND DATE(pqrsfFechaVencimiento)>=DATE(NOW()) AND datediff(DATE(pqrsfFechaVencimiento), DATE(NOW()))<=" . $diasParaVencimiento;
         }
         return DB::select($sql);
     }
 
     public static function obtnNumeroVencidas(){
-        $sql="SELECT COUNT(pqrsfCodigo) AS numeroVencidas FROM pqrsfs WHERE pqrsfEstado!='2' AND NOW()>pqrsfFechaVencimiento";
+        $sql="SELECT COUNT(pqrsfCodigo) AS numeroVencidas FROM pqrsfs WHERE pqrsfEstado!='2' AND DATE(NOW())>DATE(pqrsfFechaVencimiento)";
         return DB::select($sql);
     }
 
     public static function obtnNumeroProximasVencidas(){
-        $sql="SELECT COUNT(pqrsfCodigo) AS numeroProximasVencidas FROM pqrsfs WHERE pqrsfEstado!='2' AND datediff(pqrsfFechaVencimiento, NOW())>0 AND datediff(pqrsfFechaVencimiento, NOW())<=8";
+        $sql="SELECT COUNT(pqrsfCodigo) AS numeroProximasVencidas FROM pqrsfs WHERE pqrsfEstado!='2' AND datediff(DATE(pqrsfFechaVencimiento), DATE(NOW())>0 AND datediff(DATE(pqrsfFechaVencimiento), DATE(NOW())<=8";
 
         return DB::select($sql);
     }
@@ -68,13 +68,13 @@ class Pqrsf extends Model
 
     public static function obtnNumeroAtendiendo(){
         //$sql="SELECT COUNT(pqrsfCodigo) AS numeroAtendiendo FROM pqrsfs WHERE pqrsfEstado='1'        
-        $sql="SELECT COUNT(pqrsfCodigo) AS numeroAtendiendo FROM pqrsfs WHERE pqrsfEstado='1' AND DATE(NOW())<=pqrsfFechaVencimiento";
+        $sql="SELECT COUNT(pqrsfCodigo) AS numeroAtendiendo FROM pqrsfs WHERE pqrsfEstado='1' AND DATE(NOW())<=DATE(pqrsfFechaVencimiento)";
         return DB::select($sql);   
     }
 
     public static function obtnNumeroPendientes(){
         //$sql="SELECT COUNT(pqrsfCodigo) AS numeroPendientes FROM pqrsfs WHERE pqrsfEstado='0';
-        $sql="SELECT COUNT(pqrsfCodigo) AS numeroPendientes FROM pqrsfs WHERE pqrsfEstado='0' AND DATE(NOW())<=pqrsfFechaVencimiento";
+        $sql="SELECT COUNT(pqrsfCodigo) AS numeroPendientes FROM pqrsfs WHERE pqrsfEstado='0' AND DATE(NOW())<=DATE(pqrsfFechaVencimiento)";
         
         return DB::select($sql);   
     }
