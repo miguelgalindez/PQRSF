@@ -46,7 +46,7 @@ class Pqrsf extends Model
     }
 
     public static function obtnNumeroProximasVencidas(){
-        $sql="SELECT COUNT(pqrsfCodigo) AS numeroProximasVencidas FROM pqrsfs WHERE pqrsfEstado!='2' AND datediff(DATE(pqrsfFechaVencimiento), DATE(NOW())>0 AND datediff(DATE(pqrsfFechaVencimiento), DATE(NOW())<=8";
+        $sql="SELECT COUNT(pqrsfCodigo) AS numeroProximasVencidas FROM pqrsfs WHERE pqrsfEstado!='2' AND datediff(DATE(pqrsfFechaVencimiento), DATE(NOW()))>=0 AND datediff(DATE(pqrsfFechaVencimiento), DATE(NOW()))<=8";
 
         return DB::select($sql);
     }
