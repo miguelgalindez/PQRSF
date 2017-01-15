@@ -56,12 +56,15 @@ class Pqrsf extends Model
     }
 
     public static function obtnNumeroAtendiendo(){
+        //$sql="SELECT COUNT(pqrsfCodigo) AS numeroAtendiendo FROM pqrsfs WHERE pqrsfEstado='1'        
         $sql="SELECT COUNT(pqrsfCodigo) AS numeroAtendiendo FROM pqrsfs WHERE pqrsfEstado='1' AND DATE(NOW())<=pqrsfFechaVencimiento";
         return DB::select($sql);   
     }
 
     public static function obtnNumeroPendientes(){
+        //$sql="SELECT COUNT(pqrsfCodigo) AS numeroPendientes FROM pqrsfs WHERE pqrsfEstado='0';
         $sql="SELECT COUNT(pqrsfCodigo) AS numeroPendientes FROM pqrsfs WHERE pqrsfEstado='0' AND DATE(NOW())<=pqrsfFechaVencimiento";
+        
         return DB::select($sql);   
     }
 

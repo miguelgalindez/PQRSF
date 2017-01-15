@@ -93,7 +93,27 @@ OJO
 
 			¿ LAS PQRSFS YA VENCIDAS QUE !!? ¿ SE DEBEN PODER DIRECCIONAR ?
 
+			Reemplazar la columna fecha de vencimiento por estado y cuando este vencida colocar el estado +'vencida'. Por ejemplo:
+										Atendiendo
+										(Vencida)
+
+
+
 --------------------------------------------------------------------
 
+	DIRECCIONAR - CREACION DEL TICKET
+
+		Revisar que cuando se direccione/cree el ticket, se actualice la columna PqrsfEstado con el valor de '1'     (Atendiendo)
+
+--------------------------------------------------------------------
+
+	En vista DireccionarPqrsf
+
+		Quitar la columna creada y mas bien colocar el boton ver para mas detalles
+		¿ Dejar radicar las que ya estan vencidas ?
+		Marcar con color rojo las pqrsfs que ya estén vencidas
+		Marcar con color amarillo las pqrsfs que estén proximas a vencerse
+
+--------------------------------------------------------------------
 
 php artisan view:clear
