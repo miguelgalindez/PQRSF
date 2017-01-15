@@ -7,7 +7,7 @@
           <!-- small box -->
           <div class="small-box bg-red" onclick="location.href='/admin/consultas/vencimientoPQRSF/0';">
             <div class="inner">
-              <h3>{{$pqrsfsVencidas}}</h3>
+              <h3>{{$numeroPqrsfsVencidas}}</h3>
 
               <p>PQRSFs vencidas</p>
             </div>
@@ -23,7 +23,7 @@
           <!-- small box -->
           <div class="small-box bg-orange" onclick="location.href='/admin/consultas/vencimientoPQRSF/8';">
             <div class="inner">
-              <h3>{{$pqrsfsProximasVencidas}}</h3>
+              <h3>{{$numeroPqrsfsProximasVencidas}}</h3>
 
               <p>PQRSFs pŕoximas a vencerse</p>
             </div>
@@ -38,7 +38,7 @@
           <!-- small box -->
           <div class="small-box bg-black" onclick="location.href='/admin/radicarPQRSF';">
             <div class="inner">
-              <h3>{{$pqrsfsNoRadicadas}}</h3>
+              <h3>{{$numeroPqrsfsNoRadicadas}}</h3>
 
               <p>PQRSFs sin radicar</p>
             </div>
@@ -53,7 +53,7 @@
           <!-- small box -->
           <div class="small-box bg-black" onclick="location.href='/admin/direccionarPqrsf';">
             <div class="inner">
-              <h3>{{$pqrsfsNoDireccionadas}}</h3>
+              <h3>{{$numeroPqrsfsNoDireccionadas}}</h3>
 
               <p>PQRSFs sin direccionar</p>
             </div>
@@ -68,7 +68,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>{{$pqrsfsAtendidas}}</h3>
+              <h3>{{$numeroPqrsfsAtendidas}}</h3>
 
               <p>PQRSFs atendidas</p>
             </div>
@@ -84,7 +84,7 @@
           <!-- small box -->
           <div class="small-box bg-blue">
             <div class="inner">
-              <h3>{{$pqrsfsAtendiendo}}</h3>
+              <h3>{{$numeroPqrsfsAtendiendo}}</h3>
 
               <p>PQRSFs que se estan atendiendo</p>
             </div>
@@ -100,7 +100,7 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>{{$pqrsfsPendientes}}</h3>
+              <h3>{{$numeroPqrsfsPendientes}}</h3>
 
               <p>PQRSFs pendientes</p>
             </div>

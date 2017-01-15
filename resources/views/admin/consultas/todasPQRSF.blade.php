@@ -106,7 +106,7 @@
 		            	$("#mVerPqrsfOrdenes").html('<p align="justify">No registra</p></td>');
 		            }
 		            else{
-		            	$("#mVerPqrsfOrdenes").html('<button class="btn-xs btn-success" id="btnVerOrdenes">Ver ordenes</button>');
+		            	$("#mVerPqrsfOrdenes").html('<button class="btn-xs btn-success" id="mVerBtnVerOrdenes">Ver ordenes</button>');
 
 		            	$("#mVerBtnVerOrdenes").on('click', function(){
 		            		abrirModalVerOrdenes(pqrsf.codigo);		            		
@@ -116,7 +116,7 @@
 				})
 				.fail(function() {
 			    	cargarModalRespuesta(null);
-			 	});							           
+			 	});
         });               
 
         function abrirModalVerOrdenes(codigoPQRSF){
@@ -388,7 +388,7 @@
                     modalRespuesta.addClass('modal-danger');
                     modalRespuesta.modal('toggle');
             }               
-        }       
+        }
 
     });		
 

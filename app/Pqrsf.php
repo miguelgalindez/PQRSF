@@ -29,6 +29,17 @@ class Pqrsf extends Model
     	);
     }
 
+    public static function obtnPqrsfsPorVencimiento($diasParaVencimiento){
+        $sql="";
+        if($diasParaVencimiento==0){
+            $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, pqrsfDescripcion, perId, perNombres, perApellidos, pqrsfFechaVencimiento FROM pqrsfs NATURAL JOIN personas WHERE pqrsfEstado!='2' AND NOW()>pqrsfFechaVencimiento";
+        }
+        else{
+            $sql="SELECT pqrsfCodigo AS codigo, pqrsfTipo, radId, (SELECT COUNT(ordId) FROM ordenes WHERE pqrsfCodigo=codigo) AS numeroOrdenes, pqrsfAsunto, pqrsfDescripcion, perId, perNombres, perApellidos, pqrsfFechaVencimiento FROM pqrsfs NATURAL JOIN personas WHERE pqrsfEstado!='2' AND datediff(pqrsfFechaVencimiento, NOW())>0 AND datediff(pqrsfFechaVencimiento, NOW())<=" . $diasParaVencimiento;
+        }
+        return DB::select($sql);
+    }
+
     public static function obtnNumeroVencidas(){
         $sql="SELECT COUNT(pqrsfCodigo) AS numeroVencidas FROM pqrsfs WHERE pqrsfEstado!='2' AND NOW()>pqrsfFechaVencimiento";
         return DB::select($sql);

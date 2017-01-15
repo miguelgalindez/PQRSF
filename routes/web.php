@@ -48,5 +48,5 @@ Route::get('/admin/ordenes/{pqrsfCodigo}/detalles', 'PqrsfsController@obtnDetall
 
 
 // Admin/Consultas/vencimientoPQRSF
-
 Route::get('/admin/consultas/vencimientoPQRSF/{diasParaVencimiento}', 'AdminController@mostrarVencimientoPQRSF');
+Route::get('/admin/pqrsfs/vencimiento/{diasParaVencimiento}', 'PqrsfsController@obtnPqrsfsPorVencimiento');

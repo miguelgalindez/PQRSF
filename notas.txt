@@ -82,6 +82,8 @@ OJO
 
 										OJO YA HAY UN INDICADOR QUE ESTA MAL !! el de PQRSFS pendientes por direccionar esta contando tambien las que ya están vencidas. Esas ya no se pueden direccionar ?? si es asi entonces ya no se pueden contar como pendientes
 
+		Faltaria un indicador para las PQRSF que faltan revisar si estan atendidas y que faltan encuestar
+
 --------------------------------------------------------------------
 
 	CONSULTAS/TODAS LAS PQRSFS

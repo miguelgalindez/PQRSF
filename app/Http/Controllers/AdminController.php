@@ -22,48 +22,36 @@ class AdminController extends Controller
 	}
 
 	public function mostrarVencimientoPQRSF($diasParaVencimiento){
-		$tituloPagina="";
-		$descripcionPagina="";
-
-		if($diasParaVencimiento==0){
-			$tituloPagina="PQRSFs vencidas";
-			$descripcionPagina="A continuación se muestran las PQRSFs que se encuentran vencidas a la fecha";
-		}
-		else{			
-			$tituloPagina="PQRSFs proximas a vencerse";
-			$descripcionPagina="A continuación se muestran las PQRSFs que se vencerán dentro de " . $diasParaVencimiento . " días";
-		}
 		return view('admin.consultas.vencimientoPQRSF', [
-			'tituloPagina' => $tituloPagina,
-			'descripcionPagina' => $descripcionPagina
+			'diasParaVencimiento' => $diasParaVencimiento
 		]);
 	}
 	
     public function mostrarDireccionarPqrsf(){
-        return view('admin.direccionarPqrsf');
+        return view('admin.acciones.direccionarPqrsf');
     }
 
     public function mostrarRadicarPQRSF(){
-    	return view('admin.radicarPQRSF');
+    	return view('admin.acciones.radicarPQRSF');
     }
 
     public function index(){
-    	$pqrsfsVencidas=Pqrsf::obtnNumeroVencidas()[0]->numeroVencidas;
-    	$pqrsfsProximasVencidas=Pqrsf::obtnNumeroProximasVencidas()[0]->numeroProximasVencidas;
-    	$pqrsfsNoRadicadas=Pqrsf::obtnNumeroNoRadicadas()[0]->numeroNoRadicadas;
-    	$pqrsfsNoDireccionadas=Pqrsf::obtnNumeroNoDireccionadas()[0]->numeroNoDireccionadas;
-    	$pqrsfsAtendidas=Pqrsf::obtnNumeroAtendidas()[0]->numeroAtendidas;
-    	$pqrsfsAtendiendo=Pqrsf::obtnNumeroAtendiendo()[0]->numeroAtendiendo;
-    	$pqrsfsPendientes=Pqrsf::obtnNumeroPendientes()[0]->numeroPendientes;
+    	$numeroPqrsfsVencidas=Pqrsf::obtnNumeroVencidas()[0]->numeroVencidas;
+    	$numeroPqrsfsProximasVencidas=Pqrsf::obtnNumeroProximasVencidas()[0]->numeroProximasVencidas;
+    	$numeroPqrsfsNoRadicadas=Pqrsf::obtnNumeroNoRadicadas()[0]->numeroNoRadicadas;
+    	$numeroPqrsfsNoDireccionadas=Pqrsf::obtnNumeroNoDireccionadas()[0]->numeroNoDireccionadas;
+    	$numeroPqrsfsAtendidas=Pqrsf::obtnNumeroAtendidas()[0]->numeroAtendidas;
+    	$numeroPqrsfsAtendiendo=Pqrsf::obtnNumeroAtendiendo()[0]->numeroAtendiendo;
+    	$numeroPqrsfsPendientes=Pqrsf::obtnNumeroPendientes()[0]->numeroPendientes;
 
     	return view('admin.index', [
-    		'pqrsfsVencidas' => $pqrsfsVencidas,
-    		'pqrsfsProximasVencidas' => $pqrsfsProximasVencidas,
-    		'pqrsfsNoRadicadas' => $pqrsfsNoRadicadas,
-    		'pqrsfsNoDireccionadas' => $pqrsfsNoDireccionadas,
-    		'pqrsfsAtendidas' => $pqrsfsAtendidas,
-    		'pqrsfsAtendiendo' => $pqrsfsAtendiendo,
-    		'pqrsfsPendientes' => $pqrsfsPendientes
+    		'numeroPqrsfsVencidas' => $numeroPqrsfsVencidas,
+    		'numeroPqrsfsProximasVencidas' => $numeroPqrsfsProximasVencidas,
+    		'numeroPqrsfsNoRadicadas' => $numeroPqrsfsNoRadicadas,
+    		'numeroPqrsfsNoDireccionadas' => $numeroPqrsfsNoDireccionadas,
+    		'numeroPqrsfsAtendidas' => $numeroPqrsfsAtendidas,
+    		'numeroPqrsfsAtendiendo' => $numeroPqrsfsAtendiendo,
+    		'numeroPqrsfsPendientes' => $numeroPqrsfsPendientes
     	]);
     }
 
@@ -83,7 +71,7 @@ class AdminController extends Controller
     }
 
     public function mostrarRegistrarPqrsf(){
-		return view('admin.registrarPqrsf');
+		return view('admin.acciones.registrarPqrsf');
 	}
 
 	private function generateRandomString($length = 10) {

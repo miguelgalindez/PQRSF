@@ -90,6 +90,10 @@ class PqrsfsController extends Controller
         Log::info(date('Y-m-d H:i:s'));
 
         return response()->json($datosOrdenes);
-    }    
+    }
+
+    public function obtnPqrsfsPorVencimiento($diasParaVencimiento){
+        return response()->json(Pqrsf::obtnPqrsfsPorVencimiento($diasParaVencimiento));
+    }
 
 }
