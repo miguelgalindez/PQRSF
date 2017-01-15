@@ -153,62 +153,68 @@
             }
 
             function cargarDatosOrden(ordTipo, ordId){
-                var orden, arr;
-                var divHistorial=$("#divHistorial");
-                if(ordTipo=='TICKET'){
-                    
-                    arr=datosOrdenes.datosTickets;
-                    for (var i = 0, len = arr.length; i < len; i++){
-                        if(arr[i].idTicket == ordId){
-                            orden=arr[i];
-                            break;
-                        }
-                    }                                                               
-                    $("#ordResponsable").text(orden.responsable);
-                    $("#ordDependencia").text(orden.dependencia);
-                    $("#ordServicio").text(orden.servicio);
-                    $("#ordUltimaRespuesta").text(orden.fechaUltimaRespuesta);
-                    $("#ordFechaVencimiento").text(orden.fechaVencimiento);
-
-                    $('#tblCorreo').hide();
-                    $('#tblTicket').show();
-                    $('#tituloHistorial').show();               
-
-                    // Cargando Historial del Ticket
-
-                    var historial=datosOrdenes.historialTickets;
-                    var estilo;
-                    divHistorial.empty();
-                    divHistorial.append("<h4>Historial de la Orden</h4>");
-                    for(var i=0, len=historial.length; i<len; i++){
-                        if(historial[i].tipo=="R"){
-                            estilo="panel panel-success";
-                        }
-                        else{
-                            estilo="panel panel-primary";
-                        }
-                        divHistorial.append("<div class=\""+estilo+"\"><div class=\"panel-heading\"><span class=\"pull-left\">Fecha: "+historial[i].fecha+"</span><span class=\"pull-right\">Autor: "+historial[i].autor+"</span><div class=\"clearfix\"></div>Novedad: "+historial[i].titulo+"</div><div class=\"panel-body\">"+historial[i].mensaje+"</div></div>");
+            var orden, arr;
+            var divHistorial=$("#divHistorial");
+            if(ordTipo=='TICKET'){
+                
+                arr=datosOrdenes.datosTickets;
+                for (var i = 0, len = arr.length; i < len; i++){
+                    if(arr[i].idTicket == ordId){
+                        orden=arr[i];
+                        break;
                     }
+                }                                                               
+                $("#ordResponsable").text(orden.responsable);
+                $("#ordDependencia").text(orden.dependencia);
+                $("#ordServicio").text(orden.servicio);
+                $("#ordUltimaRespuesta").text(orden.fechaUltimaRespuesta);
+                $("#ordFechaVencimiento").text(orden.fechaVencimiento);
+
+                $('#tblCorreo').hide();
+                $('#tblTicket').show();
+                $('#tituloHistorial').show();               
+
+                // Cargando Historial del Ticket
+
+                var historial=datosOrdenes.historialTickets;
+                var estilo;
+                divHistorial.empty();
+                divHistorial.append("<h4>Historial de la Orden</h4>");
+                var pos=0, len=historial.length;
+                
+                while(pos<len && historial[pos].idTicket!=ordId){
+                    pos++;
                 }
-                else{
-                    
-                    arr=datosOrdenes.datosCorreos;
-                    for (var i = 0, len = arr.length; i < len; i++){
-                        if(arr[i].corId == ordId){
-                            orden=arr[i];
-                            break;
-                        }
+                while(pos<len && historial[pos].idTicket==ordId){
+                    if(historial[pos].tipo=="R"){
+                        estilo="panel panel-success";
                     }
-                    $("#ordFecha").text(orden.corFecha);
-                    $("#ordDestinatario").text(orden.corDestinatario);
-                    $("#ordAsunto").text(orden.corAsunto);
-                    $("#ordMensaje").text(orden.corMensaje);
-                    
-                    $('#tblTicket').hide();
-                    divHistorial.empty();
-                    $('#tblCorreo').show();
-                }
+                    else{
+                        estilo="panel panel-primary";
+                    }
+                    divHistorial.append("<div class=\""+estilo+"\"><div class=\"panel-heading\"><span class=\"pull-left\">Fecha: "+historial[pos].fecha+"</span><span class=\"pull-right\">Autor: "+historial[pos].autor+"</span><div class=\"clearfix\"></div>Novedad: "+historial[pos].titulo+"</div><div class=\"panel-body\">"+historial[pos].mensaje+"</div></div>");
+                    pos++;
+                }                                                            
             }
+            else{
+                
+                arr=datosOrdenes.datosCorreos;
+                for (var i = 0, len = arr.length; i < len; i++){
+                    if(arr[i].corId == ordId){
+                        orden=arr[i];
+                        break;
+                    }
+                }
+                $("#ordFecha").text(orden.corFecha);
+                $("#ordDestinatario").text(orden.corDestinatario);
+                $("#ordAsunto").text(orden.corAsunto);
+                $("#ordMensaje").text(orden.corMensaje);
+                
+                $('#tblTicket').hide();
+                divHistorial.empty();
+                $('#tblCorreo').show();
+            }
+        }
 
             $("#listaOrdenes").on("click", ".orden", function(event){           
                 if($(this).text().includes('Ticket')){
