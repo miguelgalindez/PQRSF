@@ -26,6 +26,10 @@ class AdminController extends Controller
 			'diasParaVencimiento' => $diasParaVencimiento
 		]);
 	}
+
+	public function mostrarPqrsfsPorEstado(){
+		return view('admin.reportes.pqrsfsPorEstado');
+	}
 	
     public function mostrarDireccionarPqrsf(){
         return view('admin.acciones.direccionarPqrsf');

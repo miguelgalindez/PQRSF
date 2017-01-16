@@ -77,7 +77,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href=""><i class="fa fa-circle-o"></i>Reporte 1</a></li>
+            <li><a href="/admin/reportes/pqrsfsPorEstado"><i class="fa fa-circle-o"></i>PQRSFs por estado</a></li>
             <li><a href=""><i class="fa fa-circle-o"></i>Reporte 2 </a></li>
             <li><a href=""><i class="fa fa-circle-o"></i>Reporte 3</a></li>
             <li><a href=""><i class="fa fa-circle-o"></i>Reporte 4</a></li>

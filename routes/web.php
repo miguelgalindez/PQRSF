@@ -38,8 +38,10 @@ Route::get('/login', 'UsersController@googleLogin') ;
 Route::get('/logout', 'UsersController@logout');
 
 
-// Admin/Consultas/TodasPqrsfs
+//------------------------------------------------------------------------------------------------------
+//								CONSULTAS
 
+// Admin/Consultas/TodasPqrsfs
 Route::get('/admin/consultas/todasPQRSF', 'AdminController@mostrarTodasPqrsfs');
 Route::get('/admin/pqrsfs/todas', 'PqrsfsController@obtnTodas');
 Route::get('/admin/pqrsfs/consultas/todasPQRSF/datosRestantes/{pqrsfCodigo}', 'PqrsfsController@obtnDatosRestantes');
@@ -50,3 +52,10 @@ Route::get('/admin/ordenes/{pqrsfCodigo}/detalles', 'PqrsfsController@obtnDetall
 // Admin/Consultas/vencimientoPQRSF
 Route::get('/admin/consultas/vencimientoPQRSF/{diasParaVencimiento}', 'AdminController@mostrarVencimientoPQRSF');
 Route::get('/admin/pqrsfs/vencimiento/{diasParaVencimiento}', 'PqrsfsController@obtnPqrsfsPorVencimiento');
+
+
+//------------------------------------------------------------------------------------------------------
+//								REPORTES
+
+// PQRSFs por Estado
+Route::get('/admin/reportes/pqrsfsPorEstado', 'AdminController@mostrarPqrsfsPorEstado');

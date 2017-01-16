@@ -1,5 +1,5 @@
 @extends('admin.master')
-@section('title', 'Exito')
+@section('title', 'Administración del PQRS')
 
 @section('content')
       <!-- Small boxes (Stat box) -->
