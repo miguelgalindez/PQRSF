@@ -228,7 +228,7 @@ class Osticket extends Model
             );   
         }
 
-    }
+    }    
 
     public static function obtnDatosTickets($idsTickets){
         $db=DB::connection('osticketdb');

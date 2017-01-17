@@ -59,3 +59,4 @@ Route::get('/admin/pqrsfs/vencimiento/{diasParaVencimiento}', 'PqrsfsController@
 
 // PQRSFs por Estado
 Route::get('/admin/reportes/pqrsfsPorEstado', 'AdminController@mostrarPqrsfsPorEstado');
+Route::get('/admin/osticket/dependencias', 'OsticketController@obtnTodasDependencias');

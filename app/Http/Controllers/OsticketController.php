@@ -48,4 +48,8 @@ class OsticketController extends Controller
         return response()->json(Osticket::obtnDatosTicket($idTicket));
     }
 
+    public function obtnTodasDependencias(){
+        return response()->json(Osticket::obtnTodasDependencias());
+    }
+
 }

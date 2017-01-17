@@ -42,14 +42,8 @@
 	            		<div class="input-group-addon">
 	            			<i class="fa fa-users"></i>
 	            		</div>
-						<select class="form-control select2" multiple="multiple" data-placeholder="Seleccione dependencia(s)">
-							<option>Alabama</option>
-							<option>Alaska</option>
-							<option>California</option>
-							<option>Delaware</option>
-							<option>Tennessee</option>
-							<option>Texas</option>
-							<option>Washington</option>
+						<select class="form-control select2" id="dependencias" multiple="multiple" data-placeholder="Seleccione dependencia(s)">
+							
 						</select>
 					</div>
 				</div>	          
@@ -81,10 +75,23 @@
 	<script src="{!! asset('plugins/select2/select2.full.min.js') !!}"></script>
 
 	<script type="text/javascript">
-		var now=new Date();
-		var minDate=new Date("01/01/" +now.getFullYear());
-		
+
 		$(".select2").select2();
+		$.get('/admin/osticket/dependencias', function(data){                                  
+            $.each(data, function(index, dependencia){
+                $('#dependencias').append("<option value='"+ dependencia.dept_id + "'>" +dependencia.dept_name+"</option>");
+            });            
+        });
+
+        $('#dependencias').on("select2:select", function(e) { 
+		   console.log("Nombre dependencia Seleccionada: "+e.params.data.text+"\tId Dependencia: "+e.params.data.id);
+		});
+		$('#dependencias').on("select2:unselect", function(e) {
+		   console.log("Nombre dependencia Deseleccionada: "+e.params.data.text+"\tId Dependencia: "+e.params.data.id);
+		});
+
+		var now=new Date();
+		var minDate=new Date("01/01/" +now.getFullYear());		
 
 		$('#fechaInicio').datetimepicker({	
 			locale: 'es',						
@@ -104,11 +111,13 @@
 
         $("#fechaInicio").on("dp.change", function (e) {
             $('#fechaFin').data("DateTimePicker").minDate(e.date);
-            // Actualizar graficos
+            // Actualizar datos y graficos
+            console.log("Fecha inicio actualziada");
         });
         $("#fechaFin").on("dp.change", function (e) {
             $('#fechaInicio').data("DateTimePicker").maxDate(e.date);
-            // Actualizar graficos
+            // Actualizar datos y graficos
+            console.log("Fecha fin actualziada");
         });
 
 
