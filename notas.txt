@@ -123,4 +123,16 @@ OJO
 		cambiar el estandar definido para las PQRSF vencidas y por vencerse
 			para las que estan vencidas colocar diasParaVencimiento=-1 en lugar de diasParaVencimiento=0 porque si faltan 0 dias para el vencimiento aun no esta vencida la PQRSF (vence el mismo dia)
 
+
+--------------------------------------------------------------------
+
+	OJO
+			/consultas/proximas a vencerse
+
+				El boton direccionar no funciona
+
+
+
+--------------------------------------------------------------------
+
 php artisan view:clear

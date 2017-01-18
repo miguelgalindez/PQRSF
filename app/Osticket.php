@@ -201,8 +201,10 @@ class Osticket extends Model
                 ->insert([
                     'ordId' => $idTicket,
                     'ordTipo' => 'TICKET',
-                    'pqrsfCodigo' => $codigoPQRSF
-            ]);
+                    'pqrsfCodigo' => $codigoPQRSF,
+                    'idDependencia'=> $idDependencia,
+                    'ordFecha'=> $now
+            ]);                
 
             DB::table('pqrsfs')
                 ->where('pqrsfCodigo', $codigoPQRSF)
